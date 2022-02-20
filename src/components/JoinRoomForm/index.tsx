@@ -1,9 +1,12 @@
 import { Button, Form, Input, Modal } from "antd"
 
+import IJoinRoomService from "@/contracts/IJoinRoomService"
+
 interface Props {
   visible: boolean
   onCancel: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined
-  onSubmit: ((values: any) => void) | undefined
+  onSubmit: (values: JoinRoomData) => void
+  joinRoomService: IJoinRoomService
 }
 
 export interface JoinRoomData {
@@ -11,13 +14,28 @@ export interface JoinRoomData {
   roomId: string
 }
 
-const JoinRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit}: Props) => {
+const JoinRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, joinRoomService }: Props) => {
+  const handleSubmit = async (values: JoinRoomData) => {
+    // TODO: 
+    try {
+      await joinRoomService.run()
+      onSubmit(values)
+      // chamar serviço de JoinRoom
+    } catch (error) {
+      // notification
+      // o teste tem que pegar o ID da notificação
+      // sala não foi encontrada
+      // sala cheia?
+      // servidor ainda não tá ligado?
+    }
+  }
+
   return (
     <Modal
       title="Join Room"
       visible={visible}
       onCancel={onCancel}
-      onOk={() => {}}
+      onOk={() => { }}
       footer={[
         <Button form='join-room' key="submit" htmlType='submit'>Join</Button>
       ]}
@@ -25,7 +43,7 @@ const JoinRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit}: Props) =>
       <Form
         name="join-room"
         layout='vertical'
-        onFinish={onSubmit}
+        onFinish={handleSubmit}
       >
         <Form.Item name="username" label="Your name" rules={[{ required: true, message: 'A name is required!' }]}>
           <Input placeholder="King Arthur" />
