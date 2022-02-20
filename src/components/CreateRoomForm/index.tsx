@@ -1,4 +1,5 @@
-import { Button, Form, Input, Modal, Select, Switch } from "antd"
+import { Button, Col, Form, Input, Modal, Row, Select, Switch } from "antd"
+import { InputGroup } from "./styles"
 const { Option } = Select
 
 interface Props {
@@ -16,7 +17,6 @@ export interface CreateRoomData {
   daysEndAt: string
   weekendDays: boolean
 }
-
 
 const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, createRoomService }: Props) => {
   const handleSubmit = (values: CreateRoomData) => {
@@ -51,29 +51,33 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, createRo
           </Select>
         </Form.Item>
 
-        <div>
-          <Form.Item name="daysStartAt" label="Days start at">
-            <Select>
-              <Option value="07h"> 07h </Option>
-              <Option value="08h"> 08h </Option>
-              <Option value="09h"> 09h </Option>
-              <Option value="10h"> 10h </Option>
-            </Select>
-          </Form.Item>
+        <Row>
+          <Col className="gutter-row" span={12}>
+            <Form.Item style={{ paddingRight: '8px' }} name="daysStartAt" label="Days start at">
+              <Select>
+                <Option value="07h"> 07h </Option>
+                <Option value="08h"> 08h </Option>
+                <Option value="09h"> 09h </Option>
+                <Option value="10h"> 10h </Option>
+              </Select>
+            </Form.Item>
+          </Col>
 
-          <Form.Item name="daysEndAt" label="Days end at">
-            <Select>
-              <Option value="20h"> 20h </Option>
-              <Option value="21h"> 21h </Option>
-              <Option value="22h"> 22h </Option>
-              <Option value="00h"> 00h </Option>
-            </Select>
-          </Form.Item>
-        </div>
+          <Col className="gutter-row" span={12}>
+            <Form.Item style={{ paddingLeft: '8px' }} name="daysEndAt" label="Days end at">
+              <Select>
+                <Option value="20h"> 20h </Option>
+                <Option value="21h"> 21h </Option>
+                <Option value="22h"> 22h </Option>
+                <Option value="00h"> 00h </Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
-          <Form.Item name="weekendDays" label="Weekend Days?" labelAlign="left">
-            <Switch  />
-          </Form.Item>
+        <Form.Item name="weekendDays" label="Weekend Days?" labelAlign="left">
+          <Switch />
+        </Form.Item>
 
       </Form>
     </Modal>
