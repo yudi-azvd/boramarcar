@@ -8,8 +8,12 @@ import JoinRoomForm, { JoinRoomData } from '../../components/JoinRoomForm'
 import JoinRoomService from '@/services/JoinRoomService'
 import CreateRoomForm, { CreateRoomData } from '@/components/CreateRoomForm'
 import CreateRoomService from '@/services/CreateRoomService'
+import { useSocket } from '@/hooks/socket'
+import { useNavigate } from 'react-router-dom'
 
 const Home: React.FC = () => {
+  const navigate = useNavigate()
+  const { createRoom, joinRoom, registerJoinRoomCallbacks } = useSocket()
   const [isJoinRoomFormVisible, setIsJoinRoomFormVisible] = useState(false)
   const [isCreateRoomFormVisible, setIsCreateRoomFormVisible] = useState(false)
 
@@ -25,18 +29,25 @@ const Home: React.FC = () => {
   const handleJoinRoomCancel = () =>
     setIsJoinRoomFormVisible(false)
 
-  const handleJoinSubmit = (values: JoinRoomData) => {
-    notification['success']({
-      message: 'Information to be sent:',
-      description: JSON.stringify(values)
-    })
+  registerJoinRoomCallbacks({
+    onSuccess: () => {
+      navigate('/dashboard')
+    },
+    onFailure: () => {
+      notification.error({
+        message: 'Room does not exist',
+        description: 'Check the room ID with the owner'
+      })
+    }
+  })
+
+  const handleJoinSubmit = (joinRoomData: JoinRoomData) => {
+    joinRoom(joinRoomData)
   }
 
   const handleCreateSubmit = (values: CreateRoomData) => {
-    notification['success']({
-      message: 'Information to be sent:',
-      description: JSON.stringify(values)
-    })
+    createRoom(values)
+    navigate('/dashboard')
   }
 
   return (

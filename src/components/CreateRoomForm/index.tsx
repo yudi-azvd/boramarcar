@@ -1,5 +1,4 @@
 import { Button, Col, Form, Input, Modal, Row, Select, Switch } from "antd"
-import { InputGroup } from "./styles"
 const { Option } = Select
 
 interface Props {
@@ -75,7 +74,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, createRo
           </Col>
         </Row>
 
-        <Form.Item name="weekendDays" label="Weekend Days?" labelAlign="left">
+        <Form.Item name="weekendDays" label="Weekend Days?" labelAlign="left" valuePropName="checked">
           <Switch />
         </Form.Item>
 
