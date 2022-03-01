@@ -36,7 +36,8 @@ const SocketContext = createContext<SocketContextInterface>(
 const SocketProvider: React.FC = ({ children }) => {
   let registeredJoinRoomSuccess = false
   let registeredJoinRoomFailure = false
-  const socket = io(`${SERVER_ADDRESS}:${PORT}`, { transports: ['websocket'] })
+  const socket = io(`${SERVER_ADDRESS}:${PORT}`, { transports: ['websocket', 'polling'] })
+  // const socket = io(`${SERVER_ADDRESS}:${PORT}`)
   socket.on('connect', () => {
     console.log('socket created', socket.id)
   })
