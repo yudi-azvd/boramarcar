@@ -50,7 +50,7 @@ const JoinRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, joinRoomSe
         </Form.Item>
 
         <Form.Item name="roomId" label="Room ID" rules={[{ required: true, message: 'Don\'t forget the room ID!' }]}>
-          <Input placeholder="98asjdb182uAjdsj" />
+          <Input placeholder="3ZNvLLF7OjKQrCjbAAAB" />
         </Form.Item>
       </Form>
     </Modal>

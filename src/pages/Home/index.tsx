@@ -29,6 +29,7 @@ const Home: React.FC = () => {
   const handleJoinRoomCancel = () =>
     setIsJoinRoomFormVisible(false)
 
+  // Não parece seguir o estilo React
   registerJoinRoomCallbacks({
     onSuccess: () => {
       navigate('/dashboard')
