@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_SERVER_ADDRESS: string
-  readonly VITE_SERVER_PORT: number
+  readonly VITE_SERVER_PORT: string
 }
 
 interface ImportMeta {
