@@ -1,38 +1,22 @@
-import Schedule, { Day, ScheduleProps, TimeboxValue } from "@/components/Schedule"
+import ScheduleOrHeatmap from "@/components/ScheduleOrHeatmap"
 import { useSocket } from "@/hooks/socket"
-import { Tooltip } from "antd"
-import { useState } from "react"
-
-const times = [
-  '08h00',
-  '09h00',
-  '10h00',
-  '11h00',
-  '12h00',
-  '13h00',
-  '14h00',
-  '15h00',
-  '16h00',
-  '17h00',
-  '18h00',
-  '19h00',
-  '20h00',
-]
-
-const days = [
-  'Monday',
-  'Tuesday',
-  'Wednesday'
-] as Day[]
-
-const values = {
-  'Monday-08h00': 'available' as 'available' | 'busy' | undefined,
-  'Monday-09h00': 'busy' as 'available' | 'busy' | undefined
-}
+import { Button, Tooltip } from "antd"
+import { Container, Side, UsersList } from "./style"
 
 const Dashboard: React.FC = () => {
   const { user } = useSocket()
-  const [values, setValues] = useState<{[key: string]: TimeboxValue}>({})
+
+  const usersInRoom = [
+    'Anne',
+    'Audrey',
+    'Ava',
+    'Bella',
+    'Bernadette',
+    'Carol',
+    'Caroline',
+    'Carolyn',
+    'Chloe',
+  ]
 
   // const {room} = useRoom()
   /**
@@ -44,16 +28,41 @@ const Dashboard: React.FC = () => {
    * }
    */
 
-  return (
-    <div>
-      <h1>Heatmap-Schedule</h1>
-      <Tooltip title={user?.id}>
-        <p>{user?.name} seu ID é {user?.id}</p>
-        {user?.isOwner ?? <span>Você é o dono da sala</span>}
-      </Tooltip>
+  const copyToClipboard = async () => {
+    if ('clipboard' in navigator) {
+      await navigator.clipboard.writeText('ssss')
+    }
+    // e se não tiver? kkk
+  }
 
-      <Schedule data={{ days, times, values }} />
-    </div>
+  return (
+    <Container>
+
+      <Side>
+        <Tooltip title={user?.id}>
+          <strong>{user?.name}</strong>
+        </Tooltip>
+
+        {user?.isOwner
+          ? (<p>Você é o dono da sala</p>)
+          : (<p>O dono dessa sala é o fulaninho</p>)}
+
+        <div>
+          <p> Copie o ID da sala para a àrea de transferência!</p>
+          <Button type="primary" onClick={copyToClipboard}>
+            Copiar
+          </Button>
+        </div>
+
+        <UsersList>
+          {usersInRoom.map(u => (
+            <li key={u} > {u} </li>
+          ))}
+        </UsersList>
+      </Side>
+
+      <ScheduleOrHeatmap />
+    </Container>
   )
 }
 

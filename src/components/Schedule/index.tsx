@@ -10,7 +10,7 @@ export interface ScheduleProps {
     times: string[], // 08h, 09h, 10h, ..., 22h
     days: Day[]
     values: {
-      // segunda-08h00: busy, segunda-09h00: available, ...
+      // Monday-08h00: busy, Tuesday-09h00: available, ...
       [key: string]: TimeboxValue
     }
   }
@@ -37,14 +37,12 @@ const Schedule: React.FC<ScheduleProps> = ({ data }) => {
 
   return (
     <>
-      <h1>Schedule</h1>
-
-      <Container cols={days.length + 1} rows={times.length}>
-        <div id="top-left-corner">Horário \ Dia </div>
+      <Container cols={days.length + 1} rows={times.length + 1}>
+        <div id="top-left">Horário \ Dia </div>
 
         {days.map(day => (
           // se a tela for muito pequena, mostrar apenas a primeira letra
-          <div className="day" key={`day-time-${day}`}> {day[0]} </div>
+          <div className="day" key={`day-${day}`}> {day[0]} </div>
         ))}
 
         {times.map(time => {
