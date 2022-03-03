@@ -7,9 +7,9 @@ import 'antd/dist/antd.css'
 ReactDOM.render(
   // solução temporária
   // https://github.com/ant-design/ant-design/issues/22493#issuecomment-608959024
-  // <React.StrictMode>
+  //<React.StrictMode>
     <App />
-  // </React.StrictMode>
+  //</React.StrictMode>
   ,
   document.getElementById('root')
 )

@@ -1,6 +1,7 @@
-import Schedule, { Day, ScheduleProps } from "@/components/Schedule"
+import Schedule, { Day, ScheduleProps, TimeboxValue } from "@/components/Schedule"
 import { useSocket } from "@/hooks/socket"
 import { Tooltip } from "antd"
+import { useState } from "react"
 
 const times = [
   '08h00',
@@ -21,9 +22,7 @@ const times = [
 const days = [
   'Monday',
   'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
+  'Wednesday'
 ] as Day[]
 
 const values = {
@@ -31,17 +30,9 @@ const values = {
   'Monday-09h00': 'busy' as 'available' | 'busy' | undefined
 }
 
-const data: ScheduleProps = {
-  data: {
-    days,
-    times,
-    values
-  }
-} // pq não funciona????
-
-
 const Dashboard: React.FC = () => {
   const { user } = useSocket()
+  const [values, setValues] = useState<{[key: string]: TimeboxValue}>({})
 
   // const {room} = useRoom()
   /**
@@ -53,9 +44,6 @@ const Dashboard: React.FC = () => {
    * }
    */
 
-  console.log({data});
-  
-
   return (
     <div>
       <h1>Heatmap-Schedule</h1>
@@ -64,7 +52,7 @@ const Dashboard: React.FC = () => {
         {user?.isOwner ?? <span>Você é o dono da sala</span>}
       </Tooltip>
 
-      <Schedule data={{days, times, values}} />
+      <Schedule data={{ days, times, values }} />
     </div>
   )
 }

@@ -1,6 +1,9 @@
+import React, { useState } from "react"
 import { Container, Timebox } from "./style"
 
 export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+
+export type TimeboxValue = 'available' | 'busy' | undefined
 
 export interface ScheduleProps {
   data: {
@@ -8,26 +11,33 @@ export interface ScheduleProps {
     days: Day[]
     values: {
       // segunda-08h00: busy, segunda-09h00: available, ...
-      [key: string]: 'available' | 'busy' | undefined
+      [key: string]: TimeboxValue
     }
   }
 }
 
 
 const Schedule: React.FC<ScheduleProps> = ({ data }) => {
-  const { days, times, values } = data
+  const { days, times } = data
+  const [values, setValues] = useState(data.values)
 
-  const setTimeBoxValue = (s: string) => {
-    // console.log(s);
+  const setTimeBoxValue = (dayTime: string) => {
     // chamar função que atualiza valor do timebox globalmente    
+    const oldValue = values[dayTime]
+    let newValue: TimeboxValue = undefined
+    if (oldValue === 'available')
+      newValue = 'busy'
+    if (oldValue === 'busy')
+      newValue = undefined
+    if (oldValue === undefined)
+      newValue = 'available'
+
+    setValues({ ...values, [`${dayTime}`]: newValue })
   }
 
   return (
     <>
       <h1>Schedule</h1>
-
-      <p> {days.length} </p>
-      <p> {times.length} </p>
 
       <Container cols={days.length + 1} rows={times.length}>
         <div id="top-left-corner">Horário \ Dia </div>
