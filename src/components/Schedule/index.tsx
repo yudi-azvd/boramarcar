@@ -5,7 +5,7 @@ export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | '
 export interface ScheduleProps {
   data: {
     times: string[], // 08h, 09h, 10h, ..., 22h
-    days: Day[] // segunda, terça, quarta, ...
+    days: Day[]
     values: {
       // segunda-08h00: busy, segunda-09h00: available, ...
       [key: string]: 'available' | 'busy' | undefined
@@ -17,11 +17,19 @@ export interface ScheduleProps {
 const Schedule: React.FC<ScheduleProps> = ({ data }) => {
   const { days, times, values } = data
 
+  const setTimeBoxValue = (s: string) => {
+    // console.log(s);
+    // chamar função que atualiza valor do timebox globalmente    
+  }
+
   return (
     <>
       <h1>Schedule</h1>
 
-      <Container>
+      <p> {days.length} </p>
+      <p> {times.length} </p>
+
+      <Container cols={days.length + 1} rows={times.length}>
         <div id="top-left-corner">Horário \ Dia </div>
 
         {days.map(day => (
@@ -34,6 +42,7 @@ const Schedule: React.FC<ScheduleProps> = ({ data }) => {
             [<div className="time" key={time}> {time} </div>]
               .concat(days.map(day => (
                 <Timebox
+                  onClick={() => setTimeBoxValue(`${day}-${time}`)}
                   key={`${day}-${time}`}
                   value={values[`${day}-${time}`]}
                 />

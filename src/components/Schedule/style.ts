@@ -1,9 +1,14 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ContainerProps {
+  cols: number
+  rows: number
+}
+
+export const Container = styled.div<ContainerProps>`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(13, 1fr);
+  grid-template-columns: repeat(${props => props.cols}, 1fr);
+  grid-template-rows: repeat(${props => props.rows}, 1fr);
 
   > div {
     border: 1px solid #77777778;
@@ -14,7 +19,7 @@ export const Container = styled.div`
   }
 `
 
-export interface TimeboxProps {
+interface TimeboxProps {
   value: 'busy' | 'available' | undefined
 }
 
