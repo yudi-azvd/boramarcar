@@ -1,10 +1,10 @@
 import ScheduleOrHeatmap from "@/components/ScheduleOrHeatmap"
-import { useSocket } from "@/hooks/socket"
+import { useAuth } from "@/hooks/auth"
 import { Button, Tooltip } from "antd"
 import { Container, Side, UsersList } from "./style"
 
 const Dashboard: React.FC = () => {
-  const { user } = useSocket()
+  const { user, room } = useAuth()
 
   const usersInRoom = [
     'Anne',
@@ -30,22 +30,28 @@ const Dashboard: React.FC = () => {
 
   const copyToClipboard = async () => {
     if ('clipboard' in navigator) {
-      await navigator.clipboard.writeText('ssss')
+      await navigator.clipboard.writeText(room.id || '')
     }
     // e se não tiver? kkk
   }
 
   return (
     <Container>
-
+      {/* Saber se está em celular */}
+      {/* https://stackoverflow.com/questions/39435395/reactjs-how-to-determine-if-the-application-is-being-viewed-on-mobile-or-deskto */}
       <Side>
-        <Tooltip title={user?.id}>
-          <strong>{user?.name}</strong>
-        </Tooltip>
+        <Tooltip title={user.id}>
+          <p><strong>Sala: {room.name}</strong></p>
 
-        {user?.isOwner
-          ? (<p>Você é o dono da sala</p>)
-          : (<p>O dono dessa sala é o fulaninho</p>)}
+          <p>
+            <strong>{user.name}</strong>, {user.isOwner ? (
+              <>você é o dono da sala </>
+            ) : (
+              <>o dono da sala é o {room.ownerName} </>
+            )}
+          </p>
+
+        </Tooltip>
 
         <div>
           <p> Copie o ID da sala para a àrea de transferência!</p>

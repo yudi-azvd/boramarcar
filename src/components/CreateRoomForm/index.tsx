@@ -1,24 +1,15 @@
+import CreateRoomRequest from "@/data/CreateRoomRequest"
 import { Button, Col, Form, Input, Modal, Row, Select, Switch } from "antd"
 const { Option } = Select
 
 interface Props {
   visible: boolean
   onCancel: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined
-  onSubmit: (values: CreateRoomData) => void
-  createRoomService: any
+  onSubmit: (values: CreateRoomRequest) => void
 }
 
-export interface CreateRoomData {
-  username: string
-  roomId: string
-  timeboxDuration: string
-  daysStartAt: string
-  daysEndAt: string
-  weekendDays: boolean
-}
-
-const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, createRoomService }: Props) => {
-  const handleSubmit = (values: CreateRoomData) => {
+const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props) => {
+  const handleSubmit = (values: CreateRoomRequest) => {
     onSubmit(values)
   }
 
@@ -36,11 +27,22 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit, createRo
         name="create-room"
         layout="vertical"
         onFinish={handleSubmit}
-        initialValues={{ timeboxDuration: '1h', daysStartAt: '8h', daysEndAt: '22h' }}
+        initialValues={{ timeboxDuration: '1h', daysStartAt: '8h', daysEndAt: '22h', roomName: 'War Room' }}
       >
-        <Form.Item name="username" label="Your name" rules={[{ required: true, message: 'A name is required!' }]}>
-          <Input placeholder="Tanjiro Kamado" />
-        </Form.Item>
+
+        <Row>
+          <Col className="gutter-row" span={12}>
+            <Form.Item style={{ paddingRight: '8px' }} name="userName" label="Your name" rules={[{ required: true, message: 'A name is required!' }]}>
+              <Input placeholder="Tanjiro Kamado" />
+            </Form.Item>
+          </Col>
+
+          <Col className="gutter-row" span={12}>
+            <Form.Item style={{ paddingLeft: '8px' }} name="roomName" label="Room name" rules={[{ max: 16 }]}>
+              <Input placeholder="War Room" />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item name="timeboxDuration" label="Timebox Duration">
           <Select>

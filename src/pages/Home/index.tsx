@@ -6,14 +6,14 @@ import { Container, Content } from './styles'
 import logo from '@/assets/heatmap-schedule.png'
 import JoinRoomForm, { JoinRoomData } from '../../components/JoinRoomForm'
 import JoinRoomService from '@/services/JoinRoomService'
-import CreateRoomForm, { CreateRoomData } from '@/components/CreateRoomForm'
-import CreateRoomService from '@/services/CreateRoomService'
-import { useSocket } from '@/hooks/socket'
+import CreateRoomForm from '@/components/CreateRoomForm'
+import { useAuth } from '@/hooks/auth'
 import { useNavigate } from 'react-router-dom'
+import CreateRoomRequest from '@/data/CreateRoomRequest'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
-  const { createRoom, joinRoom, registerJoinRoomCallbacks } = useSocket()
+  const { createRoom, joinRoom } = useAuth()
   const [isJoinRoomFormVisible, setIsJoinRoomFormVisible] = useState(false)
   const [isCreateRoomFormVisible, setIsCreateRoomFormVisible] = useState(false)
 
@@ -29,25 +29,20 @@ const Home: React.FC = () => {
   const handleJoinRoomCancel = () =>
     setIsJoinRoomFormVisible(false)
 
-  // Não parece seguir o estilo React
-  registerJoinRoomCallbacks({
-    onSuccess: () => {
+  const handleJoinSubmit = async (joinRoomRequest: JoinRoomData) => {
+    try {
+      await joinRoom(joinRoomRequest)
       navigate('/dashboard')
-    },
-    onFailure: () => {
+    } catch (error) {
       notification.error({
-        message: 'Room does not exist',
-        description: 'Check the room ID with the owner'
+        message: 'aconteceu alguma coisa de errado',
+        description: 'oi'
       })
     }
-  })
-
-  const handleJoinSubmit = (joinRoomData: JoinRoomData) => {
-    joinRoom(joinRoomData)
   }
 
-  const handleCreateSubmit = (values: CreateRoomData) => {
-    createRoom(values)
+  const handleCreateSubmit = async (createRoomRequest: CreateRoomRequest) => {
+    await createRoom(createRoomRequest)
     navigate('/dashboard')
   }
 
@@ -81,7 +76,6 @@ const Home: React.FC = () => {
         visible={isCreateRoomFormVisible}
         onCancel={handleCreateRoomCancel}
         onSubmit={handleCreateSubmit}
-        createRoomService={new CreateRoomService("api")}
       />
     </Container>
   )

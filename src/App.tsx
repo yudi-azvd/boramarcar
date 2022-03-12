@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { SocketProvider } from './hooks/socket'
+import { AuthProvider } from './hooks/auth'
 import Dashboard from './pages/Dashboard'
 
 import Home from './pages/Home'
@@ -9,7 +9,7 @@ import GlobalStyle from './styles/global'
 function App() {
   return (
     <>
-      <SocketProvider>
+      <AuthProvider>
         <GlobalStyle />
         <Router>
           <Routes>
@@ -17,7 +17,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
           </Routes>
         </Router>
-      </SocketProvider>
+      </AuthProvider>
     </>
   )
 }
