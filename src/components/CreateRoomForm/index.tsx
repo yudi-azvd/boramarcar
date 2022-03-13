@@ -1,16 +1,34 @@
 import CreateRoomRequest from "@/data/CreateRoomRequest"
-import { Button, Col, Form, Input, Modal, Row, Select, Switch } from "antd"
+import { Button, Col, Form, Input, Modal, notification, Row, Select, Switch } from "antd"
+import { useState } from "react"
+import Spin from "@/components/Spin"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/hooks/auth"
 const { Option } = Select
 
 interface Props {
   visible: boolean
   onCancel: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined
-  onSubmit: (values: CreateRoomRequest) => void
+  onSubmit: (values: CreateRoomRequest) => Promise<void>
 }
 
-const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props) => {
-  const handleSubmit = (values: CreateRoomRequest) => {
-    onSubmit(values)
+const CreateRoomForm: React.FC<Props> = ({ visible, onCancel }: Props) => {
+  const navigate = useNavigate()
+  const { createRoom } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (createRoomRequest: CreateRoomRequest) => {
+    try {
+      setIsLoading(true)
+      await createRoom(createRoomRequest)
+      navigate('/dashboard')
+    } catch (error) {
+      setIsLoading(false)
+      notification.error({
+        message: 'aconteceu alguma coisa de errado',
+        description: 'oi'
+      })
+    }
   }
 
   return (
@@ -18,9 +36,11 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
       title="Create Room"
       visible={visible}
       onCancel={onCancel}
-      onOk={() => { }}
       footer={[
-        <Button form='create-room' key="submit" htmlType='submit'>Create</Button>
+        <Button key="create-room-footer-spin" type="text">
+          <Spin spinning={isLoading} />
+        </Button>,
+        <Button form="create-room" key="submit" htmlType="submit">Create</Button>
       ]}
     >
       <Form
@@ -29,7 +49,6 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
         onFinish={handleSubmit}
         initialValues={{ timeboxDuration: '1h', daysStartAt: '8h', daysEndAt: '22h', roomName: 'War Room' }}
       >
-
         <Row>
           <Col className="gutter-row" span={12}>
             <Form.Item style={{ paddingRight: '8px' }} name="userName" label="Your name" rules={[{ required: true, message: 'A name is required!' }]}>
@@ -45,7 +64,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
         </Row>
 
         <Form.Item name="timeboxDuration" label="Timebox Duration">
-          <Select>
+          <Select disabled>
             <Option value="30min" > 30min </Option>
             <Option value="1h" > 1h </Option>
             <Option value="2h" > 2h </Option>
@@ -55,7 +74,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
         <Row>
           <Col className="gutter-row" span={12}>
             <Form.Item style={{ paddingRight: '8px' }} name="daysStartAt" label="Days start at">
-              <Select>
+              <Select disabled>
                 <Option value="07h"> 07h </Option>
                 <Option value="08h"> 08h </Option>
                 <Option value="09h"> 09h </Option>
@@ -66,7 +85,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
 
           <Col className="gutter-row" span={12}>
             <Form.Item style={{ paddingLeft: '8px' }} name="daysEndAt" label="Days end at">
-              <Select>
+              <Select disabled>
                 <Option value="20h"> 20h </Option>
                 <Option value="21h"> 21h </Option>
                 <Option value="22h"> 22h </Option>
@@ -77,7 +96,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel, onSubmit }: Props)
         </Row>
 
         <Form.Item name="weekendDays" label="Weekend Days?" labelAlign="left" valuePropName="checked">
-          <Switch />
+          <Switch disabled />
         </Form.Item>
 
       </Form>

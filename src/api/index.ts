@@ -10,8 +10,6 @@ if (SERVER_ADDRESS.indexOf('localhost') > 0)
 else
   baseURL = `${SERVER_ADDRESS}`
 
-console.log(baseURL);
-
 const api = axios.create({
   baseURL
 })
