@@ -19,15 +19,20 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel }: Props) => {
 
   const handleSubmit = async (createRoomRequest: CreateRoomRequest) => {
     try {
+      if (isLoading)
+        return // evita enviar o formulário novamente
+
       setIsLoading(true)
       await createRoom(createRoomRequest)
       navigate('/dashboard')
     } catch (error) {
-      setIsLoading(false)
-      notification.error({
-        message: 'aconteceu alguma coisa de errado',
-        description: 'oi'
-      })
+      if (error instanceof Error) {
+        setIsLoading(false)
+        notification.error({
+          message: error.message,
+          description: error.stack
+        })
+      }
     }
   }
 
@@ -40,7 +45,7 @@ const CreateRoomForm: React.FC<Props> = ({ visible, onCancel }: Props) => {
         <Button key="create-room-footer-spin" type="text">
           <Spin spinning={isLoading} />
         </Button>,
-        <Button form="create-room" key="submit" htmlType="submit">Create</Button>
+        <Button disabled={isLoading} form="create-room" key="submit" htmlType="submit">Create</Button>
       ]}
     >
       <Form

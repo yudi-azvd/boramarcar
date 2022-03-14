@@ -1,6 +1,6 @@
 import Schedule, { Day, TimeboxValue } from "@/components/Schedule"
 import { Menu } from "./style"
-import { Button} from "antd"
+import { Button } from "antd"
 import { useState } from "react"
 
 const times = [
@@ -19,7 +19,7 @@ const times = [
   '20h00',
 ]
 
-const days = [
+const days: Day[] = [
   'Sunday',
   'Monday',
   'Tuesday',
@@ -27,7 +27,7 @@ const days = [
   'Thursday',
   'Friday',
   'Saturday'
-] as Day[]
+]
 
 const timeboxValues = {
   'Monday-08h00': 'available',
@@ -53,16 +53,21 @@ const ScheduleOrHeatmap: React.FC = () => {
   return (
     <div>
       <Menu>
-        <Button size="large" type="text">
+        <Button onClick={() => setSelectedTab('schedule')} size="large" type="text">
           Cronograma
         </Button>
 
-        <Button size="large" type="text" disabled>
+        <Button onClick={() => setSelectedTab('heatmap')} size="large" type="text" disabled>
           Mapa de calor
         </Button>
       </Menu>
-      
-      <Schedule data={{ days, times, values }} />
+
+      {selectedTab === 'schedule' ? (
+        <Schedule data={{ days, times, values }} />
+      ) : (
+        <p>Mapa de calor</p>
+      )}
+
     </div>
   )
 }

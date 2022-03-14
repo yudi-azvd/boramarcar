@@ -1,16 +1,12 @@
 import api from "@/api";
 import CreateRoomRequest from "@/data/CreateRoomRequest";
-import { CreateRoomResponse } from "@/data/CreateRoomResponse";
+import CreateRoomResponse from "@/data/CreateRoomResponse";
 import JoinRoomRequest from "@/data/JoinRoomRequest";
+import JoinRoomResponse  from "@/data/JoinRoomResponse";
 import Room from "@/data/Room";
 import User from "@/data/User";
 import { AxiosResponse } from "axios";
 import { createContext, useCallback, useContext, useState } from "react";
-
-interface JoinRoomResponse {
-  user: User
-  room: Room
-}
 
 interface AuthContextInterface {
   user: User 
@@ -24,6 +20,7 @@ const AuthContext = createContext<AuthContextInterface>(
 )
 
 const AuthProvider: React.FC = ({ children }) => {
+  // TODO: guardar nome e ID do usuário no localStorage pra "persistência"
   const [user, setUser] = useState<User>({ id: 'no-id', isOwner: false, name: 'no-name' })
   const [room, setRoom] = useState<Room>({ id: 'no-id', name: 'no-name', ownerId: 'no-id', ownerName: 'no-name' })
 
@@ -33,12 +30,10 @@ const AuthProvider: React.FC = ({ children }) => {
     setRoom(room)
 
     console.log(room, user);
-    
   }, [])
 
   const joinRoom = useCallback(async (joinRoomRequest: JoinRoomRequest): Promise<void> => {
     const { data: { room, user } } = await api.post<JoinRoomRequest, AxiosResponse<JoinRoomResponse>>('/join-room', joinRoomRequest)
-    console.log('explodiu');
     setUser(user)
     setRoom(room)
   }, [])
@@ -54,7 +49,7 @@ function useAuth(): AuthContextInterface {
   const context = useContext(AuthContext)
 
   if (!context) {
-    throw new Error('useSocket must be used within SocketProvider')
+    throw new Error('useAuth must be used within AuthProvider')
   }
 
   return context

@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import { useSocket } from "@/hooks/socket"
+import React, { useEffect, useState } from "react"
 import { Container, Timebox } from "./style"
 
 export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
@@ -19,6 +20,7 @@ export interface ScheduleProps {
 
 const Schedule: React.FC<ScheduleProps> = ({ data }) => {
   const { days, times } = data
+  const { socket } = useSocket()
   const [values, setValues] = useState(data.values)
 
   const setTimeBoxValue = (dayTime: string) => {
@@ -31,6 +33,8 @@ const Schedule: React.FC<ScheduleProps> = ({ data }) => {
       newValue = undefined
     if (oldValue === undefined)
       newValue = 'available'
+
+    socket.emit('change-timebox-value', { dayTime, newValue })
 
     setValues({ ...values, [`${dayTime}`]: newValue })
   }

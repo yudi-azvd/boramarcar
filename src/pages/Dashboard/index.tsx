@@ -1,7 +1,8 @@
 import ScheduleOrHeatmap from "@/components/ScheduleOrHeatmap"
 import { useAuth } from "@/hooks/auth"
+import Header from "@/components/Header"
 import { Button, Tooltip } from "antd"
-import { Container, Side, UsersList } from "./style"
+import { Container, Content, Side, UsersList } from "./style"
 
 const Dashboard: React.FC = () => {
   const { user, room } = useAuth()
@@ -37,37 +38,41 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      {/* Saber se está em celular */}
-      {/* https://stackoverflow.com/questions/39435395/reactjs-how-to-determine-if-the-application-is-being-viewed-on-mobile-or-deskto */}
-      <Side>
-        <Tooltip title={user.id}>
-          <p><strong>Sala: {room.name}</strong></p>
+      <Header />
 
-          <p>
-            <strong>{user.name}</strong>, {user.isOwner ? (
-              <>você é o dono da sala </>
-            ) : (
-              <>o dono da sala é o {room.ownerName} </>
-            )}
-          </p>
+      <Content>
+        {/* Saber se está em celular */}
+        {/* https://stackoverflow.com/questions/39435395/reactjs-how-to-determine-if-the-application-is-being-viewed-on-mobile-or-deskto */}
+        <Side>
+          <Tooltip title={user.id}>
+            <p><strong>Sala: {room.name}</strong></p>
 
-        </Tooltip>
+            <p>
+              <strong>{user.name}</strong>, {user.isOwner ? (
+                <>você é o dono da sala </>
+              ) : (
+                <>o dono da sala é o {room.ownerName} </>
+              )}
+            </p>
 
-        <div>
-          <p> Copie o ID da sala para a àrea de transferência!</p>
-          <Button type="primary" onClick={copyToClipboard}>
-            Copiar
-          </Button>
-        </div>
+          </Tooltip>
 
-        <UsersList>
-          {usersInRoom.map(u => (
-            <li key={u} > {u} </li>
-          ))}
-        </UsersList>
-      </Side>
+          <div>
+            <p> Copie o ID da sala para a àrea de transferência!</p>
+            <Button type="primary" onClick={copyToClipboard}>
+              Copiar
+            </Button>
+          </div>
 
-      <ScheduleOrHeatmap />
+          <UsersList>
+            {usersInRoom.map(u => (
+              <li key={u} > {u} </li>
+            ))}
+          </UsersList>
+        </Side>
+
+        <ScheduleOrHeatmap />
+      </Content>
     </Container>
   )
 }

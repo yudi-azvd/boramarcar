@@ -1,7 +1,7 @@
 import Room from "./Room"
 import User from "./User"
 
-export interface CreateRoomResponse {
+export default interface CreateRoomResponse {
   user: User
   room: Room
 }
