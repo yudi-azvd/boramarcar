@@ -12,6 +12,16 @@ if (import.meta.env.MODE === 'development') {
 const SERVER_ADDRESS = import.meta.env.VITE_SERVER_ADDRESS || localAddress
 const PORT = import.meta.env.VITE_SERVER_PORT || 5000
 
-const address = `${SERVER_ADDRESS}:${PORT}`
+let address = ''
+if (import.meta.env.MODE === 'development') {
+  address = `${SERVER_ADDRESS}:${PORT}`
+} 
+else { 
+  // deve ser ambiente de produção. Nesse caso, como o
+  // servidor está hospedado na Heroku, esse web app não deve depender
+  // da porta
+  address = `${SERVER_ADDRESS}`
+}
+
 
 export default address
