@@ -2,7 +2,7 @@ import ScheduleOrHeatmap from "@/components/ScheduleOrHeatmap"
 import { useAuth } from "@/hooks/auth"
 import Header from "@/components/Header"
 import { Button, Tooltip } from "antd"
-import { Container, Content, Side, UsersList } from "./style"
+import { Container, Content, RoomInfo, UsersList } from "./style"
 
 const Dashboard: React.FC = () => {
   const { user, room } = useAuth()
@@ -43,18 +43,21 @@ const Dashboard: React.FC = () => {
       <Content>
         {/* Saber se está em celular */}
         {/* https://stackoverflow.com/questions/39435395/reactjs-how-to-determine-if-the-application-is-being-viewed-on-mobile-or-deskto */}
-        <Side>
+        {/* Fazer RoomInfo um menu lateral retrátil à esquerda em desktop */}
+        {/* Em mobile, esse menu deve ser escondido por padrão. É aberto clicando */}
+        {/* em um hamburguer à esquerda */}
+        <RoomInfo>
+          <p><strong>Sala: {room.name}</strong></p>
           <Tooltip title={user.id}>
-            <p><strong>Sala: {room.name}</strong></p>
-
             <p>
-              <strong>{user.name}</strong>, {user.isOwner ? (
-                <>você é o dono da sala </>
-              ) : (
-                <>o dono da sala é o {room.ownerName} </>
-              )}
+              <strong>{user.name}</strong>, {' '}
+              <span>
+                {user.isOwner
+                  ? 'você é o dono da sala.'
+                  : `o dono da sala é ${room.ownerName}.`
+                }
+              </span>
             </p>
-
           </Tooltip>
 
           <div>
@@ -69,7 +72,7 @@ const Dashboard: React.FC = () => {
               <li key={u} > {u} </li>
             ))}
           </UsersList>
-        </Side>
+        </RoomInfo>
 
         <ScheduleOrHeatmap />
       </Content>

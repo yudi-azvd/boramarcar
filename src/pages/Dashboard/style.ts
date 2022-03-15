@@ -9,11 +9,7 @@ export const Content = styled.div`
   justify-content: space-between;
 `
 
-export const Side = styled.aside`
-  strong {
-    display: block;
-  }
-
+export const RoomInfo = styled.aside`
   display: none;
 
   @media (min-width: 768px) {
