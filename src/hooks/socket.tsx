@@ -1,12 +1,14 @@
 import Day from "@/data/Day"
+import Time from "@/data/Time"
+import TimeboxValue from "@/data/TimeboxValue"
 import address from "@/ip"
 import { createContext, useContext, useEffect, useState } from "react"
 import { io, Socket as SocketIoClient } from "socket.io-client"
 
 type TimeboxChange = {
-  time: string,
+  time: Time,
   day: Day
-  newValue: string | undefined
+  newValue: TimeboxValue
 }
 
 interface ClientToServerEvents {

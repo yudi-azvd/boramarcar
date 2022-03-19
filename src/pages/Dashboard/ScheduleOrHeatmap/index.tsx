@@ -5,6 +5,8 @@ import { Container, Menu } from "./style"
 import { Button } from "antd"
 import { useState } from "react"
 import Heatmap from "../Heatmap"
+import DayTime from "@/data/DayTime"
+import Time from "@/data/Time"
 
 const times = [
   '08h00',
@@ -20,7 +22,7 @@ const times = [
   '18h00',
   '19h00',
   '20h00',
-]
+] as Time[]
 
 const days: Day[] = [
   'Sunday',
@@ -36,8 +38,8 @@ const timeboxValues = {
   'Monday-08h00': 'available',
   'Monday-09h00': 'busy',
 } as {
-  [key: string]: TimeboxValue
-}
+    [key in DayTime]: TimeboxValue
+  }
 
 const ScheduleOrHeatmap: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'schedule' | 'heatmap'>('schedule')
@@ -46,18 +48,18 @@ const ScheduleOrHeatmap: React.FC = () => {
   return (
     <Container>
       <Menu>
-        <Button onClick={() => setSelectedTab('schedule')} size="large" type={selectedTab === 'schedule' ? 'primary': 'default'}>
+        <Button onClick={() => setSelectedTab('schedule')} size="large" type={selectedTab === 'schedule' ? 'primary' : 'default'}>
           Cronograma
         </Button>
 
-        <Button onClick={() => setSelectedTab('heatmap')} size="large" type={selectedTab === 'heatmap' ? 'primary': 'default'}>
+        <Button onClick={() => setSelectedTab('heatmap')} size="large" type={selectedTab === 'heatmap' ? 'primary' : 'default'}>
           Mapa de calor
         </Button>
       </Menu>
 
       <div className="schedule-or-heatmap">
         <Schedule data={{ days, times, values }} visible={selectedTab === 'schedule'} />
-        <Heatmap data={{days, times, values}} visible={selectedTab === 'heatmap'} />
+        <Heatmap data={{ days, times, values }} visible={selectedTab === 'heatmap'} />
       </div>
     </Container>
   )

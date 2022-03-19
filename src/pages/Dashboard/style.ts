@@ -25,6 +25,7 @@ export const RoomInfo = styled.aside`
   @media (min-width: 768px) {
     max-width: 30%;
     margin-top: 0;
+    margin-right: 32px;
   }
 `
 

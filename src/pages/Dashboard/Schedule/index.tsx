@@ -1,4 +1,6 @@
 import Day from "@/data/Day"
+import DayTime from "@/data/DayTime"
+import Time from "@/data/Time"
 import TimeboxValue from "@/data/TimeboxValue"
 import { useSocket } from "@/hooks/socket"
 import React, { useState } from "react"
@@ -8,11 +10,10 @@ import { Container, Timebox } from "./style"
 export interface ScheduleProps {
   visible: boolean
   data: {
-    times: string[], // 08h, 09h, 10h, ..., 22h
+    times: Time[],
     days: Day[]
     values: {
-      // Monday-08h00: busy, Tuesday-09h00: available, ...
-      [key: string]: TimeboxValue
+      [key in DayTime]: TimeboxValue
     }
   }
 }
@@ -21,9 +22,10 @@ export interface ScheduleProps {
 const Schedule: React.FC<ScheduleProps> = ({ data, visible }) => {
   const { days, times } = data
   const { socket } = useSocket()
+  const [step, setStep] = useState(1)
   const [values, setValues] = useState(data.values)
 
-  const setTimeBoxValue = (dayTime: string) => {
+  const setTimeBoxValue = (dayTime: DayTime) => {
     // chamar função que atualiza valor do timebox globalmente    
     const oldValue = values[dayTime]
     let newValue: TimeboxValue = undefined
@@ -34,9 +36,9 @@ const Schedule: React.FC<ScheduleProps> = ({ data, visible }) => {
     if (oldValue === undefined)
       newValue = 'available'
 
-    const [day, time] = dayTime.split('-') as [Day, string]
+    const [day, time] = dayTime.split('-') as [Day, Time]
     socket.emit('change-timebox-value', { day, time, newValue })
-    setValues({ ...values, [`${dayTime}`]: newValue })
+    setValues({ ...values, [dayTime]: newValue })
   }
 
   return (

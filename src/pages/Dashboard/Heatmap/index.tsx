@@ -1,31 +1,30 @@
+import Day from "@/data/Day"
+import DayTime from "@/data/DayTime"
+import Time from "@/data/Time"
 import { useSocket } from "@/hooks/socket"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Container, Timebox } from "./style"
-
-export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
 
 export type TimeboxValue = 'available' | 'busy' | undefined
 
 export interface Props {
   visible: boolean
   data: {
-    times: string[], // 08h, 09h, 10h, ..., 22h
+    times: Time[],
     days: Day[]
     values: {
-      // Monday-08h00: busy, Tuesday-09h00: available, ...
-      [key: string]: TimeboxValue
+      [key in DayTime]: TimeboxValue
     }
   }
 }
 
 
 const Heatmap: React.FC<Props> = ({ data, visible }) => {
-  // const Heatmap: React.FC<Props> = ({ data }) => {
   const { days, times } = data
   const { socket } = useSocket()
   const [values, setValues] = useState(data.values)
 
-  const setTimeBoxValue = (dayTime: string) => {
+  const setTimeBoxValue = (dayTime: DayTime) => {
     // chamar função que atualiza valor do timebox globalmente    
     const oldValue = values[dayTime]
     let newValue: TimeboxValue = undefined
@@ -36,9 +35,9 @@ const Heatmap: React.FC<Props> = ({ data, visible }) => {
     if (oldValue === undefined)
       newValue = 'available'
 
-    const [day, time] = dayTime.split('-') as [Day, string]
+    const [day, time] = dayTime.split('-') as [Day, Time]
     socket.emit('change-timebox-value', { day, time, newValue })
-    setValues({ ...values, [`${dayTime}`]: newValue })
+    setValues({ ...values, [dayTime]: newValue })
   }
 
   return (

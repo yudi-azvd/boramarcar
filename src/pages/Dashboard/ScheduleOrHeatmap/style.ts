@@ -11,6 +11,10 @@ export const Container = styled.div`
     position: relative;
     width: 100%;
     height: 100vh;
+    
+    /* @media (min-width: 768px) {
+      width: 100%;
+    } */
   }
 `
 

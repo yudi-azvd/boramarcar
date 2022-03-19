@@ -6,7 +6,32 @@ interface ContainerProps {
   visible: boolean
 }
 
+interface TimeboxProps {
+  value: 'busy' | 'available' | undefined
+}
+
+const valueToColor = {
+  busy: '#E95F63',
+  available: '#18DC86',
+}
+
+export const Timebox = styled.div<TimeboxProps>`
+  background: ${props => props.value 
+    ? valueToColor[props.value]
+    : 'transperent'};
+
+  transition: border .2s, background .2s, opacity 0.2s;
+  border: 2px solid rgba(0, 0, 0, 0.0);
+  border-radius: 2px;
+    
+  &:hover {
+    border: 2px solid rgba(0, 0, 0, 0.15);
+  }
+`
+
+
 export const Container = styled.div<ContainerProps>`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(${props => props.cols}, 1fr);
   grid-template-rows: repeat(${props => props.rows}, 1fr);
@@ -15,7 +40,6 @@ export const Container = styled.div<ContainerProps>`
   
   position: absolute; // div.schedule-or-heatmap, pai tem position: relative
   z-index: ${props => props.visible ? 1 : -1};
-  opacity: ${props => props.visible ? 1 : 0};
   
   transition: opacity .2s;
   height: 100vh;
@@ -71,27 +95,8 @@ export const Container = styled.div<ContainerProps>`
     justify-content: center;
     align-items: center;
   }
-`
 
-interface TimeboxProps {
-  value: 'busy' | 'available' | undefined
-}
-
-const valueToColor = {
-  busy: '#E95F63',
-  available: '#18DC86',
-}
-
-export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value 
-    ? valueToColor[props.value]
-    : 'transperant'};
-
-  transition: border 0.2s;
-  border: 2px solid rgba(0, 0, 0, 0.0);
-  border-radius: 5px;
-  
-  &:hover {
-    border: 2px solid rgba(0, 0, 0, 0.15);
+  ${Timebox} {
+    opacity: ${props => props.visible ? 1 : 0};
   }
 `
