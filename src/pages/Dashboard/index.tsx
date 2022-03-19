@@ -1,4 +1,4 @@
-import ScheduleOrHeatmap from "@/components/ScheduleOrHeatmap"
+import ScheduleOrHeatmap from "./ScheduleOrHeatmap"
 import { useAuth } from "@/hooks/auth"
 import Header from "@/components/Header"
 import { Button, Tooltip } from "antd"
@@ -46,7 +46,11 @@ const Dashboard: React.FC = () => {
         {/* Fazer RoomInfo um menu lateral retrátil à esquerda em desktop */}
         {/* Em mobile, esse menu deve ser escondido por padrão. É aberto clicando */}
         {/* em um hamburguer à esquerda */}
+
         <RoomInfo>
+          {/* <div className="menu-btn">
+            <MenuOutlined />
+          </div> */}
           <p><strong>Sala: {room.name}</strong></p>
           <Tooltip title={user.id}>
             <p>
@@ -67,6 +71,7 @@ const Dashboard: React.FC = () => {
             </Button>
           </div>
 
+          <div><strong>Participantes</strong></div>
           <UsersList>
             {usersInRoom.map(u => (
               <li key={u} > {u} </li>

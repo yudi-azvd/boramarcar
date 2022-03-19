@@ -1,10 +1,11 @@
+import Day from "@/data/Day"
 import address from "@/ip"
 import { createContext, useContext, useEffect, useState } from "react"
 import { io, Socket as SocketIoClient } from "socket.io-client"
 
-
 type TimeboxChange = {
-  dayTime: string,
+  time: string,
+  day: Day
   newValue: string | undefined
 }
 

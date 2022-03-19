@@ -17,8 +17,12 @@ export const Container = styled.header`
     }
   
     h2 {
-      display: inline;
       margin: 0;
+      display: none;
+      
+      @media (min-width: 768px) {
+        display: inline;
+      }
     }
   }
 `

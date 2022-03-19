@@ -6,7 +6,8 @@ export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | '
 
 export type TimeboxValue = 'available' | 'busy' | undefined
 
-export interface ScheduleProps {
+export interface Props {
+  visible: boolean
   data: {
     times: string[], // 08h, 09h, 10h, ..., 22h
     days: Day[]
@@ -18,7 +19,8 @@ export interface ScheduleProps {
 }
 
 
-const Schedule: React.FC<ScheduleProps> = ({ data }) => {
+const Heatmap: React.FC<Props> = ({ data, visible }) => {
+  // const Heatmap: React.FC<Props> = ({ data }) => {
   const { days, times } = data
   const { socket } = useSocket()
   const [values, setValues] = useState(data.values)
@@ -34,14 +36,14 @@ const Schedule: React.FC<ScheduleProps> = ({ data }) => {
     if (oldValue === undefined)
       newValue = 'available'
 
-    socket.emit('change-timebox-value', { dayTime, newValue })
-
+    const [day, time] = dayTime.split('-') as [Day, string]
+    socket.emit('change-timebox-value', { day, time, newValue })
     setValues({ ...values, [`${dayTime}`]: newValue })
   }
 
   return (
     <>
-      <Container cols={days.length + 1} rows={times.length + 1}>
+      <Container cols={days.length + 1} rows={times.length + 1} visible={visible}>
         <div id="top-left">Horário \ Dia </div>
 
         {days.map(day => (
@@ -65,4 +67,4 @@ const Schedule: React.FC<ScheduleProps> = ({ data }) => {
   )
 }
 
-export default Schedule
+export default Heatmap

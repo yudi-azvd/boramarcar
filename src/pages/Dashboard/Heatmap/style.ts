@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface ContainerProps {
   cols: number
   rows: number
+  visible: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -11,6 +12,14 @@ export const Container = styled.div<ContainerProps>`
   grid-template-rows: repeat(${props => props.rows}, 1fr);
   grid-row-gap: 4px;
   grid-column-gap: 4px;
+  
+  position: absolute; // div.schedule-or-heatmap, pai tem position: relative
+  z-index: ${props => props.visible ? 1 : -1};
+  opacity: ${props => props.visible ? 1 : 0};
+  
+  transition: opacity .2s;
+
+  height: 100%;
 
   > div {
     color: rgba(0, 0, 0, 0.7);
