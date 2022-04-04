@@ -1,13 +1,13 @@
 import Schedule from "../Schedule"
-import Day from '@/data/Day'
-import TimeboxValue from '@/data/TimeboxValue'
+import Day from '@/types/Day'
+import TimeboxValue from '@/types/TimeboxValue'
 import { Container, Menu } from "./style"
 import { Button } from "antd"
 import { useState } from "react"
 import Heatmap from "../Heatmap"
-import DayTime from "@/data/DayTime"
-import Time from "@/data/Time"
-import HeatmapData from "@/data/HeatmapData"
+import DayTime from "@/types/DayTime"
+import Time from "@/types/Time"
+import HeatmapData from "@/types/HeatmapData"
 
 const times = [
   '08h00',

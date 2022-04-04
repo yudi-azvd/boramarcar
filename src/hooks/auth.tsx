@@ -1,15 +1,15 @@
 import api from "@/api";
-import CreateRoomRequest from "@/data/CreateRoomRequest";
-import CreateRoomResponse from "@/data/CreateRoomResponse";
-import JoinRoomRequest from "@/data/JoinRoomRequest";
-import JoinRoomResponse  from "@/data/JoinRoomResponse";
-import Room from "@/data/Room";
-import User from "@/data/User";
+import CreateRoomRequest from "@/types/CreateRoomRequest";
+import CreateRoomResponse from "@/types/CreateRoomResponse";
+import JoinRoomRequest from "@/types/JoinRoomRequest";
+import JoinRoomResponse from "@/types/JoinRoomResponse";
+import Room from "@/types/Room";
+import User from "@/types/User";
 import { AxiosResponse } from "axios";
 import { createContext, useCallback, useContext, useState } from "react";
 
 interface AuthContextInterface {
-  user: User 
+  user: User
   room: Room
   createRoom(createRoomData: CreateRoomRequest): Promise<void>
   joinRoom(joinRoomData: JoinRoomRequest): Promise<void>

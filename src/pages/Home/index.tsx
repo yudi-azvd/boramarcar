@@ -8,7 +8,7 @@ import JoinRoomForm, { JoinRoomData } from '../../components/JoinRoomForm'
 import JoinRoomService from '@/services/JoinRoomService'
 import CreateRoomForm from '@/components/CreateRoomForm'
 import { useNavigate } from 'react-router-dom'
-import CreateRoomRequest from '@/data/CreateRoomRequest'
+import CreateRoomRequest from '@/types/CreateRoomRequest'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()

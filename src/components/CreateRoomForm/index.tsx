@@ -1,4 +1,4 @@
-import CreateRoomRequest from "@/data/CreateRoomRequest"
+import CreateRoomRequest from "@/types/CreateRoomRequest"
 import { Button, Col, Form, Input, Modal, notification, Row, Select, Switch } from "antd"
 import { useState } from "react"
 import Spin from "@/components/Spin"
