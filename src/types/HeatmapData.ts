@@ -1,4 +1,4 @@
-import DayTime from '@/data/DayTime'
+import DayTime from '@/types/DayTime'
 
 type HeatmapData = {
   [key in DayTime]?: {
