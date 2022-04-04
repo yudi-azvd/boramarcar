@@ -7,7 +7,9 @@ interface ContainerProps {
 }
 
 interface TimeboxProps {
-  value: 'busy' | 'available' | undefined
+  // availableUsersCount: number
+  // busyUsersCount: number 
+  // undefinedUsersCount: number
 }
 
 const valueToColor = {
@@ -15,11 +17,26 @@ const valueToColor = {
   available: '#18DC86',
 }
 
-export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value 
-    ? valueToColor[props.value]
-    : 'transperent'};
+/**
+  background: ${({ availableUsersCount, busyUsersCount }) => {
+    if (availableUsersCount == busyUsersCount)
+      return 'transperant'
+    if (availableUsersCount > busyUsersCount)
+      return valueToColor.available
+      else
+      return valueToColor.busy
+  }};
 
+  opacity: ${({availableUsersCount, busyUsersCount, undefinedUsersCount}) => {
+    const total = availableUsersCount + busyUsersCount + undefinedUsersCount
+    if (availableUsersCount > busyUsersCount)
+      return availableUsersCount / total
+  }};
+
+ */
+
+export const Timebox = styled.div<TimeboxProps>`
+  background: transparent;
   transition: border .2s, background .2s, opacity 0.2s;
   border: 2px solid rgba(0, 0, 0, 0.0);
   border-radius: 2px;

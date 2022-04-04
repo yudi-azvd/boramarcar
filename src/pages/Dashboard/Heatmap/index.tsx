@@ -1,5 +1,6 @@
 import Day from "@/data/Day"
 import DayTime from "@/data/DayTime"
+import HeatmapData from "@/data/HeatmapData"
 import Time from "@/data/Time"
 import { useSocket } from "@/hooks/socket"
 import React, { useState } from "react"
@@ -12,33 +13,13 @@ export interface Props {
   data: {
     times: Time[],
     days: Day[]
-    values: {
-      [key in DayTime]: TimeboxValue
-    }
   }
+  heatmapData: HeatmapData
 }
 
 
-const Heatmap: React.FC<Props> = ({ data, visible }) => {
+const Heatmap: React.FC<Props> = ({ data, visible, heatmapData }) => {
   const { days, times } = data
-  const { socket } = useSocket()
-  const [values, setValues] = useState(data.values)
-
-  const setTimeBoxValue = (dayTime: DayTime) => {
-    // chamar função que atualiza valor do timebox globalmente    
-    const oldValue = values[dayTime]
-    let newValue: TimeboxValue = undefined
-    if (oldValue === 'available')
-      newValue = 'busy'
-    if (oldValue === 'busy')
-      newValue = undefined
-    if (oldValue === undefined)
-      newValue = 'available'
-
-    const [day, time] = dayTime.split('-') as [Day, Time]
-    socket.emit('change-timebox-value', { day, time, newValue })
-    setValues({ ...values, [dayTime]: newValue })
-  }
 
   return (
     <>
@@ -46,7 +27,6 @@ const Heatmap: React.FC<Props> = ({ data, visible }) => {
         <div id="top-left">Horário \ Dia </div>
 
         {days.map(day => (
-          // se a tela for muito pequena, mostrar apenas a primeira letra
           <div className="day" key={`day-${day}`}> {day[0]} </div>
         ))}
 
@@ -55,9 +35,9 @@ const Heatmap: React.FC<Props> = ({ data, visible }) => {
             [<div className="time" key={time}> {time} </div>]
               .concat(days.map(day => (
                 <Timebox
-                  onClick={() => setTimeBoxValue(`${day}-${time}`)}
                   key={`${day}-${time}`}
-                  value={values[`${day}-${time}`]}
+                  // availableUsersCount={Math.floor(Math.random()*100)}
+                  // busyUsersCount={Math.floor(Math.random()*100)}
                 />
               ))))
         })}

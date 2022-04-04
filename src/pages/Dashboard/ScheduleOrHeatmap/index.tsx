@@ -7,6 +7,7 @@ import { useState } from "react"
 import Heatmap from "../Heatmap"
 import DayTime from "@/data/DayTime"
 import Time from "@/data/Time"
+import HeatmapData from "@/data/HeatmapData"
 
 const times = [
   '08h00',
@@ -34,12 +35,23 @@ const days: Day[] = [
   'Saturday'
 ]
 
+const heatmapData: HeatmapData = {
+  'Friday-08h00': {
+    available: 8,
+    busy: 2,
+    undefined: 4
+  },
+  'Monday-12h00': {
+    available: 12,
+    busy: 0,
+    undefined: 2
+  }
+}
+
 const timeboxValues = {
   'Monday-08h00': 'available',
   'Monday-09h00': 'busy',
-} as {
-    [key in DayTime]: TimeboxValue
-  }
+} as { [key in DayTime]: TimeboxValue }
 
 const ScheduleOrHeatmap: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'schedule' | 'heatmap'>('schedule')
@@ -59,7 +71,7 @@ const ScheduleOrHeatmap: React.FC = () => {
 
       <div className="schedule-or-heatmap">
         <Schedule data={{ days, times, values }} visible={selectedTab === 'schedule'} />
-        <Heatmap data={{ days, times, values }} visible={selectedTab === 'heatmap'} />
+        <Heatmap heatmapData={heatmapData} data={{ days, times }} visible={selectedTab === 'heatmap'} />
       </div>
     </Container>
   )

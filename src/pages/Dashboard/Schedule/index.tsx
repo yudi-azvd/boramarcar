@@ -3,6 +3,7 @@ import DayTime from "@/data/DayTime"
 import Time from "@/data/Time"
 import TimeboxValue from "@/data/TimeboxValue"
 import { useSocket } from "@/hooks/socket"
+import { notification } from "antd"
 import React, { useState } from "react"
 import { Container, Timebox } from "./style"
 
@@ -41,6 +42,32 @@ const Schedule: React.FC<ScheduleProps> = ({ data, visible }) => {
     setValues({ ...values, [dayTime]: newValue })
   }
 
+  const onMouseDown = (dayTime: DayTime) => {
+    notification.error({
+      message: dayTime
+    })
+  }
+  
+  const onMouseUp = (dayTime: DayTime) => {
+    notification.error({
+      message: dayTime
+    })
+  }
+
+  const onTouchStart = (dayTime: DayTime) => {
+    notification.success({
+      message: dayTime,
+      description: 'touch START'
+    })
+  }
+
+  const onTouchEnd = (dayTime: DayTime) => {
+    notification.success({
+      message: dayTime,
+      description: 'touch END'
+    })
+  }
+
   return (
     <>
       <Container cols={days.length + 1} rows={times.length + 1} visible={visible} >
@@ -54,13 +81,21 @@ const Schedule: React.FC<ScheduleProps> = ({ data, visible }) => {
         {times.map(time => {
           return (
             [<div className="time" key={time}> {time} </div>]
-              .concat(days.map(day => (
-                <Timebox
-                  onClick={() => setTimeBoxValue(`${day}-${time}`)}
-                  key={`${day}-${time}`}
-                  value={values[`${day}-${time}`]}
-                />
-              ))))
+              .concat(days.map(day => {
+                const dayTime = `${day}-${time}` as DayTime
+                return (
+                  <Timebox
+                    onMouseDown={() => onMouseDown(dayTime)}
+                    onMouseUp={() => onMouseUp(dayTime)}
+                    onTouchStart={() => onTouchStart(dayTime)}
+                    onTouchEnd={() => onTouchEnd(dayTime)}
+                    onClick={() => setTimeBoxValue(dayTime)}
+                    onDoubleClick={() => console.log('double click')}
+                    key={dayTime}
+                    value={values[dayTime]}
+                  />
+                )
+              })))
         })}
       </Container>
     </>

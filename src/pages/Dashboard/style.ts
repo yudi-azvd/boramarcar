@@ -4,10 +4,15 @@ export const Container = styled.div`
   margin: 0 auto;
   max-width: 90%;
 
+  @media (min-width: 1200px) {
+    max-width: 1200px;
+  }
+
   button {
     margin-bottom: 16px;
   }
 `
+
 export const Content = styled.div`
   position: relative;
   display: flex;

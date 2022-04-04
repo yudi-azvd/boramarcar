@@ -16,7 +16,7 @@ const valueToColor = {
 }
 
 export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value 
+  background: ${props => props.value
     ? valueToColor[props.value]
     : 'transperent'};
 
@@ -46,6 +46,11 @@ export const Container = styled.div<ContainerProps>`
 
   > div {
     color: rgba(0, 0, 0, 0.7);
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
   }
 
   > div#top-left {
