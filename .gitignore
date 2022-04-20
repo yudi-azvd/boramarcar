@@ -79,4 +79,6 @@ api-extractor.json
 
 crowdin-cli.jar
 
+__snapshots__
+
 .env
