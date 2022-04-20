@@ -1,4 +1,4 @@
 
-const hey = 'oi'
+const Schedule = 'oi'
 
-export default hey
+export default Schedule
