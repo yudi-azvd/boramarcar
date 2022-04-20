@@ -13,5 +13,5 @@ interface TimeboxProps {
 }
 
 export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => timeboxColors[props.value]};
+  background: ${props => timeboxColors[props.value] ?? 'transparent'};
 `
