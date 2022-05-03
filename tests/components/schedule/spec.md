@@ -29,6 +29,9 @@ em blocos de 1 hora.
   - mudar para a sua cor correspondente
   - chamar o serviço de atualização remota de timebox com o valor **notdefined**
 
+Essa parte tem cara de ser o teste de outra classe, não de Schedule.
+Um `TimeboxUpdate`, talvez no método `TimeboxUpdate.dispatch()`.
+
 - Clicar em um timebox várias vezes em **intervalos menores que 50ms**
   - deve mudar o valor do timebox correspondente
   - deve mudar a cor do timebox correspondente
