@@ -5,7 +5,7 @@ import 'jest-styled-components'
 import { Timebox } from '@/presentation/components/Schedule/styles'
 
 interface SutProps {
-  value: 'notdefined' | 'available' | 'busy'
+  value?: 'available' | 'busy'
 }
 
 interface Sut {
@@ -18,11 +18,11 @@ function makeSut({ value }: SutProps): Sut {
 }
 
 describe('Timebox', () => {
-  it('should be grey when its value is notdefined', () => {
-    const { sut } = makeSut({ value: 'notdefined' })
+  it('should be grey when its value is undefined', () => {
+    const { sut } = makeSut({ value: undefined })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: #BBBBBB`)
+    expect(sut).toHaveStyle(`background: #DDDDDD`)
   })
 
   it('should be green when its value is available', () => {
