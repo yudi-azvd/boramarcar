@@ -18,11 +18,11 @@ function makeSut({ value }: SutProps): Sut {
 }
 
 describe('Timebox', () => {
-  it('should be transparent when its value is notdefined', () => {
+  it('should be grey when its value is notdefined', () => {
     const { sut } = makeSut({ value: 'notdefined' })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: transparent`)
+    expect(sut).toHaveStyle(`background: #BBBBBB`)
   })
 
   it('should be green when its value is available', () => {

@@ -1,17 +1,18 @@
+import { DayTime, TimeBoxValue } from '@/types'
 import styled from 'styled-components'
 
 const timeboxColors: {
-  [key: string]: string
+  [key in TimeBoxValue]: string
 } = {
-  notdefined: 'transparent',
+  notdefined: '#BBBBBB',
   available: '#18DC86',
   busy: '#E95F63',
 }
 
 interface TimeboxProps {
-  value: 'notdefined' | 'available' | 'busy'
+  value?: TimeBoxValue
 }
 
 export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => timeboxColors[props.value] ?? 'transparent'};
+  background: ${props => props.value ? timeboxColors[props.value] : 'transparent'};
 `
