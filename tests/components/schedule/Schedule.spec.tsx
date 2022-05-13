@@ -3,9 +3,10 @@ import { render } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import 'jest-styled-components'
+import { Day, Time } from "@/types"
 
-const times = ['09h', '10h', '11h']
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
+const times: Time[] = ['09h', '10h', '11h']
+const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
 
 function makeSut() {
   const { container } = render(<Schedule days={days} times={times} values={{}} />)

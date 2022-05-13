@@ -1,9 +1,10 @@
+import { Day, DayTime, Time, TimeBoxValue } from "@/types"
 import { Timebox } from "./styles"
 
 interface ScheduleProps {
-  times: string[]
-  days: string[]
-  values: { [key: string]: 'notdefined' | 'available' | 'busy' }
+  times: Time[]
+  days: Day[]
+  values: { [key in DayTime]?: TimeBoxValue }
 }
 
 const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
@@ -18,7 +19,7 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
       {times.map(time => (
         [<div className="time" key={`sch-${time}`} > {time} </div>].concat(
           days.map(day => {
-            const dayTime = `${day}-${time}`
+            const dayTime: DayTime = `${day}-${time}`
             return <Timebox
               className="timebox"
               id={`sch-${dayTime}`}
