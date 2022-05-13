@@ -18,4 +18,4 @@ export type Time =
 
 export type DayTime = `${Day}-${Time}`
 
-export type TimeBoxValue = 'notdefined' | 'available' | 'busy'
+export type TimeBoxValue = undefined | 'available' | 'busy'
