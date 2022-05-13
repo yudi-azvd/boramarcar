@@ -8,13 +8,26 @@ interface ScheduleProps {
   values: { [key in DayTime]?: TimeBoxValue }
 }
 
+const dict: {
+  [key in Day]: string
+} = {
+  'Sunday': 'Domingo',
+  'Monday': 'Segunda',
+  'Tuesday': 'Terça',
+  'Wednesday': 'Quarta',
+  'Thursday': 'Quinta',
+  'Friday': 'Sexta',
+  'Saturday': 'Sábado'
+}
+
 const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
-  const [copyValues, setCopyValues] = useState(values)
+  const [copyValues, setCopyValues] = useState(() => values)
+  // console.log(values);
+  // console.log(copyValues);
 
   function setTimeBoxValue(dayTime: DayTime): void {
     const oldValue = copyValues[dayTime]
     let newValue: TimeBoxValue = undefined
-    console.log({ oldValue });
 
     if (oldValue === 'available')
       newValue = 'busy'
@@ -23,7 +36,6 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
     if (oldValue === undefined)
       newValue = 'available'
 
-    console.log({ newValue });
     setCopyValues({ ...copyValues, [dayTime]: newValue })
   }
 
@@ -32,7 +44,7 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
       <div id="top-left" />
 
       {days.map(day => (
-        <div className="day" key={`sch-${day}`}> {day} </div>
+        <div className="day" key={`sch-${day}`}> {dict[day][0]} </div>
       ))}
 
       {times.map(time => (
@@ -42,7 +54,7 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
             return (
               <Timebox
                 onClick={() => setTimeBoxValue(dayTime)}
-                className="timebox"
+                className="timebox"  // precisa para os testes. Ou escolhe outro seletor mais fácil lá
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
                 value={copyValues[dayTime]}

@@ -1,10 +1,10 @@
 import { TimeBoxValue } from '@/types'
 import styled from 'styled-components'
 
-const timeboxColors: {
-  [key in TimeBoxValue]: string
+export const timeboxColors: {
+  [key in 'available' | 'busy']: string
 } = {
-  notdefined: '#BBBBBB',
+  // undefined: #DDDDDD
   available: '#18DC86',
   busy: '#E95F63',
 }
@@ -14,7 +14,16 @@ interface TimeboxProps {
 }
 
 export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value ? timeboxColors[props.value] : 'transparent'};
+  background: ${props => props.value ? timeboxColors[props.value] : '#DDDDDD'};
+  
+  & {
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    -webkit-filter: brightness(90%);
+    filter: brightness(90%);
+  }
 `
 
 interface ContainerProps {
@@ -25,6 +34,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 100%;
+  height: 90vh;
   display: grid;
   grid-template-columns: repeat(${props => props.cols}, 1fr);
   grid-template-rows: repeat(${props => props.rows}, 1fr);
@@ -37,6 +47,7 @@ export const Container = styled.div<ContainerProps>`
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+    border-radius: 4px;
   }
 
   > div#top-left {
@@ -64,9 +75,9 @@ export const Container = styled.div<ContainerProps>`
       position: absolute;
       content: '';
       background: rgba(0, 0, 0, 0.1);
-      height: 100%;
-      width: 2px;
-      right: -3px;
+      height: 2px;
+      width: 100%;
+      bottom: -3px;
     }
   }
 
