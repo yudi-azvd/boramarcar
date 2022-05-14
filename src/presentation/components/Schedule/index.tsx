@@ -46,7 +46,7 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, userId, scheduleReposi
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await scheduleRepository.getAll(userId)
+      const timeboxes = await scheduleRepository.getAll({ userId })
       setValues(timeboxes)
     }
 

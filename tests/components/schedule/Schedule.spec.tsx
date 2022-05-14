@@ -5,8 +5,8 @@ import '@testing-library/jest-dom'
 import 'jest-styled-components'
 import { Day, DayTime, Time, TimeBoxValue } from "@/types"
 
-import FakeScheduleRepository from "@/repositories/FakeUserTimeboxesRepository"
-import { UpdateScheduleDTO } from "@/contracts"
+import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
+import { GetAllScheduleDTO, UpdateScheduleDTO } from "@/contracts"
 
 describe('Schedule', () => {
   const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
@@ -16,28 +16,29 @@ describe('Schedule', () => {
     'Wednesday-11h': 'busy'
   } as { [key in DayTime]?: TimeBoxValue }
 
-  let fakeUserTimeboxesRepository: FakeScheduleRepository
+  let userId = 'fake-user-id'
+  let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
-  let userTimeboxesRepositoryGetAllSpy: jest.SpyInstance<Promise<{
+  let scheduleRepositoryGetAllSpy: jest.SpyInstance<Promise<{
     [key in DayTime]?: TimeBoxValue
-  }>, [userId: string]>
-  let userTimeboxesRepositoryUpdateSpy: jest.SpyInstance<Promise<void>,
+  }>, [getAllScheduleDTO: GetAllScheduleDTO]>
+  let scheduleRepositoryUpdateSpy: jest.SpyInstance<Promise<void>,
     [updateScheduleDTO: UpdateScheduleDTO]>
 
   function makeSut(timeboxesValues?: { [key in DayTime]?: TimeBoxValue }) {
-    fakeUserTimeboxesRepository = new FakeScheduleRepository(
+    fakeScheduleRepository = new FakeScheduleRepository(
       timeboxesValues === undefined
         ? defaultTimeboxesValues
         : timeboxesValues)
-    userTimeboxesRepositoryGetAllSpy = jest.spyOn(fakeUserTimeboxesRepository, 'getAll')
-    userTimeboxesRepositoryUpdateSpy = jest.spyOn(fakeUserTimeboxesRepository, 'update')
+    scheduleRepositoryGetAllSpy = jest.spyOn(fakeScheduleRepository, 'getAll')
+    scheduleRepositoryUpdateSpy = jest.spyOn(fakeScheduleRepository, 'update')
     container = render(
       <Schedule
         days={days}
         times={times}
-        userId="fake-user-id"
-        scheduleRepository={fakeUserTimeboxesRepository}
+        userId={userId}
+        scheduleRepository={fakeScheduleRepository}
       />).container
     timeboxes = [...container.querySelectorAll('.timebox')]
   }
@@ -53,12 +54,12 @@ describe('Schedule', () => {
   })
 
   afterEach(() => {
-    userTimeboxesRepositoryGetAllSpy.mockClear()
-    userTimeboxesRepositoryUpdateSpy.mockClear()
+    scheduleRepositoryGetAllSpy.mockClear()
+    scheduleRepositoryUpdateSpy.mockClear()
   })
 
   it('should request for all timeboxes on render', async () => {
-    expect(userTimeboxesRepositoryGetAllSpy).toHaveBeenCalledWith('fake-user-id')
+    expect(scheduleRepositoryGetAllSpy).toHaveBeenCalledWith({ userId })
   })
 
   it('should initially display timeboxes with initial colors defined in defaultTimeboxesValues', async () => {
@@ -71,7 +72,7 @@ describe('Schedule', () => {
 
       const availableTimebox = container.querySelector('#sch-Sunday-09h') as HTMLDivElement
       expect(availableTimebox).toHaveStyleRule('background', '#18DC86')
-      
+
       const busyTimebox = container.querySelector('#sch-Wednesday-11h') as HTMLDivElement
       expect(busyTimebox).toHaveStyleRule('background', '#E95F63')
     })
@@ -132,8 +133,8 @@ describe('Schedule', () => {
       const timeboxToClick = container.querySelector('#sch-Wednesday-09h') as HTMLDivElement
       await actClick(timeboxToClick)
 
-      expect(userTimeboxesRepositoryUpdateSpy).toHaveBeenCalledWith(
-        { userId: 'fake-user-id', dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
+      expect(scheduleRepositoryUpdateSpy).toHaveBeenCalledWith(
+        { userId, dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
       )
     })
   })
