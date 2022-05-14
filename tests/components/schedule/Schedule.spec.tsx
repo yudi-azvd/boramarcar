@@ -70,7 +70,7 @@ describe('Schedule', () => {
     // teste passa também 
     await waitFor(() => {
       const undefinedTimebox = container.querySelector('#sch-Sunday-10h') as HTMLDivElement
-      expect(undefinedTimebox).toHaveStyleRule('background', '#DDDDDD')
+      expect(undefinedTimebox).toHaveStyleRule('background', '#FFFFFF')
 
       const availableTimebox = container.querySelector('#sch-Sunday-09h') as HTMLDivElement
       expect(availableTimebox).toHaveStyleRule('background', '#18DC86')
@@ -81,7 +81,7 @@ describe('Schedule', () => {
 
     // timeboxes.forEach(t => {
     //   expect(t).toMatchSnapshot()
-    //   expect(t).toHaveStyleRule('background', '#DDDDDD')
+    //   expect(t).toHaveStyleRule('background', '#FFFFFF')
     // })
   })
 
@@ -123,10 +123,10 @@ describe('Schedule', () => {
       // expect(timeboxToClick).toHaveStyleRule('background', '#18DC86')
       await actClick(timeboxToClick)
       // Essa asserção é desnecessária, mas se não tiver, a asserção para
-      // #DDDDDD falha. Vai saber...
+      // #FFFFFF falha. Vai saber...
       expect(timeboxToClick).toHaveStyleRule('background', '#E95F63')
       await actClick(timeboxToClick)
-      expect(timeboxToClick).toHaveStyleRule('background', '#DDDDDD')
+      expect(timeboxToClick).toHaveStyleRule('background', '#FFFFFF')
     })
   })
 
