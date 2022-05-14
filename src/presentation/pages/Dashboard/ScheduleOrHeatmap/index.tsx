@@ -53,6 +53,13 @@ const ScheduleOrHeatmap: React.FC = () => {
     setUsername(event.currentTarget.value)
   }
 
+  function updateUsername(username: string) {
+    const currentUser = users.find(u => u.id === user.id) as HeatmapUser
+    const otherUsers = users.filter(u => u.id !== user.id)
+    currentUser.name = username
+    setUsers([currentUser, ...otherUsers])
+  }
+
   useEffect(() => {
     async function loadUsers() {
       setUsers([
@@ -108,6 +115,7 @@ const ScheduleOrHeatmap: React.FC = () => {
         Bem vindo, <input
           size={25}
           onChange={handleChangeUsername}
+          onBlur={() => updateUsername(username)}
           placeholder={'Clique aqui para mudar seu nome'}
           value={user.name}
           type="text"
