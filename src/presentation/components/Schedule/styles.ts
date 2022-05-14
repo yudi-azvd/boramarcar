@@ -15,6 +15,7 @@ interface TimeboxProps {
 
 export const Timebox = styled.div<TimeboxProps>`
   background: ${props => props.value ? timeboxColors[props.value] : '#DDDDDD'};
+  cursor: pointer;
   
   & {
     transition: all 0.2s ease;
