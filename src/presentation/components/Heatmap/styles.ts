@@ -1,29 +1,14 @@
-import { TimeboxValue } from '@/types'
 import styled from 'styled-components'
 
-export const timeboxColors: {
-  [key in 'available' | 'busy']: string
-} = {
-  // undefined: #DDDDDD
-  available: '#18DC86',
-  busy: '#E95F63',
+interface HeatmapTimeboxProps {
+  color: string
 }
 
-interface TimeboxProps {
-  value?: TimeboxValue
-}
-
-export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value ? timeboxColors[props.value] : '#DDDDDD'};
-  cursor: pointer;
+export const HeatmapTimebox = styled.div<HeatmapTimeboxProps>`
+  background: ${({ color }) => color};
   
   & {
     transition: all 0.2s ease;
-  }
-
-  &:hover {
-    -webkit-filter: brightness(90%);
-    filter: brightness(90%);
   }
 `
 
@@ -92,7 +77,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: center;
   }
 
-  ${Timebox} {
+  ${HeatmapTimebox} {
     opacity: ${props => props.visible ? 1 : 0};
   }
 `
