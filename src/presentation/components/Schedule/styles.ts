@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const timeboxColors: {
   [key in 'available' | 'busy']: string
 } = {
-  // undefined: #DDDDDD
+  // undefined: #FFFFFF
   available: '#18DC86',
   busy: '#E95F63',
 }
@@ -14,7 +14,9 @@ interface TimeboxProps {
 }
 
 export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value ? timeboxColors[props.value] : '#DDDDDD'};
+  background: ${props => props.value 
+    ? timeboxColors[props.value] 
+    : '#FFFFFF'};
   cursor: pointer;
   
   & {

@@ -22,7 +22,7 @@ describe('Timebox', () => {
     const { sut } = makeSut({ value: undefined })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: #DDDDDD`)
+    expect(sut).toHaveStyle(`background: #FFFFFF`)
   })
 
   it('should be green when its value is available', () => {
