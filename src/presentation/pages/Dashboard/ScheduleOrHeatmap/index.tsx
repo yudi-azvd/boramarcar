@@ -17,6 +17,8 @@ const ScheduleOrHeatmap: React.FC = () => {
   const fakeScheduleRepository = new FakeScheduleRepository({
     'Sunday-08h': 'available',
     'Sunday-09h': 'busy',
+    'Tuesday-08h': 'available',
+    'Tuesday-09h': 'busy',
     'Monday-08h': 'available',
     'Wednesday-19h': 'busy'
   })
@@ -35,6 +37,8 @@ const ScheduleOrHeatmap: React.FC = () => {
           schedule: {
             'Sunday-08h': 'available',
             'Sunday-09h': 'busy',
+            'Tuesday-08h': 'available',
+            'Tuesday-09h': 'busy',
             "Friday-08h": 'available',
             'Monday-08h': 'available',
             'Wednesday-19h': 'busy',
@@ -47,6 +51,8 @@ const ScheduleOrHeatmap: React.FC = () => {
             'Sunday-08h': 'available',
             'Sunday-09h': 'busy',
             'Monday-08h': 'busy',
+            'Tuesday-08h': 'available',
+            'Tuesday-09h': 'busy',
             "Friday-08h": 'available',
             'Wednesday-19h': 'busy',
           }
@@ -57,6 +63,8 @@ const ScheduleOrHeatmap: React.FC = () => {
           schedule: {
             'Sunday-08h': 'available',
             'Sunday-09h': 'busy',
+            'Tuesday-08h': 'busy',
+            'Tuesday-09h': 'available',
             'Monday-08h': 'busy',
             "Friday-08h": 'available',
             'Wednesday-19h': 'busy',
