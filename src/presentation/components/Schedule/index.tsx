@@ -1,5 +1,5 @@
 import { ScheduleRepository } from "@/contracts"
-import { Day, DayTime, Time, TimeBoxValue } from "@/types"
+import { Day, DayTime, Time, TimeboxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
@@ -25,12 +25,12 @@ const dict: {
 
 const Schedule: React.FC<ScheduleProps> = ({ days, times, roomId, userId, scheduleRepository }) => {
   const [values, setValues] = useState({} as {
-    [key in DayTime]?: TimeBoxValue
+    [key in DayTime]?: TimeboxValue
   })
 
   async function setTimeBoxValue(dayTime: DayTime): Promise<void> {
     const oldValue = values[dayTime]
-    let newValue: TimeBoxValue = undefined
+    let newValue: TimeboxValue = undefined
 
     if (oldValue === 'available')
       newValue = 'busy'

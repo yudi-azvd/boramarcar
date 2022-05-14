@@ -1,4 +1,4 @@
-import { Day, DayTime, Time} from "@/types"
+import { Day, DayTime, Time } from "@/types"
 import { Container, Timebox } from "./styles"
 
 interface HeatmapProps {

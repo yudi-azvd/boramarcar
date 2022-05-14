@@ -18,4 +18,6 @@ export type Time =
 
 export type DayTime = `${Day}-${Time}`
 
-export type TimeBoxValue = undefined | 'available' | 'busy'
+export type TimeboxValue = undefined | 'available' | 'busy'
+
+// export type ScheduleBlock = {[key: DayTime]: TimeboxValue}

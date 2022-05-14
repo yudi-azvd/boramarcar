@@ -1,4 +1,4 @@
-import { DayTime, TimeBoxValue as TimeboxValue } from "@/types";
+import { DayTime, TimeboxValue as TimeboxValue } from "@/types";
 
 export interface UpdateScheduleDTO {
   roomId: string
