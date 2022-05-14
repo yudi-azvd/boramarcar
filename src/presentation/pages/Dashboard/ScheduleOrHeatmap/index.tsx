@@ -1,3 +1,4 @@
+import { GetUserScheduleDTO, UpdateScheduleDTO } from '@/contracts'
 import Heatmap, { HeatmapUser } from '@/presentation/components/Heatmap'
 import Schedule from '@/presentation/components/Schedule'
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
@@ -5,8 +6,7 @@ import { Day, DayTime, Time, TimeboxValue } from '@/types'
 import { Container } from './style'
 
 import { Tabs } from 'antd'
-import { useEffect, useState } from 'react'
-import { GetUserScheduleDTO, UpdateScheduleDTO } from '@/contracts'
+import { FormEvent, useEffect, useState } from 'react'
 const { TabPane } = Tabs
 
 const currentUserSchedule:
@@ -22,9 +22,10 @@ const currentUserSchedule:
 const fakeScheduleRepository = new FakeScheduleRepository(currentUserSchedule)
 
 const ScheduleOrHeatmap: React.FC = () => {
+  const [username, setUsername] = useState('')
   const roomId = 'test-room-id'
   const user: HeatmapUser = {
-    name: 'Euzinho',
+    name: username,
     id: 'test-user-id',
     schedule: currentUserSchedule
   }
@@ -45,6 +46,11 @@ const ScheduleOrHeatmap: React.FC = () => {
     }
     setUsers([currentUser, ...otherUsers])
     await fakeScheduleRepository.update(updateScheduleInfo)
+  }
+
+  function handleChangeUsername(event: FormEvent<HTMLInputElement>) {
+    event.preventDefault()
+    setUsername(event.currentTarget.value)
   }
 
   useEffect(() => {
@@ -98,6 +104,17 @@ const ScheduleOrHeatmap: React.FC = () => {
 
   return (
     <Container>
+      <div>
+        Bem vindo, <input
+          size={25}
+          onChange={handleChangeUsername}
+          placeholder={'Clique aqui para mudar seu nome'}
+          value={user.name}
+          type="text"
+          name="name"
+          id="user-name" />
+      </div>
+
       <Tabs defaultActiveKey="1" size="large">
         <TabPane tab="Cronograma" key="1">
           <Schedule
