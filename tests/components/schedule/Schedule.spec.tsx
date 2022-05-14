@@ -1,12 +1,12 @@
 import Schedule from "@/presentation/components/Schedule"
+import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
+import { GetAllScheduleDTO, UpdateScheduleDTO } from "@/contracts"
+import { Day, DayTime, Time, TimeBoxValue } from "@/types"
+
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import 'jest-styled-components'
-import { Day, DayTime, Time, TimeBoxValue } from "@/types"
-
-import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
-import { GetAllScheduleDTO, UpdateScheduleDTO } from "@/contracts"
 
 describe('Schedule', () => {
   const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
@@ -17,6 +17,7 @@ describe('Schedule', () => {
   } as { [key in DayTime]?: TimeBoxValue }
 
   let userId = 'fake-user-id'
+  let roomId = 'fake-room-id'
   let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
@@ -37,6 +38,7 @@ describe('Schedule', () => {
       <Schedule
         days={days}
         times={times}
+        roomId={roomId}
         userId={userId}
         scheduleRepository={fakeScheduleRepository}
       />).container
@@ -59,7 +61,7 @@ describe('Schedule', () => {
   })
 
   it('should request for all timeboxes on render', async () => {
-    expect(scheduleRepositoryGetAllSpy).toHaveBeenCalledWith({ userId })
+    expect(scheduleRepositoryGetAllSpy).toHaveBeenCalledWith({ userId, roomId })
   })
 
   it('should initially display timeboxes with initial colors defined in defaultTimeboxesValues', async () => {
@@ -134,7 +136,7 @@ describe('Schedule', () => {
       await actClick(timeboxToClick)
 
       expect(scheduleRepositoryUpdateSpy).toHaveBeenCalledWith(
-        { userId, dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
+        { roomId, userId, dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
       )
     })
   })

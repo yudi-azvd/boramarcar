@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
 interface ScheduleProps {
+  userId: string
+  roomId: string
   times: Time[]
   days: Day[]
-  userId: string
   scheduleRepository: ScheduleRepository
 }
 
@@ -22,7 +23,7 @@ const dict: {
   'Saturday': 'Sábado'
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ days, times, userId, scheduleRepository }) => {
+const Schedule: React.FC<ScheduleProps> = ({ days, times, roomId, userId, scheduleRepository }) => {
   const [values, setValues] = useState({} as {
     [key in DayTime]?: TimeBoxValue
   })
@@ -40,13 +41,13 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, userId, scheduleReposi
 
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
-    await scheduleRepository.update({ userId, dayTime, timeboxValue: newValue })
+    await scheduleRepository.update({ roomId, userId, dayTime, timeboxValue: newValue })
     setValues({ ...values, [dayTime]: newValue })
   }
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await scheduleRepository.getAll({ userId })
+      const timeboxes = await scheduleRepository.getAll({ roomId, userId })
       setValues(timeboxes)
     }
 

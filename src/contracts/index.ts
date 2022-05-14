@@ -1,12 +1,14 @@
 import { DayTime, TimeBoxValue as TimeboxValue } from "@/types";
 
 export interface UpdateScheduleDTO {
+  roomId: string
   userId: string
   dayTime: DayTime
   timeboxValue: TimeboxValue
 }
 
 export interface GetAllScheduleDTO {
+  roomId: string
   userId: string
 }
 

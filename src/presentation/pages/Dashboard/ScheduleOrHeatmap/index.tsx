@@ -18,6 +18,7 @@ const ScheduleOrHeatmap: React.FC = () => {
           <Schedule
             days={days}
             times={times}
+            roomId="test-room-id"
             userId="test-user-id"
             scheduleRepository={
               new FakeScheduleRepository({
