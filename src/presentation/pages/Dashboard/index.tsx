@@ -1,14 +1,13 @@
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
+import { Container } from './style'
 
 const Dashboard: React.FC = () => {
 
   return (
-    <div>
+    <Container>
       <h1>Dashboard</h1>
-
       <ScheduleOrHeatmap />
-          
-    </div>
+    </Container>
   )
 }
 
