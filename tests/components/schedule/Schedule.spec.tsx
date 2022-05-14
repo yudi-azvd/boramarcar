@@ -1,6 +1,6 @@
 import Schedule from "@/presentation/components/Schedule"
 import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
-import { GetAllScheduleDTO, UpdateScheduleDTO } from "@/contracts"
+import { GetUserScheduleDTO, GetUserScheduleInThisRoom, UpdateScheduleDTO, UpdateUserScheduleInThisRoom } from "@/contracts"
 import { Day, DayTime, Time, TimeboxValue } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
@@ -21,26 +21,27 @@ describe('Schedule', () => {
   let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
-  let scheduleRepositoryGetAllSpy: jest.SpyInstance<Promise<
-    { [key in DayTime]?: TimeboxValue }>, 
-    [getAllScheduleDTO: GetAllScheduleDTO]>
-  let scheduleRepositoryUpdateSpy: jest.SpyInstance<Promise<void>,
-    [updateScheduleDTO: UpdateScheduleDTO]>
+  let getUserScheduleInThisRoom: GetUserScheduleInThisRoom
+  let updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
 
   function makeSut(timeboxesValues?: { [key in DayTime]?: TimeboxValue }) {
-    fakeScheduleRepository = new FakeScheduleRepository(
-      timeboxesValues === undefined
-        ? defaultTimeboxesValues
-        : timeboxesValues)
-    scheduleRepositoryGetAllSpy = jest.spyOn(fakeScheduleRepository, 'getAll')
-    scheduleRepositoryUpdateSpy = jest.spyOn(fakeScheduleRepository, 'update')
+    const definitiveTimeboxesValues = timeboxesValues === undefined
+      ? defaultTimeboxesValues
+      : timeboxesValues
+    fakeScheduleRepository = new FakeScheduleRepository(definitiveTimeboxesValues)
+    getUserScheduleInThisRoom = jest.fn<Promise<{ [key in DayTime]?: TimeboxValue }>, [GetUserScheduleDTO]>()
+      .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
+
+    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [UpdateScheduleDTO]>()
+
     container = render(
       <Schedule
         days={days}
         times={times}
         roomId={roomId}
         userId={userId}
-        scheduleRepository={fakeScheduleRepository}
+        getUserScheduleInThisRoom={getUserScheduleInThisRoom}
+        updateUserScheduleInThisRoom={updateUserScheduleInThisRoom}
       />).container
     timeboxes = [...container.querySelectorAll('.timebox')]
   }
@@ -55,13 +56,8 @@ describe('Schedule', () => {
     await act(async () => makeSut())
   })
 
-  afterEach(() => {
-    scheduleRepositoryGetAllSpy.mockClear()
-    scheduleRepositoryUpdateSpy.mockClear()
-  })
-
   it('should request for all timeboxes on render', async () => {
-    expect(scheduleRepositoryGetAllSpy).toHaveBeenCalledWith({ userId, roomId })
+    expect(getUserScheduleInThisRoom).toHaveBeenCalledWith({ userId, roomId })
   })
 
   it('should initially display timeboxes with initial colors defined in defaultTimeboxesValues', async () => {
@@ -135,7 +131,7 @@ describe('Schedule', () => {
       const timeboxToClick = container.querySelector('#sch-Wednesday-09h') as HTMLDivElement
       await actClick(timeboxToClick)
 
-      expect(scheduleRepositoryUpdateSpy).toHaveBeenCalledWith(
+      expect(updateUserScheduleInThisRoom).toHaveBeenCalledWith(
         { roomId, userId, dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
       )
     })
