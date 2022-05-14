@@ -1,7 +1,7 @@
 import Schedule from "@/presentation/components/Schedule"
 import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
 import { GetAllScheduleDTO, UpdateScheduleDTO } from "@/contracts"
-import { Day, DayTime, Time, TimeBoxValue } from "@/types"
+import { Day, DayTime, Time, TimeboxValue } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
@@ -14,20 +14,20 @@ describe('Schedule', () => {
   const defaultTimeboxesValues = {
     'Sunday-09h': 'available',
     'Wednesday-11h': 'busy'
-  } as { [key in DayTime]?: TimeBoxValue }
+  } as { [key in DayTime]?: TimeboxValue }
 
   let userId = 'fake-user-id'
   let roomId = 'fake-room-id'
   let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
-  let scheduleRepositoryGetAllSpy: jest.SpyInstance<Promise<{
-    [key in DayTime]?: TimeBoxValue
-  }>, [getAllScheduleDTO: GetAllScheduleDTO]>
+  let scheduleRepositoryGetAllSpy: jest.SpyInstance<Promise<
+    { [key in DayTime]?: TimeboxValue }>, 
+    [getAllScheduleDTO: GetAllScheduleDTO]>
   let scheduleRepositoryUpdateSpy: jest.SpyInstance<Promise<void>,
     [updateScheduleDTO: UpdateScheduleDTO]>
 
-  function makeSut(timeboxesValues?: { [key in DayTime]?: TimeBoxValue }) {
+  function makeSut(timeboxesValues?: { [key in DayTime]?: TimeboxValue }) {
     fakeScheduleRepository = new FakeScheduleRepository(
       timeboxesValues === undefined
         ? defaultTimeboxesValues

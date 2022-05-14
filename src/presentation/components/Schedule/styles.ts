@@ -1,4 +1,4 @@
-import { TimeBoxValue } from '@/types'
+import { TimeboxValue } from '@/types'
 import styled from 'styled-components'
 
 export const timeboxColors: {
@@ -10,7 +10,7 @@ export const timeboxColors: {
 }
 
 interface TimeboxProps {
-  value?: TimeBoxValue
+  value?: TimeboxValue
 }
 
 export const Timebox = styled.div<TimeboxProps>`
