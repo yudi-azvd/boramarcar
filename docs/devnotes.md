@@ -8,6 +8,27 @@ Em nenhuma ordem em particular.
 ### Desenvolvimento incremental
 - Primeiro fiz apenas o Schedule funcionando com dias e horários hard coded.
 
+Comparar com a primeira abordagem
+
+Tinha começado com a primeira página do ponto
+de vista do usuário: login/cadastro. Isso dificultou um pouco o restante do 
+desenvolvimento porque quando cheguei no `Schedule` eu já tava pensando em 
+termos de ContextAPI pra pegar os dados do usuário e etc. Claro que dava
+pra começar pelo login/cadastro sem essas dificuldades, mas depois de ler
+esse [post](post do akita no linkedin) eu me toquei que tinha que começar pelo
+mais importante, que é indicado no próprio nome da aplicação: cronograma e mapa
+de calor. 
+
+Outra "filosofia" que mantive durante o desenvolvimento dessa vez, foi a "outra
+parte vai resolver isso aqui". Em vez de fazer a requisição do cronograma do 
+usuário em `Schedule`, decidi que ele já os receberia como argumentos. E mais
+depois ainda decidi que `Schedule` receberia uma dependência responsável por
+pegar esses dados. Outro exemplo? Qual a vantagem de fazer isso?
+
+Ainda seria possível usa essa filosofia começando pelo login/cadastro, mas 
+começando assim atrasaria o feedback do usuário nas partes mais importantes
+da aplicação
+
 
 ### Mudanças em geral
 Fazer mudanças com testes unitários é uma beleza. É paz e tranquilidade na 
@@ -18,11 +39,12 @@ pela execução dos testes.
 As interfaces são as partes mais importantes do projeto. Mudei ela uma vez e a 
 mudança repercutiu em "muitos" outros lugares.
 
-Minha **primeira abordagem** foi de passar um repositório de cronograma (`ScheduleRepository`)
-como depedência para o componente `Schedule`. De cara estranhei um pouco essa abordagem
-porque parece muito coisa de backend. O componente `Schedule` usava dois métodos do 
-repositório: `getAll` pra pegar o cronograma do usuário e `updateAlgumaCoisa` pra
-atualizar um horário do usuário quando ele clica num quadradinho.
+Minha **primeira abordagem** foi de passar um repositório de cronograma 
+(`ScheduleRepository`) como depedência para o componente `Schedule`. De cara 
+estranhei um pouco essa abordagem porque parece muito coisa de backend. O 
+componente `Schedule` usava dois métodos do repositório: `getAll` pra pegar o 
+cronograma do usuário e `updateAlgumaCoisa` pra atualizar um horário do usuário
+quando ele clica num quadradinho.
 
 Na hora do desenvolvimento, acabei percebendo que tinha que atualizar
 o componente `Heatmap` quando o usuário clica em algum quadradinho do `Schedule`.
