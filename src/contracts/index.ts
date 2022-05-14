@@ -6,7 +6,11 @@ export interface UpdateScheduleDTO {
   timeboxValue: TimeboxValue
 }
 
+export interface GetAllScheduleDTO {
+  userId: string
+}
+
 export interface ScheduleRepository {
   update: (updateSchedule: UpdateScheduleDTO) => Promise<void>
-  getAll: (userId: string) => Promise<{ [key in DayTime]?: TimeboxValue }>
+  getAll: (getAllSchedule: GetAllScheduleDTO) => Promise<{ [key in DayTime]?: TimeboxValue }>
 }

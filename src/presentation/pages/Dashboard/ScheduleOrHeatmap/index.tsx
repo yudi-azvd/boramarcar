@@ -1,6 +1,6 @@
 import Heatmap from '@/presentation/components/Heatmap'
 import Schedule from '@/presentation/components/Schedule'
-import FakeScheduleRepository from '@/repositories/FakeUserTimeboxesRepository'
+import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
 import { Day, Time } from '@/types'
 import { Container } from './style'
 
