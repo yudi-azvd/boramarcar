@@ -7,6 +7,11 @@ const Router: React.FC = () => {
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/devnotes' element={
+          (() => (
+          <div><h1>Notas de desenvolvimento</h1></div>)
+          )()}
+        />
       </Routes>
     </BrowserRouter>
   )
