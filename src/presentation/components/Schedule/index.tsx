@@ -1,11 +1,12 @@
+import { UserTimeboxesRepository } from "@/contracts"
 import { Day, DayTime, Time, TimeBoxValue } from "@/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
 interface ScheduleProps {
   times: Time[]
   days: Day[]
-  values: { [key in DayTime]?: TimeBoxValue }
+  userTimeboxesRepository: UserTimeboxesRepository
 }
 
 const dict: {
@@ -20,13 +21,13 @@ const dict: {
   'Saturday': 'Sábado'
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
-  const [copyValues, setCopyValues] = useState(() => values)
-  // console.log(values);
-  // console.log(copyValues);
+const Schedule: React.FC<ScheduleProps> = ({ days, times, userTimeboxesRepository }) => {
+  const [values, setValues] = useState({} as {
+    [key in DayTime]?: TimeBoxValue
+  })
 
-  function setTimeBoxValue(dayTime: DayTime): void {
-    const oldValue = copyValues[dayTime]
+  async function setTimeBoxValue(dayTime: DayTime): Promise<void> {
+    const oldValue = values[dayTime]
     let newValue: TimeBoxValue = undefined
 
     if (oldValue === 'available')
@@ -36,8 +37,20 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
     if (oldValue === undefined)
       newValue = 'available'
 
-    setCopyValues({ ...copyValues, [dayTime]: newValue })
+    // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
+    // intererem uns nos outros.
+    await userTimeboxesRepository.update(dayTime, newValue)
+    setValues({ ...values, [dayTime]: newValue })
   }
+
+  useEffect(() => {
+    async function getAll() {
+      const timeboxes = await userTimeboxesRepository.getAll()
+      setValues(timeboxes)
+    }
+
+    getAll()
+  }, [])
 
   return (
     <Container cols={days.length + 1} rows={times.length + 1} visible>
@@ -54,10 +67,12 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, values }) => {
             return (
               <Timebox
                 onClick={() => setTimeBoxValue(dayTime)}
-                className="timebox"  // precisa para os testes. Ou escolhe outro seletor mais fácil lá
+                // Precisa dessa classe para os testes. Ou escolhe outro seletor 
+                // mais fácil lá em Schedule.spec/makeSut 
+                className="timebox"
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
-                value={copyValues[dayTime]}
+                value={values[dayTime] ?? undefined}
               />
             )
           })
