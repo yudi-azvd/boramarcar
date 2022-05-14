@@ -1,6 +1,6 @@
 import Heatmap from '@/presentation/components/Heatmap'
 import Schedule from '@/presentation/components/Schedule'
-import FakeUserTimeboxesRepository from '@/repositories/FakeUserTimeboxesRepository'
+import FakeScheduleRepository from '@/repositories/FakeUserTimeboxesRepository'
 import { Day, Time } from '@/types'
 import { Container } from './style'
 
@@ -18,8 +18,9 @@ const ScheduleOrHeatmap: React.FC = () => {
           <Schedule
             days={days}
             times={times}
-            userTimeboxesRepository={
-              new FakeUserTimeboxesRepository('user-id', {
+            userId="test-user-id"
+            scheduleRepository={
+              new FakeScheduleRepository({
                 'Sunday-08h': 'available',
                 'Wednesday-19h': 'busy'
               })

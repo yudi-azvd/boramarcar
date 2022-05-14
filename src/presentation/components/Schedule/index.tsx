@@ -1,4 +1,4 @@
-import { UserTimeboxesRepository } from "@/contracts"
+import { ScheduleRepository } from "@/contracts"
 import { Day, DayTime, Time, TimeBoxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
@@ -6,7 +6,8 @@ import { Container, Timebox } from "./styles"
 interface ScheduleProps {
   times: Time[]
   days: Day[]
-  userTimeboxesRepository: UserTimeboxesRepository
+  userId: string
+  scheduleRepository: ScheduleRepository
 }
 
 const dict: {
@@ -21,7 +22,7 @@ const dict: {
   'Saturday': 'Sábado'
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ days, times, userTimeboxesRepository }) => {
+const Schedule: React.FC<ScheduleProps> = ({ days, times, userId, scheduleRepository }) => {
   const [values, setValues] = useState({} as {
     [key in DayTime]?: TimeBoxValue
   })
@@ -39,13 +40,13 @@ const Schedule: React.FC<ScheduleProps> = ({ days, times, userTimeboxesRepositor
 
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
-    await userTimeboxesRepository.update(dayTime, newValue)
+    await scheduleRepository.update({ userId, dayTime, timeboxValue: newValue })
     setValues({ ...values, [dayTime]: newValue })
   }
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await userTimeboxesRepository.getAll()
+      const timeboxes = await scheduleRepository.getAll(userId)
       setValues(timeboxes)
     }
 

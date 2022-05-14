@@ -1,16 +1,16 @@
-import { UserTimeboxesRepository } from "@/contracts";
+import { ScheduleRepository, UpdateScheduleDTO } from "@/contracts";
 import { DayTime, TimeBoxValue } from "@/types";
 
-export default class FakeUserTimeboxesRepository implements UserTimeboxesRepository {
-  constructor(readonly userId: string, private timeboxes: {
+export default class FakeScheduleRepository implements ScheduleRepository {
+  constructor(private timeboxes: {
     [key in DayTime]?: TimeBoxValue
   }) { }
 
-  async update(dayTime: DayTime, timeboxValue: TimeBoxValue): Promise<void> {
+  async update({ dayTime, timeboxValue }: UpdateScheduleDTO): Promise<void> {
     this.timeboxes[dayTime] = timeboxValue
   }
 
-  async getAll(): Promise<{ [key in DayTime]?: TimeBoxValue }> {
+  async getAll(userId: string): Promise<{ [key in DayTime]?: TimeBoxValue }> {
     return this.timeboxes
   }
 }
