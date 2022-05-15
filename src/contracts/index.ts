@@ -1,4 +1,4 @@
-import { DayTime, TimeboxValue as TimeboxValue } from "@/types";
+import { DayTime, Schedule, TimeboxValue as TimeboxValue } from "@/types";
 
 export interface UpdateScheduleDTO {
   roomId: string
@@ -17,10 +17,11 @@ export interface ScheduleRepository {
   getAll: (getAllSchedule: GetUserScheduleDTO) => Promise<Schedule>
 }
 
-export interface GetUserScheduleInThisRoom {
-  (getAllSchedule: GetUserScheduleDTO): Promise<Schedule>
+export interface GetCurrentUserSchedule {
+  (): Promise<Schedule>
 }
 
-export interface UpdateUserScheduleInThisRoom {
-  (updateSchedule: UpdateScheduleDTO): Promise<void>
+export interface UpdateCurrentUserSchedule {
+  // (updateCurrentUserScheduleDTO: { dayTime: DayTime, timeboxValue: TimeboxValue }): Promise<void>
+  (updateCurrentUserScheduleDTO: [ DayTime, TimeboxValue ]): Promise<void>
 }

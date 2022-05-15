@@ -1,32 +1,26 @@
-import { GetUserScheduleInThisRoom, ScheduleRepository, UpdateUserScheduleInThisRoom } from "@/contracts"
+import { GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
 import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
 interface ScheduleBoardProps {
-  userId: string
-  roomId: string
   times: Time[]
   days: Day[]
-  getUserScheduleInThisRoom: GetUserScheduleInThisRoom
-  updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
+  getCurrentUserSchedule: GetCurrentUserSchedule
+  updateCurrentUserSchedule: UpdateCurrentUserSchedule
 }
 
 const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   days,
   times,
-  roomId,
-  userId,
-  getUserScheduleInThisRoom,
-  updateUserScheduleInThisRoom
+  getCurrentUserSchedule,
+  updateCurrentUserSchedule,
 }) => {
-  const [values, setValues] = useState({} as {
-    [key in DayTime]?: TimeboxValue
-  })
+  const [schedule, setSchedule] = useState({} as Schedule)
 
   async function setTimeBoxValue(dayTime: DayTime): Promise<void> {
-    const oldValue = values[dayTime]
+    const oldValue = schedule[dayTime]
     let newValue: TimeboxValue = undefined
 
     if (oldValue === 'available')
@@ -38,14 +32,15 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
 
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
-    await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
-    setValues({ ...values, [dayTime]: newValue })
+    // await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
+    await updateCurrentUserSchedule([dayTime, newValue])
+    setSchedule({ ...schedule, [dayTime]: newValue })
   }
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await getUserScheduleInThisRoom({ roomId, userId })
-      setValues(timeboxes)
+      const timeboxes = await getCurrentUserSchedule()
+      setSchedule(timeboxes)
     }
 
     getAll()
@@ -71,7 +66,7 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
                 className="timebox"
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
-                value={values[dayTime] ?? undefined}
+                value={schedule[dayTime] ?? undefined}
               />
             )
           })
