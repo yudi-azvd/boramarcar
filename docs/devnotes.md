@@ -15,6 +15,38 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-15
+
+Tenho que repensar o fluxo de dados do `ScheduleOrHeatmap`. 
+
+Tenho que repensar o as dependências de `Heatmap`.
+
+## 2022-05-14 - Sobre o Firestore...
+
+Em menos de 1 hora eu atingi o limite de 50k leituras na Firestore com no máximo
+5 documentos rodando a aplicação em ambiente local de desenvolvimento.
+
+![](./firestore-exceeded-reads.png)
+
+Fazendo umas contas rapidamente: a página onde eu usei a função `getUsers` é a
+página inicial do protótipo. Se eu salvo o arquivo da página, a função `getUsers`
+é chamada 2 vezes pra ler os 5 documentos cada uma dessas vezes. Eu podia
+ter diminuido de 2 pra 1 vez se eu tivesse colocado `getUsers` no useEffect que
+já existia :facepalm:.
+
+Então, se eu não estiver enganado, a cada Ctrl + S ou F5, a aplicação faz 10 leituras
+na Firestore. Aparentemente eu salvei esse arquivo ou atualizei a página umas 5 mil
+vezes.
+
+No Reddit disseram que esse número de leituras pode vir também do console da 
+Firestore. De qualquer maneira, isso abordagem não sobreviveria ao teste com
+usuários reais mesmo se eu tivesse colocado tudo no mesmo useEffect.
+
+Ainda bem que eu tô no plano grátis. Se um dia eu utilizar o plano pago eu tenho
+que me certificar de ligar alertas de billing.
+
+Vou tentar Realtime Database do Firebase.
+
 ## 2022-05-14 - ainda mais tarde
 
 Minha dúvida atual é sobre como fazer um mini ambiente de stage, em que várias

@@ -1,18 +1,13 @@
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { Day, DayTime, Time, TimeboxValue, User } from "@/types"
 import { Popover } from "antd"
 import { Container, HeatmapTimebox } from "./styles"
 
-export interface HeatmapUser {
-  name: string
-  id: string
-  schedule: { [key in DayTime]?: TimeboxValue }
-}
 
 interface HeatmapProps {
   times: Time[]
   days: Day[]
   roomId: string
-  users: HeatmapUser[]
+  users: User[]
 }
 
 const colorStops = {

@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import '@/config/firebase'
+
 import 'antd/dist/antd.css'
 import Router from './routes/router'
 
