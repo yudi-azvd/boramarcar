@@ -2,7 +2,7 @@ import { GetUserScheduleDTO, UpdateScheduleDTO } from '@/contracts'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { Schedule, User } from '@/types'
+import { DayTime, Schedule, TimeboxValue, User } from '@/types'
 import { fakeUsers, userFakeSchedule } from '@/util/fakedata'
 import { Container } from './style'
 
@@ -23,19 +23,20 @@ const ScheduleOrHeatmap: React.FC = () => {
   }
   const [users, setUsers] = useState<User[]>([])
 
-  async function getUserSchedule(getUserScheduleInfo: GetUserScheduleDTO): Promise<Schedule> {
-    return await fakeScheduleRepository.getAll(getUserScheduleInfo)
+  async function getCurrentUserSchedule(): Promise<Schedule> {
+    return await fakeScheduleRepository.getAll({ roomId, userId: user.id })
   }
 
-  async function updateUserSchedule(updateScheduleInfo: UpdateScheduleDTO): Promise<void> {
-    const currentUser = users.find(u => u.id === updateScheduleInfo.userId) as User
-    const otherUsers = users.filter(u => u.id !== updateScheduleInfo.userId)
+  async function updateCurrentUserSchedule(updateScheduleInfo: [DayTime, TimeboxValue]): Promise<void> {
+    const [dayTime, timeboxValue] = updateScheduleInfo
+    const currentUser = users.find(u => u.id === user.id) as User
+    const otherUsers = users.filter(u => u.id !== user.id)
     currentUser.schedule = {
       ...currentUser.schedule,
-      [updateScheduleInfo.dayTime]: updateScheduleInfo.timeboxValue
+      [dayTime]: timeboxValue
     }
     setUsers([currentUser, ...otherUsers])
-    await fakeScheduleRepository.update(updateScheduleInfo)
+    await fakeScheduleRepository.update({ dayTime, roomId, userId: user.id, timeboxValue })
   }
 
   function handleChangeUsername(event: FormEvent<HTMLInputElement>) {
@@ -77,10 +78,8 @@ const ScheduleOrHeatmap: React.FC = () => {
           <ScheduleBoard
             days={days}
             times={times}
-            roomId={roomId}
-            userId={user.id}
-            getUserScheduleInThisRoom={getUserSchedule}
-            updateUserScheduleInThisRoom={updateUserSchedule}
+            getCurrentUserSchedule={getCurrentUserSchedule}
+            updateCurrentUserSchedule={updateCurrentUserSchedule}
           />
         </TabPane>
 
