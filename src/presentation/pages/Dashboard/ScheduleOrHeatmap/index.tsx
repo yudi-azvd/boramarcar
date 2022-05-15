@@ -2,12 +2,13 @@ import { GetUserScheduleDTO, UpdateScheduleDTO } from '@/contracts'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { Day, DayTime, Schedule, Time, TimeboxValue, User } from '@/types'
+import { Schedule, User } from '@/types'
 import { fakeUsers, userFakeSchedule } from '@/util/fakedata'
 import { Container } from './style'
 
 import { Tabs } from 'antd'
 import { FormEvent, useEffect, useState } from 'react'
+import { days, times } from '@/domain/daystimes'
 const { TabPane } = Tabs
 
 const fakeScheduleRepository = new FakeScheduleRepository(userFakeSchedule)
@@ -20,8 +21,6 @@ const ScheduleOrHeatmap: React.FC = () => {
     id: 'test-user-id',
     schedule: userFakeSchedule
   }
-  const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  const times: Time[] = ['08h', '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h']
   const [users, setUsers] = useState<User[]>([])
 
   async function getUserSchedule(getUserScheduleInfo: GetUserScheduleDTO): Promise<Schedule> {
