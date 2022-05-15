@@ -1,4 +1,5 @@
 import { GetUserScheduleInThisRoom, ScheduleRepository, UpdateUserScheduleInThisRoom } from "@/contracts"
+import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
 import { Day, DayTime, Time, TimeboxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
@@ -10,18 +11,6 @@ interface ScheduleBoardProps {
   days: Day[]
   getUserScheduleInThisRoom: GetUserScheduleInThisRoom
   updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
-}
-
-const dict: {
-  [key in Day]: string
-} = {
-  'Sunday': 'Domingo',
-  'Monday': 'Segunda',
-  'Tuesday': 'Terça',
-  'Wednesday': 'Quarta',
-  'Thursday': 'Quinta',
-  'Friday': 'Sexta',
-  'Saturday': 'Sábado'
 }
 
 const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
@@ -67,7 +56,7 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
       <div id="top-left" />
 
       {days.map(day => (
-        <div className="day" key={`sch-${day}`}> {dict[day][0]} </div>
+        <div className="day" key={`sch-${day}`}> {englishWeekdaysToPortuguese[day][0]} </div>
       ))}
 
       {times.map(time => (
