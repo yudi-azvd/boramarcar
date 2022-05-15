@@ -1,7 +1,7 @@
-import Schedule from "@/presentation/components/Schedule"
+import ScheduleBoard from "@/presentation/components/ScheduleBoard"
 import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
-import { GetUserScheduleDTO, GetUserScheduleInThisRoom, UpdateScheduleDTO, UpdateUserScheduleInThisRoom } from "@/contracts"
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { GetUserScheduleDTO, GetCurrentUserSchedule, UpdateScheduleDTO, UpdateCurrentUserSchedule } from "@/contracts"
+import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
@@ -11,37 +11,35 @@ import 'jest-styled-components'
 describe('Schedule', () => {
   const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
   const times: Time[] = ['09h', '10h', '11h']
-  const defaultTimeboxesValues = {
+  const defaultTimeboxesValues: Schedule = {
     'Sunday-09h': 'available',
     'Wednesday-11h': 'busy'
-  } as { [key in DayTime]?: TimeboxValue }
+  }
 
   let userId = 'fake-user-id'
   let roomId = 'fake-room-id'
   let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
-  let getUserScheduleInThisRoom: GetUserScheduleInThisRoom
-  let updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
+  let getUserScheduleInThisRoom: GetCurrentUserSchedule
+  let updateUserScheduleInThisRoom: UpdateCurrentUserSchedule
 
-  function makeSut(timeboxesValues?: { [key in DayTime]?: TimeboxValue }) {
+  function makeSut(timeboxesValues?: Schedule) {
     const definitiveTimeboxesValues = timeboxesValues === undefined
       ? defaultTimeboxesValues
       : timeboxesValues
     fakeScheduleRepository = new FakeScheduleRepository(definitiveTimeboxesValues)
-    getUserScheduleInThisRoom = jest.fn<Promise<{ [key in DayTime]?: TimeboxValue }>, [GetUserScheduleDTO]>()
+    getUserScheduleInThisRoom = jest.fn<Promise<Schedule>, []>()
       .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
 
-    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [UpdateScheduleDTO]>()
+    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [[DayTime, TimeboxValue]]>()
 
     container = render(
-      <Schedule
+      <ScheduleBoard
         days={days}
         times={times}
-        roomId={roomId}
-        userId={userId}
-        getUserScheduleInThisRoom={getUserScheduleInThisRoom}
-        updateUserScheduleInThisRoom={updateUserScheduleInThisRoom}
+        getCurrentUserSchedule={getUserScheduleInThisRoom}
+        updateCurrentUserSchedule={updateUserScheduleInThisRoom}
       />).container
     timeboxes = [...container.querySelectorAll('.timebox')]
   }
@@ -57,7 +55,7 @@ describe('Schedule', () => {
   })
 
   it('should request for all timeboxes on render', async () => {
-    expect(getUserScheduleInThisRoom).toHaveBeenCalledWith({ userId, roomId })
+    expect(getUserScheduleInThisRoom).toHaveBeenCalled()
   })
 
   it('should initially display timeboxes with initial colors defined in defaultTimeboxesValues', async () => {
@@ -131,9 +129,8 @@ describe('Schedule', () => {
       const timeboxToClick = container.querySelector('#sch-Wednesday-09h') as HTMLDivElement
       await actClick(timeboxToClick)
 
-      expect(updateUserScheduleInThisRoom).toHaveBeenCalledWith(
-        { roomId, userId, dayTime: 'Wednesday-09h', timeboxValue: 'available' } as UpdateScheduleDTO
-      )
+      expect(updateUserScheduleInThisRoom)
+        .toHaveBeenCalledWith(['Wednesday-09h', 'available' ])
     })
   })
 })

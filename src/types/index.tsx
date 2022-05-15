@@ -1,7 +1,7 @@
 export type User = {
   name: string
   id: string
-  schedule: { [key in DayTime]?: TimeboxValue }
+  schedule: Schedule
 }
 
 export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
@@ -26,4 +26,4 @@ export type DayTime = `${Day}-${Time}`
 
 export type TimeboxValue = undefined | 'available' | 'busy'
 
-// export type ScheduleBlock = {[key: DayTime]: TimeboxValue}
+export type Schedule = { [key in DayTime]?: TimeboxValue }
