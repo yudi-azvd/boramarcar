@@ -7,6 +7,7 @@ interface HeatmapTimeboxProps {
 export const HeatmapTimebox = styled.div<HeatmapTimeboxProps>`
   background: ${({ color }) => color};
   border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
   
   & {
     transition: all 0.2s ease;

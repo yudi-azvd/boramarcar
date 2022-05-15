@@ -49,7 +49,7 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
 
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
-    updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
+    await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
     setValues({ ...values, [dayTime]: newValue })
   }
 
