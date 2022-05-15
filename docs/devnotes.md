@@ -13,6 +13,51 @@ por outro framework ou de substituir serverless pelo modelo cliente servidor +
 socket, pra depois ficar fácil de trocar o frontend ou backend completamente por
 outra stack.
 
+Agora, sim, as notas:
+
+## 2022-05-14 - ainda mais tarde
+
+Minha dúvida atual é sobre como fazer um mini ambiente de stage, em que várias
+pessoas podem usar a aplicação. 
+
+**O Problema**: a aplicação tem que reagir à mudanças nos cronogramas do usuários
+da sala pra calcular o mapa de calor. Atualmente isso já acontece para o usuário
+local "apenas na minha máquina". A aplicação tem que "perceber" e reagir às
+mudanças de cronogramas, como se ele se inscrevesse num evento e quando esse 
+evento acontece, ela executa um callback.
+
+**Solução 1** SocketIO. A versão anterior dessa aplicação tinha um servidor com
+socket. O usuário podia mudar os horários no cronograma e o servidor imprimia
+o ID do usuário e o novo valor do Timebox. 
+
+**Solução 2** Firebase. Nunca mexi, só vi alguns vídeos. Mas sei que é possível
+executar um callback quando ocorre alguma mundança no banco de dados.
+
+Tô inclinado na **solução 1**. Já tem um servidor quase pronto com sockets. O 
+próximo passo seria abstrair essa reação a eventos em uma interface pra não 
+depender de SocketIO ou Firebase diretamente. Depois eu faria a implementação
+definitiva em Firebase.
+
+Por que não começar logo com Firebase? Acho que é o _receio_ de ficar muito tempo
+travado tentando encaixar o Firebase na aplicação (ler documentação). Começando
+com sockets eu começaria pelo conhecido, criaria uma abstração para reagir a 
+eventos e depois colocaria o Firebase por baixo. Sim, parece mais que dá mais
+trabalho, mas acho que esse é o caminho menos frustrante pra entregar um mini 
+ambiente de stage, em que várias pessoas podem usar a aplicação. Quando eu terminar
+a gambiarra com SocketIO, já vou poder pedir feedback pras pessoas. E acho que 
+posso aprender mais assim também.
+
+Links úteis sobre Firebase e emuladores:
+
+- [Um tutorial](https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/),
+tem um exemplo de inscrever na mudança de documento.
+- [Instalar e configurar](https://firebase.google.com/docs/emulator-suite/install_and_configure)
+- [Conectar e prototipar](https://firebase.google.com/docs/emulator-suite/connect_and_prototype#web-version-9_1)
+- [Add firebase to your project](https://firebase.google.com/docs/web/setup)
+
+Lendo esses links por cima me fez achar menos complicado começar por Firebase...
+
+Então vamos de Firebase.
 
 ## 2022-05-14 - algumas horas depois
 Estimar quanto tempo vai levar pra concluir o projeto 
@@ -26,8 +71,11 @@ Planos futuros:
 varias pessoas possam usar a aplicação na mesma sala
     - servidor vai ter que resolver ID dos usuários?
     - uma página pra escolher o nome e vai ser redirecionado para o dashboard
-    - rota de teste /reset pra resetar os cronogramas de quem está presente
-    - rota de teste /reset-users pra apagar kickar os usuários da sala
+    - rota de teste /reset-users pra resetar os cronogramas de quem está presente
+    - rota de teste /kick-users pra apagar/kickar os usuários da sala e fazer um cleanup
+    - rota de teste /list-users pra listar os usuários da sala
+    - rota de teste /show-user-schedule pra listar o cronograma de um usuário 
+    dado um ID
 
 
 ## 2022-05-14 
@@ -159,10 +207,22 @@ library.
 Puxar um pouco das ideias de desenvolvimentos de jogos:
 pequenos laboraórios dentro projeto, assim como cenas no Godot. O jogo principal,
 a "main" ainda existe ao lado desses pequenos laboratórios. No Godot é possível
-executar cada um desses laboratórios individual e isoladamente.
+executar cada um desses laboratórios individual e isoladamente. 
+
+Em desenvolvimento de jogos não é necessário abrir o jogo, apertar os botões do 
+menu, vencer a fase 1, vencer a fase 2 pra testar a fase 3. Quero explorar essa 
+mesma mentalidade em no desenvolvimento dessa aplicação (e de outras também): 
+pra testar o cronograma eu não preciso passar pela tela login, o cronograma não 
+precisa estar implentado. O mapa de calor pode funcionar de forma independente do 
+cronograma. Por mais que na aplicação final o mapa de calor dependa dos
+cronogramas de todos os usuários, ele de verdade só precisa indicar quantas
+pessoas estão disponíveis e ocupadas nos dias e horários, ou seja, ele só precisa
+de _dados_ e não do cronograma.
 
 **Ideia**: usar variáveis ambiente (`.env`) para o app saber qual "laboratório"
 ele deve executar. Essa estratégia também deve funcionar no pipeline de CI (?).
+
+Uma complicação que eu vejo é como coordenar isso em um time.
 
 ### Antiga
 Antiga estilização das `div` do Schedule e Heatmap
