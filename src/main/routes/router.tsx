@@ -1,4 +1,5 @@
 import Dashboard from '@/presentation/pages/Dashboard'
+import DevNotes from '@/presentation/pages/DevNotes'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const Router: React.FC = () => {
@@ -7,10 +8,7 @@ const Router: React.FC = () => {
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/devnotes' element={
-          (() => (
-          <div><h1>Notas de desenvolvimento</h1></div>)
-          )()}
+        <Route path='/devnotes' element={<DevNotes />}
         />
       </Routes>
     </BrowserRouter>
