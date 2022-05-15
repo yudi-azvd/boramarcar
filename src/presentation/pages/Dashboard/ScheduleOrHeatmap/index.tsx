@@ -1,27 +1,21 @@
-import { GetUserScheduleDTO, UpdateScheduleDTO } from '@/contracts'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
 import { DayTime, Schedule, TimeboxValue, User } from '@/types'
-import { fakeUsers, userFakeSchedule } from '@/util/fakedata'
+import { fakeUsers, fakeUser } from '@/util/fakedata'
 import { Container } from './style'
 
 import { Tabs } from 'antd'
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { days, times } from '@/domain/daystimes'
 const { TabPane } = Tabs
 
-const fakeScheduleRepository = new FakeScheduleRepository(userFakeSchedule)
+const fakeScheduleRepository = new FakeScheduleRepository(fakeUser.schedule)
 
 const ScheduleOrHeatmap: React.FC = () => {
-  const [username, setUsername] = useState('')
   const roomId = 'test-room-id'
-  const user: User = {
-    name: username,
-    id: 'test-user-id',
-    schedule: userFakeSchedule
-  }
-  const [users, setUsers] = useState<User[]>([])
+  const user = fakeUser
+  const [otherUsers, setOtherUsers] = useState<User[]>([])
 
   async function getCurrentUserSchedule(): Promise<Schedule> {
     return await fakeScheduleRepository.getAll({ roomId, userId: user.id })
@@ -29,31 +23,12 @@ const ScheduleOrHeatmap: React.FC = () => {
 
   async function updateCurrentUserSchedule(updateScheduleInfo: [DayTime, TimeboxValue]): Promise<void> {
     const [dayTime, timeboxValue] = updateScheduleInfo
-    const currentUser = users.find(u => u.id === user.id) as User
-    const otherUsers = users.filter(u => u.id !== user.id)
-    currentUser.schedule = {
-      ...currentUser.schedule,
-      [dayTime]: timeboxValue
-    }
-    setUsers([currentUser, ...otherUsers])
-    await fakeScheduleRepository.update({ dayTime, roomId, userId: user.id, timeboxValue })
-  }
-
-  function handleChangeUsername(event: FormEvent<HTMLInputElement>) {
-    event.preventDefault()
-    setUsername(event.currentTarget.value)
-  }
-
-  function updateUsername(username: string) {
-    const currentUser = users.find(u => u.id === user.id) as User
-    const otherUsers = users.filter(u => u.id !== user.id)
-    currentUser.name = username
-    setUsers([currentUser, ...otherUsers])
+    await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime, timeboxValue })
   }
 
   useEffect(() => {
     async function loadUsers() {
-      setUsers([user, ...fakeUsers])
+      setOtherUsers(fakeUsers)
     }
 
     loadUsers()
@@ -62,15 +37,7 @@ const ScheduleOrHeatmap: React.FC = () => {
   return (
     <Container>
       <div>
-        Bem vindo, <input
-          size={25}
-          onChange={handleChangeUsername}
-          onBlur={() => updateUsername(username)}
-          placeholder={'Clique aqui para mudar seu nome'}
-          value={user.name}
-          type="text"
-          name="name"
-          id="user-name" />
+        Bem vindo, {user.name}
       </div>
 
       <Tabs defaultActiveKey="1" size="large">
@@ -88,7 +55,7 @@ const ScheduleOrHeatmap: React.FC = () => {
             days={days}
             times={times}
             roomId={roomId}
-            users={users}
+            users={[user, ...otherUsers]}
           />
         </TabPane>
       </Tabs>

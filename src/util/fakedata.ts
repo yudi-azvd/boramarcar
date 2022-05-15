@@ -1,5 +1,6 @@
 import { Schedule, User } from "@/types";
 
+
 export const userFakeSchedule: Schedule = {
   'Sunday-08h': 'available',
   'Sunday-09h': 'busy',
@@ -8,6 +9,13 @@ export const userFakeSchedule: Schedule = {
   'Monday-08h': 'available',
   'Wednesday-14h': 'busy'
 }
+
+export const fakeUser: User = {
+  name: 'SEU NOME AQUI',
+  id: 'fake-user-id',
+  schedule: userFakeSchedule
+}
+
 
 export const fakeUsers: User[] = [
   {
