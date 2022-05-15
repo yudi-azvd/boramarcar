@@ -1,18 +1,12 @@
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { Day, DayTime, Time, User } from "@/types"
 import { Popover } from "antd"
 import { Container, HeatmapTimebox } from "./styles"
 
-export interface HeatmapUser {
-  name: string
-  id: string
-  schedule: { [key in DayTime]?: TimeboxValue }
-}
-
-interface HeatmapProps {
+interface HeatmapBoardProps {
   times: Time[]
   days: Day[]
   roomId: string
-  users: HeatmapUser[]
+  users: User[]
 }
 
 const colorStops = {
@@ -63,7 +57,7 @@ const dict: {
   'Saturday': 'Sábado'
 }
 
-const Heatmap: React.FC<HeatmapProps> = ({ days, times, users }) => {
+const HeatmapBoard: React.FC<HeatmapBoardProps> = ({ days, times, users }) => {
   const idPrefix = 'heat'
   const totalUsers = users.length
 
@@ -117,4 +111,4 @@ const Heatmap: React.FC<HeatmapProps> = ({ days, times, users }) => {
   )
 }
 
-export default Heatmap
+export default HeatmapBoard

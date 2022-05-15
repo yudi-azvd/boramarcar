@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import 'jest-styled-components'
 
-import { Timebox } from '@/presentation/components/Schedule/styles'
+import { Timebox } from '@/presentation/components/ScheduleBoard/styles'
 
 interface SutProps {
   value?: 'available' | 'busy'

@@ -1,7 +1,7 @@
-import Schedule from "@/presentation/components/Schedule"
+import ScheduleBoard from "@/presentation/components/ScheduleBoard"
 import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
 import { GetUserScheduleDTO, GetUserScheduleInThisRoom, UpdateScheduleDTO, UpdateUserScheduleInThisRoom } from "@/contracts"
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
@@ -14,7 +14,7 @@ describe('Schedule', () => {
   const defaultTimeboxesValues = {
     'Sunday-09h': 'available',
     'Wednesday-11h': 'busy'
-  } as { [key in DayTime]?: TimeboxValue }
+  } as Schedule
 
   let userId = 'fake-user-id'
   let roomId = 'fake-room-id'
@@ -24,18 +24,18 @@ describe('Schedule', () => {
   let getUserScheduleInThisRoom: GetUserScheduleInThisRoom
   let updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
 
-  function makeSut(timeboxesValues?: { [key in DayTime]?: TimeboxValue }) {
+  function makeSut(timeboxesValues?: Schedule) {
     const definitiveTimeboxesValues = timeboxesValues === undefined
       ? defaultTimeboxesValues
       : timeboxesValues
     fakeScheduleRepository = new FakeScheduleRepository(definitiveTimeboxesValues)
-    getUserScheduleInThisRoom = jest.fn<Promise<{ [key in DayTime]?: TimeboxValue }>, [GetUserScheduleDTO]>()
+    getUserScheduleInThisRoom = jest.fn<Promise<Schedule>, [GetUserScheduleDTO]>()
       .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
 
     updateUserScheduleInThisRoom = jest.fn<Promise<void>, [UpdateScheduleDTO]>()
 
     container = render(
-      <Schedule
+      <ScheduleBoard
         days={days}
         times={times}
         roomId={roomId}

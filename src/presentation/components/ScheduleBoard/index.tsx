@@ -3,7 +3,7 @@ import { Day, DayTime, Time, TimeboxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
-interface ScheduleProps {
+interface ScheduleBoardProps {
   userId: string
   roomId: string
   times: Time[]
@@ -24,7 +24,7 @@ const dict: {
   'Saturday': 'Sábado'
 }
 
-const Schedule: React.FC<ScheduleProps> = ({
+const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   days,
   times,
   roomId,
@@ -92,4 +92,4 @@ const Schedule: React.FC<ScheduleProps> = ({
   )
 }
 
-export default Schedule
+export default ScheduleBoard

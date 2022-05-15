@@ -1,5 +1,5 @@
 import { GetUserScheduleDTO, ScheduleRepository, UpdateScheduleDTO } from "@/contracts";
-import { DayTime, TimeboxValue } from "@/types";
+import { DayTime, Schedule, TimeboxValue } from "@/types";
 
 export default class FakeScheduleRepository implements ScheduleRepository {
   constructor(private timeboxes: {
@@ -10,7 +10,7 @@ export default class FakeScheduleRepository implements ScheduleRepository {
     this.timeboxes[dayTime] = timeboxValue
   }
 
-  async getAll({ userId }: GetUserScheduleDTO): Promise<{ [key in DayTime]?: TimeboxValue }> {
+  async getAll({ userId }: GetUserScheduleDTO): Promise<Schedule> {
     return this.timeboxes
   }
 }
