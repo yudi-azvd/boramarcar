@@ -1,43 +1,26 @@
-import { GetUserScheduleInThisRoom, ScheduleRepository, UpdateUserScheduleInThisRoom } from "@/contracts"
-import { Day, DayTime, Time, TimeboxValue } from "@/types"
+import { GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
+import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
+import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, Timebox } from "./styles"
 
-interface ScheduleProps {
-  userId: string
-  roomId: string
+interface ScheduleBoardProps {
   times: Time[]
   days: Day[]
-  getUserScheduleInThisRoom: GetUserScheduleInThisRoom
-  updateUserScheduleInThisRoom: UpdateUserScheduleInThisRoom
+  getCurrentUserSchedule: GetCurrentUserSchedule
+  updateCurrentUserSchedule: UpdateCurrentUserSchedule
 }
 
-const dict: {
-  [key in Day]: string
-} = {
-  'Sunday': 'Domingo',
-  'Monday': 'Segunda',
-  'Tuesday': 'Terça',
-  'Wednesday': 'Quarta',
-  'Thursday': 'Quinta',
-  'Friday': 'Sexta',
-  'Saturday': 'Sábado'
-}
-
-const Schedule: React.FC<ScheduleProps> = ({
+const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   days,
   times,
-  roomId,
-  userId,
-  getUserScheduleInThisRoom,
-  updateUserScheduleInThisRoom
+  getCurrentUserSchedule,
+  updateCurrentUserSchedule,
 }) => {
-  const [values, setValues] = useState({} as {
-    [key in DayTime]?: TimeboxValue
-  })
+  const [schedule, setSchedule] = useState({} as Schedule)
 
   async function setTimeBoxValue(dayTime: DayTime): Promise<void> {
-    const oldValue = values[dayTime]
+    const oldValue = schedule[dayTime]
     let newValue: TimeboxValue = undefined
 
     if (oldValue === 'available')
@@ -49,14 +32,15 @@ const Schedule: React.FC<ScheduleProps> = ({
 
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
-    updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
-    setValues({ ...values, [dayTime]: newValue })
+    // await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
+    await updateCurrentUserSchedule([dayTime, newValue])
+    setSchedule({ ...schedule, [dayTime]: newValue })
   }
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await getUserScheduleInThisRoom({ roomId, userId })
-      setValues(timeboxes)
+      const timeboxes = await getCurrentUserSchedule()
+      setSchedule(timeboxes)
     }
 
     getAll()
@@ -67,7 +51,7 @@ const Schedule: React.FC<ScheduleProps> = ({
       <div id="top-left" />
 
       {days.map(day => (
-        <div className="day" key={`sch-${day}`}> {dict[day][0]} </div>
+        <div className="day" key={`sch-${day}`}> {englishWeekdaysToPortuguese[day][0]} </div>
       ))}
 
       {times.map(time => (
@@ -82,7 +66,7 @@ const Schedule: React.FC<ScheduleProps> = ({
                 className="timebox"
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
-                value={values[dayTime] ?? undefined}
+                value={schedule[dayTime] ?? undefined}
               />
             )
           })
@@ -92,4 +76,4 @@ const Schedule: React.FC<ScheduleProps> = ({
   )
 }
 
-export default Schedule
+export default ScheduleBoard

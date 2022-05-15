@@ -15,6 +15,19 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-15 (no final do dia)
+Mudei os componentes `Schedule` e `Heatmap` para `ScheduleBoard` e `HeatmapBoard`
+, respectvamente. 
+
+`ScheduleBoard` representa o cronograma de um usuário em determinada sala.
+`HeatmapBoard` representa os cronogramas de vários usuários em uma determinada
+sala. Como a sala não muda na página 
+
+`ScheduleBoard` depende e uma sala e de um usuário apenas, que devem ser conhecidos
+no carregamento da página que contém `ScheduleBoard`. Por isso decidi simplificar
+as suas funções de "serviço" pra não precisarem dos IDs do usuário e sala.
+
+
 ## 2022-05-15
 
 Tenho que repensar o fluxo de dados do `ScheduleOrHeatmap`. 
@@ -181,7 +194,7 @@ assinaturas:
 
 ```ts
 export interface GetUserScheduleInThisRoom {
-  (getAllSchedule: GetUserScheduleDTO): Promise<{ [key in DayTime]?: TimeboxValue }>
+  (getAllSchedule: GetUserScheduleDTO): Promise<Schedule>
 }
 
 export interface UpdateUserScheduleInThisRoom {
@@ -205,7 +218,7 @@ interface UpdateUserScheduleInThisRoomService {
 
 interface GetUserScheduleInThisRoom {
   run: (getAllSchedule: GetUserScheduleDTO) => 
-    Promise<{ [key in DayTime]?: TimeboxValue }>
+    Promise<Schedule>
 }
 ```
 

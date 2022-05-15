@@ -1,15 +1,26 @@
+import { TimeboxValue } from '@/types'
 import styled from 'styled-components'
 
-interface HeatmapTimeboxProps {
-  color: string
+import { timeboxColors } from '@/domain/schedule/colors'
+
+interface TimeboxProps {
+  value?: TimeboxValue
 }
 
-export const HeatmapTimebox = styled.div<HeatmapTimeboxProps>`
-  background: ${({ color }) => color};
+export const Timebox = styled.div<TimeboxProps>`
+  background: ${props => props.value
+    ? timeboxColors[props.value]
+    : '#FFFFFF'};
+  cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.1);
   
   & {
     transition: all 0.2s ease;
+  }
+
+  &:hover {
+    -webkit-filter: brightness(90%);
+    filter: brightness(90%);
   }
 `
 
@@ -43,7 +54,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: center;
   }
 
-  ${HeatmapTimebox} {
+  ${Timebox} {
     opacity: ${props => props.visible ? 1 : 0};
   }
 `
