@@ -1,9 +1,38 @@
+# Notas de desenvolvimento
+A ordem cronológica dessas anotações é de baixo para cima, seguindo as datas. 
+Talvez tenha uma sentença ou outra que não faça todo o sentido. Essas notas
+devem fazer sentido pelo menos pra mim. Se você entender alguma coisa é lucro.
+Ainda assim, você é bem vindo em tentar xD
+
+## Objetivos desse projeto 
+Arquitetura limpa. É uma tentativa de fazer algo parecido com esse projeto do
+Rodrigo Manguinho.
+
+Acho que um bom indicador se isso funcionou é a facilidade de substituir React 
+por outro framework ou de substituir serverless pelo modelo cliente servidor + 
+socket, pra depois ficar fácil de trocar o frontend ou backend completamente por
+outra stack.
+
+
+## 2022-05-14 - algumas horas depois
+Estimar quanto tempo vai levar pra concluir o projeto 
+
+- definir tasks/histórias de usuário
+- planilha de previsão do término (só pra ter uma noção)
+
+Planos futuros:
+
+- fazer um servidor dummy pra funcionae como API de cronograma de maneira que 
+varias pessoas possam usar a aplicação na mesma sala
+    - servidor vai ter que resolver ID dos usuários?
+    - uma página pra escolher o nome e vai ser redirecionado para o dashboard
+    - rota de teste /reset pra resetar os cronogramas de quem está presente
+    - rota de teste /reset-users pra apagar kickar os usuários da sala
+
 
 ## 2022-05-14 
-Em nenhuma ordem em particular.
-
-### Objetivos desse projeto 
-...
+Nenhuma ordem em particular. É um dump das coisas que eu tava pensando enquanto
+desenvolvia, mas que acabei escrevendo apenas agora.
 
 ### Desenvolvimento incremental
 - Primeiro fiz apenas o Schedule funcionando com dias e horários hard coded.
@@ -14,20 +43,19 @@ Tinha começado com a primeira página do ponto
 de vista do usuário: login/cadastro. Isso dificultou um pouco o restante do 
 desenvolvimento porque quando cheguei no `Schedule` eu já tava pensando em 
 termos de ContextAPI pra pegar os dados do usuário e etc. Claro que dava
-pra começar pelo login/cadastro sem essas dificuldades, mas depois de ler
-esse [post](post do akita no linkedin) eu me toquei que tinha que começar pelo
-mais importante, que é indicado no próprio nome da aplicação: cronograma e mapa
-de calor. 
+pra começar pelo login/cadastro sem essas dificuldades, mas depois de ler esse 
+[post](https://www.linkedin.com/posts/akitaonrails_toda-vez-que-eu-vejo-um-teste-de-programa%C3%A7%C3%A3o-activity-6916745763079217153-KoGR?utm_source=linkedin_share&utm_medium=member_desktop_web) eu me 
+toquei que tinha que começar pelo mais importante, que é indicado no próprio 
+nome da aplicação: cronograma e mapa de calor. Como eu quero que outras pessoas 
+achem essa aplicação útil, tenho que receber feedback sobre o core da aplicação 
+o quanto antes.
 
 Outra "filosofia" que mantive durante o desenvolvimento dessa vez, foi a "outra
 parte vai resolver isso aqui". Em vez de fazer a requisição do cronograma do 
 usuário em `Schedule`, decidi que ele já os receberia como argumentos. E mais
 depois ainda decidi que `Schedule` receberia uma dependência responsável por
-pegar esses dados. Outro exemplo? Qual a vantagem de fazer isso?
-
-Ainda seria possível usa essa filosofia começando pelo login/cadastro, mas 
-começando assim atrasaria o feedback do usuário nas partes mais importantes
-da aplicação
+pegar esses dados. Outro exemplo? Qual a vantagem de fazer isso? Não sei, to 
+testando. Tentando fazer diferente do que normalmente faço.
 
 
 ### Mudanças em geral
@@ -109,8 +137,10 @@ Se você parar pra pensar, a **terceira abordagem** não é _tão_ diferente da
 **abordagem baguncinha**. Tanto o repositório fake da **abordagem baguncinha**
 quanto os serviços fake da **abordagem baguncinha** implementam uma  interface 
 da qual `Schedule` depende. Nessas duas abordagens, `Schedule` depende de métodos
-que executam um rotina qualquer. A maior diferença é que as operações `get` e 
-`update` estão separadas em interfaces diferentes, o que está mais condizente com o 
+que executam um rotina qualquer. Além disso, o fluxo de dados da abordagem 
+baguncinha tbm é quase igual ao da terceira/segunda abordagem A maior diferença 
+é que as operações `get` e `update` estão separadas em interfaces diferentes, o 
+que está mais condizente com o 
 [Interface Segregation Principle](https://en.wikipedia.org/wiki/Interface_segregation_principle)
 do [SOLID](https://en.wikipedia.org/wiki/SOLID). 
 
@@ -133,3 +163,48 @@ executar cada um desses laboratórios individual e isoladamente.
 
 **Ideia**: usar variáveis ambiente (`.env`) para o app saber qual "laboratório"
 ele deve executar. Essa estratégia também deve funcionar no pipeline de CI (?).
+
+### Antiga
+Antiga estilização das `div` do Schedule e Heatmap
+
+```css
+  > div#top-left {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  > div.day {
+    position: relative;
+
+    &::after {
+      position: absolute;
+      content: '';
+      background: rgba(0, 0, 0, 0.1);
+      height: 100%;
+      width: 1px;
+      right: -3px;
+    }
+  }
+
+  > div.time {
+    position: relative;
+
+    &::after {
+      position: absolute;
+      content: '';
+      background: rgba(0, 0, 0, 0.1);
+      height: 1px;
+      width: 100%;
+      bottom: -3px;
+    }
+  }
+```
+
+## 2022-??-??
+
+Tava muito perdido se ia fazer com  TDD, se só ia fazer algumas páginas. Não
+sabia se ia usar um modelo cliente/servidor ou serverless com Firebase. Eu não
+sabia se ia fazer um MVP, uma PoC, um protótipo com gambiarras ou uma versão 
+definitiva com código limpo.
+
+Era só confusão e ansiedade.
