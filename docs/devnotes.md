@@ -149,7 +149,7 @@ assinaturas:
 
 ```ts
 export interface GetUserScheduleInThisRoom {
-  (getAllSchedule: GetUserScheduleDTO): Promise<{ [key in DayTime]?: TimeboxValue }>
+  (getAllSchedule: GetUserScheduleDTO): Promise<Schedule>
 }
 
 export interface UpdateUserScheduleInThisRoom {
@@ -173,7 +173,7 @@ interface UpdateUserScheduleInThisRoomService {
 
 interface GetUserScheduleInThisRoom {
   run: (getAllSchedule: GetUserScheduleDTO) => 
-    Promise<{ [key in DayTime]?: TimeboxValue }>
+    Promise<Schedule>
 }
 ```
 
