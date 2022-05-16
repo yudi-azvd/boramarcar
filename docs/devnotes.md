@@ -15,7 +15,23 @@ outra stack.
 
 Agora, sim, as notas:
 
-## 2022-05-15 (no final do dia)
+## 2022-05-15 - Parece promissor
+
+Depois da bagunça que aconteceu ontem na branch `firebase-integration-messy`,
+voltei pra `dev` pra refazer algumas coisas. Dei um nome pro tipo 
+`{ [key in DayTime]?: TimbeboxValue }`, que agora é `Schedule`. Tinha um 
+componente que se chamava `Schedule`, mas renomeei para `ScheduleBoard`. Sinto
+que vai acontecer algo parecido com `DayTime`, `TimeboxValue` e `Timebox`
+(o componente).
+
+Antes existia apenas `ScheduleBoard` usando `fakeScheduleRepository`. Na branch
+de integração com Firebase, o repositório foi substituído por variáveis
+de estado em `ScheduleOrHeatmap`. Eu tava usando essa ideia de repositório 
+porque eu imaginava que os dados `fakeScheduleRepository` seriam usados em outro
+lugar. Deve ser um alerta: toda vez que eu pensar em repositório em um projeto 
+React, provavelmente eu quero usar Estado.
+
+## 2022-05-15
 Mudei os componentes `Schedule` e `Heatmap` para `ScheduleBoard` e `HeatmapBoard`
 , respectvamente. 
 

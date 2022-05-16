@@ -7,11 +7,6 @@ const Dashboard: React.FC = () => {
   return (
     <Container>
       <h1>Dashboard</h1>
-      <p>
-        <Link to="/">
-          Voltar para página principal
-        </Link>
-      </p>
       <ScheduleOrHeatmap />
     </Container>
   )

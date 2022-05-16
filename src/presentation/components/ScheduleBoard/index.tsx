@@ -39,8 +39,8 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
 
   useEffect(() => {
     async function getAll() {
-      const timeboxes = await getCurrentUserSchedule()
-      setSchedule(timeboxes)
+      const schedule = await getCurrentUserSchedule()
+      setSchedule(schedule)
     }
 
     getAll()
