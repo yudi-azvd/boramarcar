@@ -37,7 +37,7 @@ const ScheduleOrHeatmap: React.FC = () => {
     // setUser({ ...user, schedule: newUserSchedule })
   }
 
-  function handleOtherUsersScheduleChange(usersWithNewSchedules: User[]) {
+  function handleUsersScheduleChange(usersWithNewSchedules: User[]) {
     const thisUser = usersWithNewSchedules.find(u => u.id === user.id)
     const _otherUsers = usersWithNewSchedules.filter(u => u.id !== user.id)
     setUser(thisUser as User)
@@ -54,7 +54,7 @@ const ScheduleOrHeatmap: React.FC = () => {
     
     loadUsers()
     const unsubscribe = listenToOtherUsersScheduleChangesInRoom(roomId,
-      handleOtherUsersScheduleChange)
+      handleUsersScheduleChange)
     return () => unsubscribe()
   }, [])
 

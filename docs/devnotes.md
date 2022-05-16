@@ -15,6 +15,41 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-16 - Deu certo :D (01h00)
+
+Consegui integrar com o Realtime Database (RTDB) do Firebase. Yay!
+
+**Tenho que escrever testes**. Não quero ter que ficar testando esse funcionamento 
+na mão. **Tenho que pensar nos casos de teste de hoje**. Teste unitário? teste de
+integração? Fazer algumas inversões de dependência?
+Onde testar o debouncer?
+
+Outra coisa que tá me incomodando em `ScheduleOrHeatmap` é 
+`updateCurrentUserSchedule`. A função **não** atualiza localmente o timebox do 
+usuário. Ela "emite" a mudança e a atualização só acontece por quando o callback
+`handleUsersScheduleChange` é chamado. Isso não é errado em si, mas me incomoda
+porque eu não soube fazer a atualiação acontecer localmente.
+
+Atualmente a aplicação se inscreve para escutar mudanças no caminho 
+`schedules/${roomId}` e ela recebe todos os usuários através de 
+`handleUsersScheduleChange` e `listenToOtherUsersScheduleChangesInRoom`. 
+`handleUsersScheduleChange` redefine `user` e `otherUser` sempre que é chamado.
+Acho que isso é um desperdício. Deveria ser apenas uma mudança específica de 
+usuário, dayTime e timeboxValue. Ao meu ver, pra fazer isso com RTDB eu teria
+que colocar um listener em cada `userId` de `schedules` e depois removê-los
+ao desmontar o componente. Ou algum outro objeto que sabe dizer quais usuários
+mudaram e que chama `handleUsersScheduleChange` apenas com a mudança.
+
+Agora tenho que refazer `ScheduleOrHeatmap` pra ficar mais com cara de eventos
+(?) e menos dependente de uma solução como RTDB.
+
+Isso porque eu escolhi que a aplicação vai guardar todos usuários da sala.
+
+A fluxo de dados tá um pouco ridículo. Um click no cronograma 
+
+No total, foram quase dois dias inteiros só trabalhando nisso.
+
+
 ## 2022-05-15 - Parece promissor
 
 Depois da bagunça que aconteceu ontem na branch `firebase-integration-messy`,
