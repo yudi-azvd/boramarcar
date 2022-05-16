@@ -15,7 +15,7 @@ interface HeatmapBoardProps {
 const HeatmapBoard: React.FC<HeatmapBoardProps> = ({ days, times, users }) => {
   const idPrefix = 'heat'
   const totalUsers = users.length
-
+  
   return (
     <Container cols={days.length + 1} rows={times.length + 1} visible>
       <div id="top-left" />

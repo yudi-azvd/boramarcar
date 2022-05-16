@@ -1,10 +1,30 @@
 import { UpdateScheduleDTO } from '@/contracts'
-import { DayTime, TimeboxValue, User } from '@/types'
-import { getDatabase, ref, child, set, get, push, update, remove, onValue, DataSnapshot, off } from 'firebase/database'
+import { User } from '@/types'
+import {
+  getDatabase,
+  child,
+  ref,
+  get,
+  push,
+  update,
+  remove,
+  onValue,
+  DataSnapshot
+} from 'firebase/database'
 
 const database = getDatabase()
 
 export const theOnlyRoomId = 'theOnlyRoomId'
+
+export async function deleteUser(userId: string) {
+  const userRef = ref(database, `users/${userId}`)
+  const userInRoomsRef = ref(database, `rooms/${theOnlyRoomId}/users/${userId}`)
+  const userScheduleRef = ref(database, `schedules/${theOnlyRoomId}/${userId}`)
+
+  remove(userRef)
+  remove(userInRoomsRef)
+  remove(userScheduleRef)
+}
 
 export async function createUser(username: string) {
   const usersRef = ref(database, 'users')
@@ -24,10 +44,8 @@ export async function createUser(username: string) {
   } as User
 }
 
-export async function updateUserScheduleInRoom({ dayTime, timeboxValue, roomId, userId }: UpdateScheduleDTO) {
+export async function emitUserScheduleUpdate({ dayTime, timeboxValue, roomId, userId }: UpdateScheduleDTO) {
   const userScheduleInRoomRef = ref(database, `schedules/${roomId}/${userId}`)
-
-  console.log(timeboxValue);
 
   if (timeboxValue !== undefined)
     update(userScheduleInRoomRef, {
@@ -37,50 +55,43 @@ export async function updateUserScheduleInRoom({ dayTime, timeboxValue, roomId, 
     remove(child(userScheduleInRoomRef, dayTime))
 }
 
-/// Achei que precisaria, mas não
 interface ScheduleChangeHandler {
-  (schedules: {
-    [key: string]: {
-      [key in DayTime]?: TimeboxValue
-    }
-  }): void
+  (usersWithNewSchedules: User[]): void
 }
 
-export function listenToScheduleChangesInRoom(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
+export function listenToOtherUsersScheduleChangesInRoom(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
   const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
-  
-  const unsubscribe = onValue(schedulesInRoomRef, (snapshot: DataSnapshot) => {
-    const schedules = snapshot.val()
+  const dbRef = ref(database)
 
-    // Object.keys(schedules).map(userId => )
-    scheduleChangeHandler(schedules)
-    console.log('db users schedules changed');
+  const unsubscribe = onValue(schedulesInRoomRef, async (schedulesSnapshot: DataSnapshot) => {
+    const usersSnapshot = await get(child(dbRef, 'users'))
+    const usersObject = usersSnapshot.val()
+    const schedulesByUserIdObject = schedulesSnapshot.val()
+    const users = convertToUsers(usersObject, schedulesByUserIdObject)
+    scheduleChangeHandler(users)
   })
 
   return unsubscribe
 }
 
 
-export function writeUserData(userId: string, name: string, email: string, imageURL: string) {
-  set(ref(database, 'users/' + userId), {
-    useraname: name,
-    email,
-    profile_picture: imageURL
-  })
-}
-
-export async function getUserById(id: string): Promise<User | undefined> {
+export async function getUserById(id: string): Promise<User> {
   const dbRef = ref(database)
+  let user: User = {} as User
   try {
     const userSnapshot = await get(child(dbRef, `users/${id}`))
-
+    const scheduleSnapshot = await get(child(dbRef, `schedules/${theOnlyRoomId}/${id}`))
     if (userSnapshot.exists()) {
-      console.log(userSnapshot.val());
-      return userSnapshot.val() as User
+      user = {
+        ...userSnapshot.val(),
+        schedule: scheduleSnapshot.val() ?? {}
+      }
     }
   } catch (error) {
-    console.log(error);
+    throw new Error('User not found. User ID: ' + id)
   }
+
+  return user
 }
 
 
@@ -93,21 +104,35 @@ export async function getUsers(roomId: string): Promise<User[]> {
 
     if (usersSnapshot.exists()) {
       const usersObject = usersSnapshot.val()
-      const schedulesObjects = usersSchedulesSnapshot.val()
-      users = Object.keys(usersObject)
-        .map<User>(user_id => ({
-          id: user_id,
-          name: usersObject[user_id].name,
-          schedule: schedulesObjects
-            ? schedulesObjects[user_id]
-            : {}
-        }))
+      const schedulesByUserIdObject = usersSchedulesSnapshot.val()
+      users = convertToUsers(usersObject, schedulesByUserIdObject)
     }
     else
       console.log('no data available');
   } catch (error) {
     console.log(error);
   }
+
+  return users
+}
+
+function convertToUsers(usersObject: any, schedulesByUserIdObject: any) {
+  const users = Object.keys(usersObject)
+    .map<User>(user_id => {
+      // Se é o primeiro acesso da sala, schedulesByUserIdObject é null
+      // Se é um usuário que veio depois, schedulesByUserIdObject[user_id] é null
+      const userSchedule = schedulesByUserIdObject
+        ? schedulesByUserIdObject[user_id]
+          ? schedulesByUserIdObject[user_id]
+          : {}
+        : {}
+      const user = {
+        id: user_id,
+        name: usersObject[user_id].name,
+        schedule: userSchedule,
+      }
+      return user
+    })
 
   return users
 }

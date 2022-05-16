@@ -1,10 +1,11 @@
-import { createUser } from "@/db"
+import { createUser, deleteUser } from "@/db"
 import { User } from "@/types"
 import { createContext, useCallback, useContext, useState } from "react"
 
 interface AuthContextInterface {
   user: User
   signup: (username: string) => Promise<void>
+  signout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextInterface>(
@@ -22,12 +23,18 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const signup = useCallback(async (username: string): Promise<void> => {
     const newUser = await createUser(username)
-    setUser(newUser)
     localStorage.setItem('user', JSON.stringify(newUser))
+    setUser(newUser)
   }, [])
 
+  const signout = useCallback(async (): Promise<void> => {
+    await deleteUser(user.id)
+    localStorage.setItem('user', JSON.stringify({}))
+    setUser({} as User)
+  }, [user])
+
   return (
-    <AuthContext.Provider value={{ user, signup }}>
+    <AuthContext.Provider value={{ user, signup, signout }}>
       {children}
     </AuthContext.Provider>
   )

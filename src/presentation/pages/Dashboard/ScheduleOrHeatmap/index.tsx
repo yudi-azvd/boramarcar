@@ -1,49 +1,82 @@
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { DayTime, Time, TimeboxValue, User } from '@/types'
+import { DayTime, Schedule, TimeboxValue, User } from '@/types'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
-import { fakeUsers, fakeUser } from '@/util/fakedata'
 import { days, times } from '@/domain/daystimes'
 import { Container } from './style'
 
 import { Tabs } from 'antd'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/presentation/hooks/auth'
-import { getUsers, listenToScheduleChangesInRoom, theOnlyRoomId, updateUserScheduleInRoom } from '@/db'
+import { getUsers, listenToOtherUsersScheduleChangesInRoom, theOnlyRoomId, emitUserScheduleUpdate, getUserById } from '@/db'
+import { Link, useNavigate } from 'react-router-dom'
 
 const { TabPane } = Tabs
 
-const fakeScheduleRepository = new FakeScheduleRepository(fakeUser.schedule)
+// const fakeScheduleRepository = new FakeScheduleRepository(fakeUser.schedule)
+const fakeScheduleRepository = new FakeScheduleRepository({})
 
 const ScheduleOrHeatmap: React.FC = () => {
-  const roomId = 'test-room-id'
-  const user = fakeUser
+  const roomId = 'theOnlyRoomId'
+  const navigate = useNavigate()
+  const { user: currentUser, signout } = useAuth()
+  const [user, setUser] = useState(currentUser)
   const [otherUsers, setOtherUsers] = useState<User[]>([])
 
   async function getCurrentUserSchedule(): Promise<Schedule> {
-    return await fakeScheduleRepository.getAll({ roomId, userId: user.id })
+    // return await fakeScheduleRepository.getAll({ roomId, userId: user.id })
+    const gotUser = await getUserById(user.id)
+    return gotUser.schedule
   }
 
   async function updateCurrentUserSchedule(updateScheduleInfo: [DayTime, TimeboxValue]): Promise<void> {
     const [dayTime, timeboxValue] = updateScheduleInfo
     await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime, timeboxValue })
+    const newUserSchedule = { ...user.schedule, [dayTime]: timeboxValue }
+    await emitUserScheduleUpdate({ roomId, userId: user.id, dayTime, timeboxValue })
+    // setUser({ ...user, schedule: newUserSchedule })
+  }
+
+  function handleOtherUsersScheduleChange(usersWithNewSchedules: User[]) {
+    const thisUser = usersWithNewSchedules.find(u => u.id === user.id)
+    const _otherUsers = usersWithNewSchedules.filter(u => u.id !== user.id)
+    setUser(thisUser as User)
+    setOtherUsers(_otherUsers)
   }
 
   useEffect(() => {
     async function loadUsers() {
       const loadedUsers = await getUsers(roomId)
-      console.log(loadedUsers);
-      setOtherUsers(fakeUsers)
+      // setOtherUsers(fakeUsers)
+      setUser(loadedUsers.find(u => u.id === user.id) as User)
+      setOtherUsers(loadedUsers.filter(u => u.id !== user.id))
     }
+    
     loadUsers()
-    const unsubscribe = listenToScheduleChangesInRoom(roomId, handleUsersScheduleChange)
+    const unsubscribe = listenToOtherUsersScheduleChangesInRoom(roomId,
+      handleOtherUsersScheduleChange)
     return () => unsubscribe()
   }, [])
+
+  async function handleUserLogout() {
+    await signout()
+    navigate('/')
+  }
 
   return (
     <Container>
       <div>
-        Bem vindo, {user.name}
+        <p>
+          <Link to="/" onClick={handleUserLogout}>
+            Sair e voltar para a página principal
+          </Link>
+        </p>
+      </div>
+
+      <div>
+        <p>
+          Bem vindo, {user.name}
+        </p>
       </div>
 
       <Tabs defaultActiveKey="1" size="large">
