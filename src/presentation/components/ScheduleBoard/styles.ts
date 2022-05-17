@@ -1,15 +1,15 @@
-import { TimeboxValue } from '@/types'
+import { Availability } from '@/types'
 import styled from 'styled-components'
 
 import { timeboxColors } from '@/domain/schedule/colors'
 
-interface TimeboxProps {
-  value?: TimeboxValue
+interface TimeboxItemProps {
+  availability?: Availability
 }
 
-export const Timebox = styled.div<TimeboxProps>`
-  background: ${props => props.value
-    ? timeboxColors[props.value]
+export const TimeboxItem = styled.div<TimeboxItemProps>`
+  background: ${props => props.availability
+    ? timeboxColors[props.availability]
     : '#FFFFFF'};
   cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -54,7 +54,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: center;
   }
 
-  ${Timebox} {
+  ${TimeboxItem} {
     opacity: ${props => props.visible ? 1 : 0};
   }
 `

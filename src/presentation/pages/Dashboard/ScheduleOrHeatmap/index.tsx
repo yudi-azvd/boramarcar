@@ -1,5 +1,5 @@
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { DayTime, Schedule, TimeboxValue, User } from '@/types'
+import { DayAndTime, Schedule, Availability, User } from '@/types'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import { days, times } from '@/domain/daystimes'
@@ -29,7 +29,7 @@ const ScheduleOrHeatmap: React.FC = () => {
     return gotUser.schedule
   }
 
-  async function updateCurrentUserSchedule(updateScheduleInfo: [DayTime, TimeboxValue]): Promise<void> {
+  async function updateCurrentUserSchedule(updateScheduleInfo: [DayAndTime, Availability]): Promise<void> {
     const [dayTime, timeboxValue] = updateScheduleInfo
     await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime, timeboxValue })
     const newUserSchedule = { ...user.schedule, [dayTime]: timeboxValue }
@@ -93,7 +93,6 @@ const ScheduleOrHeatmap: React.FC = () => {
           <HeatmapBoard
             days={days}
             times={times}
-            roomId={roomId}
             users={[user, ...otherUsers]}
           />
         </TabPane>

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-interface HeatmapTimeboxProps {
+interface HeatmapTimeboxItemProps {
   color: string
 }
 
-export const HeatmapTimebox = styled.div<HeatmapTimeboxProps>`
+export const HeatmapTimeboxItem = styled.div<HeatmapTimeboxItemProps>`
   background: ${({ color }) => color};
   border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -44,7 +44,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: center;
   }
 
-  ${HeatmapTimebox} {
+  ${HeatmapTimeboxItem} {
     opacity: ${props => props.visible ? 1 : 0};
   }
 `
