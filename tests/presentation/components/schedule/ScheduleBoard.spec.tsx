@@ -1,7 +1,6 @@
 import ScheduleBoard from "@/presentation/components/ScheduleBoard"
-import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
-import { GetUserScheduleDTO, GetCurrentUserSchedule, UpdateScheduleDTO, UpdateCurrentUserSchedule } from "@/contracts"
-import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
+import { GetCurrentUserSchedule, UpdateCurrentUserSchedule } from "@/contracts"
+import { Day, Schedule, Time, Timebox } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
@@ -16,9 +15,6 @@ describe('Schedule', () => {
     'Wednesday-11h': 'busy'
   }
 
-  let userId = 'fake-user-id'
-  let roomId = 'fake-room-id'
-  let fakeScheduleRepository: FakeScheduleRepository
   let container: HTMLElement
   let timeboxes: Element[]
   let getUserScheduleInThisRoom: GetCurrentUserSchedule
@@ -28,11 +24,10 @@ describe('Schedule', () => {
     const definitiveTimeboxesValues = timeboxesValues === undefined
       ? defaultTimeboxesValues
       : timeboxesValues
-    fakeScheduleRepository = new FakeScheduleRepository(definitiveTimeboxesValues)
     getUserScheduleInThisRoom = jest.fn<Promise<Schedule>, []>()
       .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
 
-    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [[DayAndTime, Availability]]>()
+    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [Timebox]>()
 
     container = render(
       <ScheduleBoard
@@ -130,7 +125,7 @@ describe('Schedule', () => {
       await actClick(timeboxToClick)
 
       expect(updateUserScheduleInThisRoom)
-        .toHaveBeenCalledWith(['Wednesday-09h', 'available' ])
+        .toHaveBeenCalledWith({ dayAndTime: 'Wednesday-09h', availability: 'available' })
     })
   })
 })
