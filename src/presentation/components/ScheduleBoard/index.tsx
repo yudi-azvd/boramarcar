@@ -1,8 +1,8 @@
 import { GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
 import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
-import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
+import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
 import { useEffect, useState } from "react"
-import { Container, Timebox } from "./styles"
+import { Container, TimeboxItem } from "./styles"
 
 interface ScheduleBoardProps {
   times: Time[]
@@ -19,9 +19,9 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
 }) => {
   const [schedule, setSchedule] = useState({} as Schedule)
 
-  async function setTimeBoxValue(dayTime: DayTime): Promise<void> {
+  async function setTimeBoxValue(dayTime: DayAndTime): Promise<void> {
     const oldValue = schedule[dayTime]
-    let newValue: TimeboxValue = undefined
+    let newValue: Availability = undefined
 
     if (oldValue === 'available')
       newValue = 'busy'
@@ -57,16 +57,16 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
       {times.map(time => (
         [<div className="time" key={`sch-${time}`} > {time} </div>].concat(
           days.map(day => {
-            const dayTime: DayTime = `${day}-${time}`
+            const dayTime: DayAndTime = `${day}-${time}`
             return (
-              <Timebox
+              <TimeboxItem
                 onClick={() => setTimeBoxValue(dayTime)}
                 // Precisa dessa classe para os testes. Ou escolhe outro seletor 
                 // mais fácil lá em Schedule.spec/makeSut 
                 className="timebox"
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
-                value={schedule[dayTime] ?? undefined}
+                availability={schedule[dayTime] ?? undefined}
               />
             )
           })

@@ -22,8 +22,13 @@ export type Time =
   '20h' |
   '21h'
 
-export type DayTime = `${Day}-${Time}`
+export type DayAndTime = `${Day}-${Time}`
 
-export type TimeboxValue = undefined | 'available' | 'busy'
+export type Availability = undefined | 'available' | 'busy'
 
-export type Schedule = { [key in DayTime]?: TimeboxValue }
+export type Timebox = {
+  dayAndTime: DayAndTime,
+  availability: Availability
+}
+
+export type Schedule = { [key in DayAndTime]?: Availability }

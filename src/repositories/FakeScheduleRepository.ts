@@ -1,17 +1,17 @@
 import { GetUserScheduleDTO, ScheduleRepository, UpdateScheduleDTO } from "@/contracts";
-import { DayTime, Schedule, TimeboxValue } from "@/types";
+import { DayAndTime, Schedule, Availability } from "@/types";
 
 export default class FakeScheduleRepository implements ScheduleRepository {
   rooms: {
     [key: string]: { // roomId
       [key: string]: { // userId
-        [key in DayTime]?: TimeboxValue
+        [key in DayAndTime]?: Availability
       }
     }
   }
 
   constructor(private timeboxes: {
-    [key in DayTime]?: TimeboxValue
+    [key in DayAndTime]?: Availability
   }) {
     this.rooms = {}
   }

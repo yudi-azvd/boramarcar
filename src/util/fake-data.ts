@@ -1,7 +1,7 @@
-import { DayTime, TimeboxValue, User } from "@/types"
+import { DayAndTime, Availability, User } from "@/types"
 
 export const currentUserSchedule:
-  { [key in DayTime]?: TimeboxValue } = {
+  { [key in DayAndTime]?: Availability } = {
   'Sunday-08h': 'available',
   'Sunday-09h': 'busy',
   'Tuesday-08h': 'available',

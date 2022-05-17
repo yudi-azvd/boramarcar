@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import 'jest-styled-components'
 
-import { Timebox } from '@/presentation/components/ScheduleBoard/styles'
+import { TimeboxItem } from '@/presentation/components/ScheduleBoard/styles'
 
 interface SutProps {
   value?: 'available' | 'busy'
@@ -13,7 +13,7 @@ interface Sut {
 }
 
 function makeSut({ value }: SutProps): Sut {
-  const { container } = render(<Timebox id="timebox-id" value={value} />)
+  const { container } = render(<TimeboxItem id="timebox-id" availability={value} />)
   return { sut: container.querySelector('#timebox-id') as HTMLDivElement }
 }
 

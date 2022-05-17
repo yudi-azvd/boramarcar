@@ -1,7 +1,7 @@
 import ScheduleBoard from "@/presentation/components/ScheduleBoard"
 import FakeScheduleRepository from "@/repositories/FakeScheduleRepository"
 import { GetUserScheduleDTO, GetCurrentUserSchedule, UpdateScheduleDTO, UpdateCurrentUserSchedule } from "@/contracts"
-import { Day, DayTime, Schedule, Time, TimeboxValue } from "@/types"
+import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
@@ -32,7 +32,7 @@ describe('Schedule', () => {
     getUserScheduleInThisRoom = jest.fn<Promise<Schedule>, []>()
       .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
 
-    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [[DayTime, TimeboxValue]]>()
+    updateUserScheduleInThisRoom = jest.fn<Promise<void>, [[DayAndTime, Availability]]>()
 
     container = render(
       <ScheduleBoard
