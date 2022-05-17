@@ -8,7 +8,7 @@ import { Container } from './style'
 import { Tabs } from 'antd'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/presentation/hooks/auth'
-import { getUsers, listenToOtherUsersScheduleChangesInRoom, theOnlyRoomId, emitUserScheduleUpdate, getUserById } from '@/db'
+import { getUsers, listenToOtherUsersScheduleUpdates, theOnlyRoomId, emitUserScheduleUpdate, getUserById } from '@/db'
 import { Link, useNavigate } from 'react-router-dom'
 
 const { TabPane } = Tabs
@@ -37,7 +37,7 @@ const ScheduleOrHeatmap: React.FC = () => {
     // setUser({ ...user, schedule: newUserSchedule })
   }
 
-  function handleUsersScheduleChange(usersWithNewSchedules: User[]) {
+  function handleUsersScheduleUpdate(usersWithNewSchedules: User[]) {
     const thisUser = usersWithNewSchedules.find(u => u.id === user.id)
     const _otherUsers = usersWithNewSchedules.filter(u => u.id !== user.id)
     setUser(thisUser as User)
@@ -53,8 +53,8 @@ const ScheduleOrHeatmap: React.FC = () => {
     }
     
     loadUsers()
-    const unsubscribe = listenToOtherUsersScheduleChangesInRoom(roomId,
-      handleUsersScheduleChange)
+    const unsubscribe = listenToOtherUsersScheduleUpdates(roomId,
+      handleUsersScheduleUpdate)
     return () => unsubscribe()
   }, [])
 
