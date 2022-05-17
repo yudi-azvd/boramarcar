@@ -48,7 +48,7 @@ export async function emitUserScheduleUpdate({ timebox, roomId, userId }: Update
   const userScheduleInRoomRef = ref(database, `schedules/${roomId}/${userId}`)
   const { dayAndTime, availability } = timebox
 
-  if (timebox !== undefined)
+  if (timebox.availability !== undefined)
     update(userScheduleInRoomRef, {
       [dayAndTime]: availability
     })

@@ -16,12 +16,9 @@ export default class FakeScheduleRepository implements ScheduleRepository {
     this.rooms = {}
   }
 
-  async update({ roomId, userId, dayTime, timeboxValue }: UpdateScheduleDTO): Promise<void> {
+  async update({ roomId, userId, timebox }: UpdateScheduleDTO): Promise<void> {
     // this.rooms[roomId][userId][dayTime] = timeboxValue
-    this.timeboxes[dayTime] = timeboxValue
-  }
-
-  async updateBy({ dayTime, timeboxValue }: UpdateScheduleDTO): Promise<void> {
+    this.timeboxes[timebox.dayAndTime] = timebox.availability
   }
 
   async getAll({ userId }: GetUserScheduleDTO): Promise<Schedule> {

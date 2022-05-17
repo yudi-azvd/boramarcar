@@ -12,6 +12,10 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const { TabPane } = Tabs
 
+interface ScheduleOrHeatmap {
+  
+}
+
 const ScheduleOrHeatmap: React.FC = () => {
   const roomId = 'theOnlyRoomId'
   const navigate = useNavigate()
@@ -26,7 +30,11 @@ const ScheduleOrHeatmap: React.FC = () => {
 
   async function updateCurrentUserSchedule(timeboxUpdate: Timebox): Promise<void> {
     await emitUserScheduleUpdate({ roomId, userId: user.id, timebox: timeboxUpdate })
-    // setUser({ ...user, schedule: newUserSchedule })
+    // const newSchedule: Schedule = { 
+    //   ...user.schedule, 
+    //   [timeboxUpdate.dayAndTime]: timeboxUpdate.availability 
+    // }
+    // setUser({ ...user, schedule: newSchedule })
   }
 
   function handleUsersScheduleUpdate(usersWithNewSchedules: User[]) {
@@ -39,7 +47,6 @@ const ScheduleOrHeatmap: React.FC = () => {
   useEffect(() => {
     async function loadUsers() {
       const loadedUsers = await getUsers(roomId)
-      // setOtherUsers(fakeUsers)
       setUser(loadedUsers.find(u => u.id === user.id) as User)
       setOtherUsers(loadedUsers.filter(u => u.id !== user.id))
     }
