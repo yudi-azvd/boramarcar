@@ -1,5 +1,5 @@
 import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { DayAndTime, Schedule, Availability, User } from '@/types'
+import { DayAndTime, Schedule, Availability, User, Timebox } from '@/types'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import { days, times } from '@/domain/daystimes'
@@ -29,11 +29,10 @@ const ScheduleOrHeatmap: React.FC = () => {
     return gotUser.schedule
   }
 
-  async function updateCurrentUserSchedule(updateScheduleInfo: [DayAndTime, Availability]): Promise<void> {
-    const [dayTime, timeboxValue] = updateScheduleInfo
-    await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime, timeboxValue })
-    const newUserSchedule = { ...user.schedule, [dayTime]: timeboxValue }
-    await emitUserScheduleUpdate({ roomId, userId: user.id, dayTime, timeboxValue })
+  async function updateCurrentUserSchedule(timeboxUpdate: Timebox): Promise<void> {
+    // await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime: dayAndTime, timeboxValue: availability })
+    const newUserSchedule = { ...user.schedule, updateCurrentUserSchedule }
+    await emitUserScheduleUpdate({ roomId, userId: user.id, timebox: timeboxUpdate })
     // setUser({ ...user, schedule: newUserSchedule })
   }
 
@@ -51,7 +50,7 @@ const ScheduleOrHeatmap: React.FC = () => {
       setUser(loadedUsers.find(u => u.id === user.id) as User)
       setOtherUsers(loadedUsers.filter(u => u.id !== user.id))
     }
-    
+
     loadUsers()
     const unsubscribe = listenToOtherUsersScheduleUpdates(roomId,
       handleUsersScheduleUpdate)

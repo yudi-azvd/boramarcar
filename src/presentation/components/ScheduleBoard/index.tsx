@@ -19,8 +19,8 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
 }) => {
   const [schedule, setSchedule] = useState({} as Schedule)
 
-  async function setTimeBoxValue(dayTime: DayAndTime): Promise<void> {
-    const oldValue = schedule[dayTime]
+  async function setTimeBoxValue(dayAndTime: DayAndTime): Promise<void> {
+    const oldValue = schedule[dayAndTime]
     let newValue: Availability = undefined
 
     if (oldValue === 'available')
@@ -33,8 +33,8 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
     // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
     // intererem uns nos outros.
     // await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
-    await updateCurrentUserSchedule([dayTime, newValue])
-    setSchedule({ ...schedule, [dayTime]: newValue })
+    await updateCurrentUserSchedule({ dayAndTime, availability: newValue })
+    setSchedule({ ...schedule, [dayAndTime]: newValue })
   }
 
   useEffect(() => {
