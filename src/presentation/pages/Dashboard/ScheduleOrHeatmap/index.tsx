@@ -1,5 +1,4 @@
-import FakeScheduleRepository from '@/repositories/FakeScheduleRepository'
-import { DayAndTime, Schedule, Availability, User, Timebox } from '@/types'
+import { Schedule, User, Timebox } from '@/types'
 import HeatmapBoard from '@/presentation/components/HeatmapBoard'
 import ScheduleBoard from '@/presentation/components/ScheduleBoard'
 import { days, times } from '@/domain/daystimes'
@@ -13,9 +12,6 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const { TabPane } = Tabs
 
-// const fakeScheduleRepository = new FakeScheduleRepository(fakeUser.schedule)
-const fakeScheduleRepository = new FakeScheduleRepository({})
-
 const ScheduleOrHeatmap: React.FC = () => {
   const roomId = 'theOnlyRoomId'
   const navigate = useNavigate()
@@ -24,14 +20,11 @@ const ScheduleOrHeatmap: React.FC = () => {
   const [otherUsers, setOtherUsers] = useState<User[]>([])
 
   async function getCurrentUserSchedule(): Promise<Schedule> {
-    // return await fakeScheduleRepository.getAll({ roomId, userId: user.id })
     const gotUser = await getUserById(user.id)
     return gotUser.schedule
   }
 
   async function updateCurrentUserSchedule(timeboxUpdate: Timebox): Promise<void> {
-    // await fakeScheduleRepository.update({ roomId, userId: user.id, dayTime: dayAndTime, timeboxValue: availability })
-    const newUserSchedule = { ...user.schedule, updateCurrentUserSchedule }
     await emitUserScheduleUpdate({ roomId, userId: user.id, timebox: timeboxUpdate })
     // setUser({ ...user, schedule: newUserSchedule })
   }
