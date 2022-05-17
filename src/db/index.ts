@@ -44,15 +44,16 @@ export async function createUser(username: string) {
   } as User
 }
 
-export async function emitUserScheduleUpdate({ dayTime, timeboxValue, roomId, userId }: UpdateScheduleDTO) {
+export async function emitUserScheduleUpdate({ timebox, roomId, userId }: UpdateScheduleDTO) {
   const userScheduleInRoomRef = ref(database, `schedules/${roomId}/${userId}`)
+  const { dayAndTime, availability } = timebox
 
-  if (timeboxValue !== undefined)
+  if (timebox !== undefined)
     update(userScheduleInRoomRef, {
-      [dayTime]: timeboxValue
+      [dayAndTime]: availability
     })
   else
-    remove(child(userScheduleInRoomRef, dayTime))
+    remove(child(userScheduleInRoomRef, dayAndTime))
 }
 
 interface ScheduleChangeHandler {
