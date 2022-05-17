@@ -82,3 +82,4 @@ crowdin-cli.jar
 __snapshots__
 
 .env
+firebase.json

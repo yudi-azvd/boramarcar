@@ -1,0 +1,12 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "emulators": {
+    "database": {
+      "port": 9000,
+      // COLOQUE AQUI O SEU HOST PARA ACESSAR DE OUTRO DISPOSITIVO
+      "host": "192.192.10.10"
+    }
+  }
+}
