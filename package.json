@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "db": "firebase emulators:start",
     "dev": "vite --host",
     "test": "jest",
     "build": "tsc && vite build",

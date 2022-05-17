@@ -7,5 +7,6 @@ yarn
 ```
 
 ```sh
+yarn db
 yarn dev
 ```

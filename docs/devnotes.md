@@ -15,6 +15,23 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-17
+
+Acho que encontrei a alternativa perfeita para RTDB do Firebase: Supabase 
+Database. É possível 
+[inscrever](https://supabase.com/docs/reference/javascript/subscribe) um 
+callback para lidar com mudanças que acontecem em tempo real. O melhor é que
+tem como 
+[escutar por mudanças a nível de linha](https://supabase.com/docs/reference/javascript/subscribe#listening-to-row-level-changes). Se não estou enganado,
+era isso mesmo que eu queria.
+
+O ruim é que o Supabase só tem 500MB de armazenamento. E ele é pausado depois
+de 1 semana sem ativididade. Só volta depois que logar no dashboard deles.
+
+
+Sobre minha conexão com o RTDB. Se não consegue se conectar,
+o app todo dá crash e para de funcionar. Tenho que tratar esse erro.
+
 ## 2022-05-16 - Deu certo :D (01h00)
 
 Consegui integrar com o Realtime Database (RTDB) do Firebase. Yay!

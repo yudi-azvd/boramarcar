@@ -1,8 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_SERVER_ADDRESS: string
-  readonly VITE_SERVER_PORT: string
+  readonly VITE_FIREBASE_DB_HOST: string
   readonly VITE_API_KEY: string
   readonly VITE_AUTH_DOMAIN: string
   readonly VITE_PROJECT_ID: string
