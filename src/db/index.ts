@@ -9,7 +9,7 @@ import {
   update,
   remove,
   onValue,
-  DataSnapshot
+  DataSnapshot,
 } from 'firebase/database'
 
 const database = getDatabase()
@@ -59,7 +59,7 @@ interface ScheduleChangeHandler {
   (usersWithNewSchedules: User[]): void
 }
 
-export function listenToOtherUsersScheduleChangesInRoom(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
+export function listenToOtherUsersScheduleUpdates(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
   const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
   const dbRef = ref(database)
 
