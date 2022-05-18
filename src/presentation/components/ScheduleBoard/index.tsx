@@ -1,4 +1,4 @@
-import { GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
+import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
 import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
 import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
 import { useEffect, useState } from "react"
@@ -8,33 +8,31 @@ interface ScheduleBoardProps {
   times: Time[]
   days: Day[]
   getCurrentUserSchedule: GetCurrentUserSchedule
-  updateCurrentUserSchedule: UpdateCurrentUserSchedule
+  currentUserScheduleUpdateEmitter: CurrentUserScheduleUpdateEmitter
 }
 
 const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   days,
   times,
   getCurrentUserSchedule,
-  updateCurrentUserSchedule,
+  currentUserScheduleUpdateEmitter,
 }) => {
-  const [schedule, setSchedule] = useState({} as Schedule)
+  const [schedule, setSchedule] = useState<Schedule>({})
 
   async function setTimeBoxValue(dayAndTime: DayAndTime): Promise<void> {
     const oldValue = schedule[dayAndTime]
-    let newValue: Availability = undefined
+    let newAvailability: Availability = undefined
 
     if (oldValue === 'available')
-      newValue = 'busy'
+      newAvailability = 'busy'
     if (oldValue === 'busy')
-      newValue = undefined
+      newAvailability = undefined
     if (oldValue === undefined)
-      newValue = 'available'
+      newAvailability = 'available'
 
-    // Se não tiver await o teste falha. Parece que o testes de Schedule.spec.tsx 
-    // intererem uns nos outros.
-    // await updateUserScheduleInThisRoom({ roomId, userId, dayTime, timeboxValue: newValue })
-    await updateCurrentUserSchedule({ dayAndTime, availability: newValue })
-    setSchedule({ ...schedule, [dayAndTime]: newValue })
+    const timebox = { dayAndTime, availability: newAvailability }
+    currentUserScheduleUpdateEmitter.emit(timebox)
+    setSchedule({ ...schedule, [dayAndTime]: newAvailability })
   }
 
   useEffect(() => {

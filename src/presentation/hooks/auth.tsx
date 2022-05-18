@@ -1,4 +1,4 @@
-import { createUser, deleteUser } from "@/db"
+import { createUser, deleteUser } from "@/data/firebase/db"
 import { User } from "@/types"
 import { createContext, useCallback, useContext, useState } from "react"
 

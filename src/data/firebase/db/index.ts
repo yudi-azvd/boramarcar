@@ -1,5 +1,5 @@
-import { UpdateScheduleDTO } from '@/contracts'
-import { User } from '@/types'
+import { CurrentUserScheduleUpdateEmitter, UpdateScheduleDTO } from '@/contracts'
+import { Timebox, User } from '@/types'
 import {
   getDatabase,
   child,
@@ -42,6 +42,27 @@ export async function createUser(username: string) {
     id: newUserRef.key,
     schedule: {}
   } as User
+}
+
+export class FirebaseCurrentUserScheduleUpdateEmitter implements CurrentUserScheduleUpdateEmitter {
+  constructor(
+    private readonly roomId: string,
+    private readonly userId: string,
+  ) { }
+
+  emit(timebox: Timebox): void {
+    console.log('FirebaseCurrentUserScheduleUpdateEmitter');
+
+    const userScheduleInRoomRef = ref(database, `schedules/${this.roomId}/${this.userId}`)
+    const { dayAndTime, availability } = timebox
+
+    if (timebox.availability !== undefined)
+      update(userScheduleInRoomRef, {
+        [dayAndTime]: availability
+      })
+    else
+      remove(child(userScheduleInRoomRef, dayAndTime))
+  }
 }
 
 export async function emitUserScheduleUpdate({ timebox, roomId, userId }: UpdateScheduleDTO) {
