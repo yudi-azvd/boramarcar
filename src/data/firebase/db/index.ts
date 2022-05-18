@@ -1,4 +1,4 @@
-import { CurrentUserScheduleUpdateEmitter, UpdateScheduleDTO } from '@/contracts'
+import { CurrentUserScheduleUpdateEmitter } from '@/contracts'
 import { Timebox, User } from '@/types'
 import {
   getDatabase,
@@ -14,21 +14,19 @@ import {
 
 const database = getDatabase()
 
-export const theOnlyRoomId = 'theOnlyRoomId'
-
-export async function deleteUser(userId: string) {
+export async function firebaseDeleteUser(roomId: string, userId: string) {
   const userRef = ref(database, `users/${userId}`)
-  const userInRoomsRef = ref(database, `rooms/${theOnlyRoomId}/users/${userId}`)
-  const userScheduleRef = ref(database, `schedules/${theOnlyRoomId}/${userId}`)
+  const userInRoomsRef = ref(database, `rooms/${roomId}/users/${userId}`)
+  const userScheduleRef = ref(database, `schedules/${roomId}/${userId}`)
 
   remove(userRef)
   remove(userInRoomsRef)
   remove(userScheduleRef)
 }
 
-export async function createUser(username: string) {
+export async function firebaseCreateUser(roomId: string, username: string) {
   const usersRef = ref(database, 'users')
-  const roomsRef = ref(database, `rooms/${theOnlyRoomId}/users`)
+  const roomsRef = ref(database, `rooms/${roomId}/users`)
   const newUserRef = push(usersRef, {
     name: username
   })
@@ -51,8 +49,6 @@ export class FirebaseCurrentUserScheduleUpdateEmitter implements CurrentUserSche
   ) { }
 
   emit(timebox: Timebox): void {
-    console.log('FirebaseCurrentUserScheduleUpdateEmitter');
-
     const userScheduleInRoomRef = ref(database, `schedules/${this.roomId}/${this.userId}`)
     const { dayAndTime, availability } = timebox
 
@@ -65,23 +61,11 @@ export class FirebaseCurrentUserScheduleUpdateEmitter implements CurrentUserSche
   }
 }
 
-export async function emitUserScheduleUpdate({ timebox, roomId, userId }: UpdateScheduleDTO) {
-  const userScheduleInRoomRef = ref(database, `schedules/${roomId}/${userId}`)
-  const { dayAndTime, availability } = timebox
-
-  if (timebox.availability !== undefined)
-    update(userScheduleInRoomRef, {
-      [dayAndTime]: availability
-    })
-  else
-    remove(child(userScheduleInRoomRef, dayAndTime))
-}
-
 interface ScheduleChangeHandler {
   (usersWithNewSchedules: User[]): void
 }
 
-export function listenToOtherUsersScheduleUpdates(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
+export function firebaseListenToOtherUsersScheduleUpdates(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
   const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
   const dbRef = ref(database)
 
@@ -97,12 +81,12 @@ export function listenToOtherUsersScheduleUpdates(roomId: string, scheduleChange
 }
 
 
-export async function getUserById(id: string): Promise<User> {
+export async function firebaseGetUserById(roomId: string, id: string): Promise<User> {
   const dbRef = ref(database)
   let user: User = {} as User
   try {
     const userSnapshot = await get(child(dbRef, `users/${id}`))
-    const scheduleSnapshot = await get(child(dbRef, `schedules/${theOnlyRoomId}/${id}`))
+    const scheduleSnapshot = await get(child(dbRef, `schedules/${roomId}/${id}`))
     if (userSnapshot.exists()) {
       user = {
         ...userSnapshot.val(),
@@ -117,7 +101,7 @@ export async function getUserById(id: string): Promise<User> {
 }
 
 
-export async function getUsers(roomId: string): Promise<User[]> {
+export async function firebaseGetUsers(roomId: string): Promise<User[]> {
   const dbRef = ref(database)
   let users: User[] = []
   try {
