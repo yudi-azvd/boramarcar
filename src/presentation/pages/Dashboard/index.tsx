@@ -1,10 +1,10 @@
-import { FirebaseCurrentUserScheduleUpdateEmitter, getUserById, getUsers, listenToOtherUsersScheduleUpdates, theOnlyRoomId } from '@/data/firebase/db'
+import { FirebaseCurrentUserScheduleUpdateEmitter, firebaseGetUserById, firebaseGetUsers, firebaseListenToOtherUsersScheduleUpdates } from '@/data/firebase/db'
 import { useAuth } from '@/presentation/hooks/auth'
 import { Schedule, User } from '@/types'
 
+import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import { Container } from './style'
 
 const Dashboard: React.FC = () => {
@@ -15,12 +15,12 @@ const Dashboard: React.FC = () => {
   const [otherUsers, setOtherUsers] = useState<User[]>([])
 
   const emitter = new FirebaseCurrentUserScheduleUpdateEmitter(
-    theOnlyRoomId,
+    roomId,
     user.id,
   )
 
   async function getCurrentUserSchedule(): Promise<Schedule> {
-    const gotUser = await getUserById(user.id)
+    const gotUser = await firebaseGetUserById(roomId, user.id)
     return gotUser.schedule
   }
 
@@ -33,13 +33,13 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadUsers() {
-      const loadedUsers = await getUsers(roomId)
+      const loadedUsers = await firebaseGetUsers(roomId)
       setUser(loadedUsers.find(u => u.id === user.id) as User)
       setOtherUsers(loadedUsers.filter(u => u.id !== user.id))
     }
 
     loadUsers()
-    const unsubscribe = listenToOtherUsersScheduleUpdates(roomId,
+    const unsubscribe = firebaseListenToOtherUsersScheduleUpdates(roomId,
       handleUsersScheduleUpdate)
     return () => unsubscribe()
   }, [])
@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
       <ScheduleOrHeatmap
         user={user}
         otherUsers={otherUsers}
-        currentUserScheduleUpdateEmitter={emitter} 
+        currentUserScheduleUpdateEmitter={emitter}
         getCurrentUserSchedule={getCurrentUserSchedule}
       />
     </Container>

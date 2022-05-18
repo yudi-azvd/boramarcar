@@ -1,4 +1,4 @@
-import { createUser, deleteUser } from "@/data/firebase/db"
+import { firebaseCreateUser, firebaseDeleteUser } from "@/data/firebase/db"
 import { User } from "@/types"
 import { createContext, useCallback, useContext, useState } from "react"
 
@@ -22,13 +22,13 @@ const AuthProvider: React.FC = ({ children }) => {
   })
 
   const signup = useCallback(async (username: string): Promise<void> => {
-    const newUser = await createUser(username)
+    const newUser = await firebaseCreateUser(username)
     localStorage.setItem('user', JSON.stringify(newUser))
     setUser(newUser)
   }, [])
 
   const signout = useCallback(async (): Promise<void> => {
-    await deleteUser(user.id)
+    await firebaseDeleteUser(user.id)
     localStorage.setItem('user', JSON.stringify({}))
     setUser({} as User)
   }, [user])
