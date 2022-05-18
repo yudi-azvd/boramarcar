@@ -16,6 +16,10 @@ export interface ScheduleRepository {
   getAll: (getAllSchedule: GetUserScheduleDTO) => Promise<Schedule>
 }
 
+export interface CurrentUserScheduleUpdateEmitter {
+  emit: (timebox: Timebox) => void
+}
+
 export interface GetCurrentUserSchedule {
   (): Promise<Schedule>
 }
