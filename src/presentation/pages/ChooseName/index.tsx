@@ -22,8 +22,16 @@ const ChooseName: React.FC = () => {
       })
       return
     }
-    await signup(username)
-    navigate('/dashboard')
+
+    try {
+      await signup(username)
+      navigate('/dashboard')
+    } catch (error) {
+      notification.error({
+        message: 'Alguma coisa deu errado',
+        description: String(error)
+      })
+    }
   }
 
   return (
