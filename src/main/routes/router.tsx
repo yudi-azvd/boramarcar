@@ -11,17 +11,13 @@ const Router: React.FC = () => {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* pra fazer autenticação de verdade */}
-          {/* https://reactrouter.com/docs/en/v6/components/navigate */}
           <Route path='/' element={<ChooseName />} />
           <Route path='/devnotes' element={<DevNotes />} />
-          <Route path='/dashboard'
-            element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            }
-          />
+
+          <Route element={<RequireAuth />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+            {/* Outras rotas privadas vão aqui */}
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
