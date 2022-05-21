@@ -20,14 +20,14 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   const [schedule, setSchedule] = useState<Schedule>({})
 
   async function setTimeBoxValue(dayAndTime: DayAndTime): Promise<void> {
-    const oldValue = schedule[dayAndTime]
+    const old = schedule[dayAndTime]
     let newAvailability: Availability = undefined
 
-    if (oldValue === 'available')
+    if (old === 'available')
       newAvailability = 'busy'
-    if (oldValue === 'busy')
+    if (old === 'busy')
       newAvailability = undefined
-    if (oldValue === undefined)
+    if (old === undefined)
       newAvailability = 'available'
 
     const timebox = { dayAndTime, availability: newAvailability }

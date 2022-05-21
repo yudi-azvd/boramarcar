@@ -15,6 +15,28 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-21
+
+Tomei algumas decisões:
+
+1 - Por enquanto, o método de autenticação vai se basear no localStorage. Se o
+usuário está autenticado, seu nome, ID e salas ficam guardados no localStorage.
+
+2 - Se o usuário não está autenticado ele deve ser redirecionado para a tela
+de login/signup. Se o usuário está autenticado, ele pode entrar nas páginas
+privadas.
+
+3 - A tela de login: só cria uma sala ou entra em uma que já existe. Em qualquer
+umas dessas duas opções, uma "conta" nova criada. Apenas assim é possível criar
+uma conta.
+
+3.1 - Estou na dúvida se uso o ID do usuário como senha pro usuário fazer login em 
+diferentes dispositivos. Relaxa, é só uma solução _temporária_. Aí na página de 
+login teria a opção de logar com o ID
+
+4 - O usário vai ter uma página que lista as salas nas quais está participando.
+
+
 ## 2022-05-17
 
 Acho que encontrei a alternativa perfeita para RTDB do Firebase: Supabase 
@@ -27,7 +49,6 @@ era isso mesmo que eu queria.
 
 O ruim é que o Supabase só tem 500MB de armazenamento. E ele é pausado depois
 de 1 semana sem ativididade. Só volta depois que logar no dashboard deles.
-
 
 Sobre minha conexão com o RTDB. Se não consegue se conectar,
 o app todo dá crash e para de funcionar. Tenho que tratar esse erro.

@@ -1,16 +1,19 @@
 import ScheduleBoard from "@/presentation/components/ScheduleBoard"
-import { GetCurrentUserSchedule, UpdateCurrentUserSchedule } from "@/contracts"
+import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, UpdateCurrentUserSchedule } from "@/contracts"
 import { Day, Schedule, Time, Timebox } from "@/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
-
 import 'jest-styled-components'
+
+class FakeCurrentUserScheduleUpdateEmitter implements CurrentUserScheduleUpdateEmitter {
+  emit(timebox: Timebox): void { }
+}
 
 describe('Schedule', () => {
   const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
   const times: Time[] = ['09h', '10h', '11h']
-  const defaultTimeboxesValues: Schedule = {
+  const defaultSchedule: Schedule = {
     'Sunday-09h': 'available',
     'Wednesday-11h': 'busy'
   }
@@ -19,22 +22,26 @@ describe('Schedule', () => {
   let timeboxes: Element[]
   let getUserScheduleInThisRoom: GetCurrentUserSchedule
   let updateUserScheduleInThisRoom: UpdateCurrentUserSchedule
+  let emitCurrentUserUpdateSpy: jest.SpyInstance
 
-  function makeSut(timeboxesValues?: Schedule) {
-    const definitiveTimeboxesValues = timeboxesValues === undefined
-      ? defaultTimeboxesValues
-      : timeboxesValues
+  function makeSut(schedule?: Schedule) {
+    const definitiveTimeboxesValues = schedule === undefined
+      ? defaultSchedule
+      : schedule
     getUserScheduleInThisRoom = jest.fn<Promise<Schedule>, []>()
       .mockReturnValue(Promise.resolve(definitiveTimeboxesValues))
 
     updateUserScheduleInThisRoom = jest.fn<Promise<void>, [Timebox]>()
+
+    const currentUserScheduleUpdateEmitter = new FakeCurrentUserScheduleUpdateEmitter()
+    emitCurrentUserUpdateSpy = jest.spyOn(currentUserScheduleUpdateEmitter, 'emit')  
 
     container = render(
       <ScheduleBoard
         days={days}
         times={times}
         getCurrentUserSchedule={getUserScheduleInThisRoom}
-        updateCurrentUserSchedule={updateUserScheduleInThisRoom}
+        currentUserScheduleUpdateEmitter={currentUserScheduleUpdateEmitter}
       />).container
     timeboxes = [...container.querySelectorAll('.timebox')]
   }
@@ -124,7 +131,7 @@ describe('Schedule', () => {
       const timeboxToClick = container.querySelector('#sch-Wednesday-09h') as HTMLDivElement
       await actClick(timeboxToClick)
 
-      expect(updateUserScheduleInThisRoom)
+      expect(emitCurrentUserUpdateSpy)
         .toHaveBeenCalledWith({ dayAndTime: 'Wednesday-09h', availability: 'available' })
     })
   })
