@@ -15,6 +15,11 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-21 - mais tarde
+
+Talvez, um jeito melhor de deixar as rotas privadas:
+https://stackoverflow.com/questions/70724269/react-router-v6-route-composition-is-it-possible-to-render-a-custom-route
+
 ## 2022-05-21
 
 Tomei algumas decisões:
