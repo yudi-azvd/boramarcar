@@ -5,13 +5,13 @@ import { differenceToColor } from "@/domain/heatmap"
 import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
 
 
-interface HeatmapBoardProps {
+interface HeatmapTabProps {
   times: Time[]
   days: Day[]
   users: User[]
 }
 
-const HeatmapBoard: React.FC<HeatmapBoardProps> = ({ days, times, users }) => {
+const HeatmapTab: React.FC<HeatmapTabProps> = ({ days, times, users }) => {
   const idPrefix = 'heat'
   const totalUsers = users.length
 
@@ -62,4 +62,4 @@ const HeatmapBoard: React.FC<HeatmapBoardProps> = ({ days, times, users }) => {
   )
 }
 
-export default HeatmapBoard
+export default HeatmapTab
