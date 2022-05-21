@@ -4,14 +4,14 @@ import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
 import { useEffect, useState } from "react"
 import { Container, TimeboxItem } from "./styles"
 
-interface ScheduleBoardProps {
+interface ScheduleTabProps {
   times: Time[]
   days: Day[]
   getCurrentUserSchedule: GetCurrentUserSchedule
   currentUserScheduleUpdateEmitter: CurrentUserScheduleUpdateEmitter
 }
 
-const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
+const ScheduleTab: React.FC<ScheduleTabProps> = ({
   days,
   times,
   getCurrentUserSchedule,
@@ -74,4 +74,4 @@ const ScheduleBoard: React.FC<ScheduleBoardProps> = ({
   )
 }
 
-export default ScheduleBoard
+export default ScheduleTab

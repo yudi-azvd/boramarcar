@@ -1,6 +1,6 @@
 import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule } from '@/contracts'
-import HeatmapBoard from '@/presentation/components/HeatmapBoard'
-import ScheduleBoard from '@/presentation/components/ScheduleBoard'
+import HeatmapTab from '@/presentation/components/HeatmapTab'
+import ScheduleTab from '@/presentation/components/ScheduleTab'
 import { days, times } from '@/domain/daystimes'
 import { User } from '@/types'
 
@@ -32,7 +32,7 @@ const ScheduleOrHeatmap: React.FC<ScheduleOrHeatmapProps> = ({
 
       <Tabs defaultActiveKey="1" size="large">
         <TabPane tab="Cronograma" key="1">
-          <ScheduleBoard
+          <ScheduleTab
             days={days}
             times={times}
             getCurrentUserSchedule={getCurrentUserSchedule}
@@ -41,7 +41,7 @@ const ScheduleOrHeatmap: React.FC<ScheduleOrHeatmapProps> = ({
         </TabPane>
 
         <TabPane tab="Mapa de calor" key="2">
-          <HeatmapBoard
+          <HeatmapTab
             days={days}
             times={times}
             users={[user, ...otherUsers]}

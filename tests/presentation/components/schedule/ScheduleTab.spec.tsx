@@ -1,4 +1,4 @@
-import ScheduleBoard from "@/presentation/components/ScheduleBoard"
+import ScheduleTab from "@/presentation/components/ScheduleTab"
 import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, UpdateCurrentUserSchedule } from "@/contracts"
 import { Day, Schedule, Time, Timebox } from "@/types"
 
@@ -37,7 +37,7 @@ describe('Schedule', () => {
     emitCurrentUserUpdateSpy = jest.spyOn(currentUserScheduleUpdateEmitter, 'emit')  
 
     container = render(
-      <ScheduleBoard
+      <ScheduleTab
         days={days}
         times={times}
         getCurrentUserSchedule={getUserScheduleInThisRoom}
