@@ -1,5 +1,5 @@
 import { firebaseCreateUser, firebaseDeleteUser } from "@/data/firebase/db"
-import { User } from "@/types"
+import { User } from "@/domain/types"
 import { createContext, useCallback, useContext, useState } from "react"
 
 interface AuthContextInterface {

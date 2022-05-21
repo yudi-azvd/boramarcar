@@ -1,5 +1,5 @@
 import { GetUserScheduleDTO, ScheduleRepository, UpdateScheduleDTO } from "@/contracts";
-import { DayAndTime, Schedule, Availability } from "@/types";
+import { DayAndTime, Schedule, Availability } from "@/domain/types";
 
 export default class FakeScheduleRepository implements ScheduleRepository {
   rooms: {

@@ -1,4 +1,4 @@
-import { Day, DayAndTime, Time, Availability, User } from "@/types"
+import { Day, DayAndTime, Time, Availability, User } from "@/domain/types"
 import { Popover } from "antd"
 import { Container, HeatmapTimeboxItem } from "./styles"
 import { differenceToColor } from "@/domain/heatmap"

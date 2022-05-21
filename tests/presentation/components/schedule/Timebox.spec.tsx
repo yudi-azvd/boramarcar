@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import 'jest-styled-components'
 
 import { TimeboxItem } from '@/presentation/components/ScheduleTab/styles'
-import { Availability } from '@/types'
+import { Availability } from '@/domain/types'
 
 interface SutProps {
   availability?: Availability

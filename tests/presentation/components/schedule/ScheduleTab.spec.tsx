@@ -1,6 +1,6 @@
 import ScheduleTab from "@/presentation/components/ScheduleTab"
 import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, UpdateCurrentUserSchedule } from "@/contracts"
-import { Day, Schedule, Time, Timebox } from "@/types"
+import { Day, Schedule, Time, Timebox } from "@/domain/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'

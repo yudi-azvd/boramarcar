@@ -1,4 +1,4 @@
-import { Availability } from '@/types'
+import { Availability } from '@/domain/types'
 import styled from 'styled-components'
 
 import { timeboxColors } from '@/domain/schedule/colors'

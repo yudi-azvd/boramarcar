@@ -1,4 +1,4 @@
-import { DayAndTime, Availability, User } from "@/types"
+import { DayAndTime, Availability, User } from "@/domain/types"
 
 export const currentUserSchedule:
   { [key in DayAndTime]?: Availability } = {

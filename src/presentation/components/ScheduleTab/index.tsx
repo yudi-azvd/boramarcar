@@ -1,6 +1,6 @@
 import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
 import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
-import { Day, DayAndTime, Schedule, Time, Availability } from "@/types"
+import { Day, DayAndTime, Schedule, Time, Availability } from "@/domain/types"
 import { useEffect, useState } from "react"
 import { Container, TimeboxItem } from "./styles"
 
