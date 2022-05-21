@@ -1,5 +1,5 @@
 import { CurrentUserScheduleUpdateEmitter } from '@/contracts'
-import { Timebox, User } from '@/types'
+import { Timebox, User } from '@/domain/types'
 import {
   getDatabase,
   child,

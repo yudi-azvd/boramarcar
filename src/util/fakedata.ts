@@ -1,4 +1,4 @@
-import { Schedule, User } from "@/types";
+import { Schedule, User } from "@/domain/types";
 
 
 export const userFakeSchedule: Schedule = {

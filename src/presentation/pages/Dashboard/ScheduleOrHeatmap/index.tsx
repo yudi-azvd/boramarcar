@@ -2,7 +2,7 @@ import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule } from '@/cont
 import HeatmapTab from '@/presentation/components/HeatmapTab'
 import ScheduleTab from '@/presentation/components/ScheduleTab'
 import { days, times } from '@/domain/daystimes'
-import { User } from '@/types'
+import { User } from '@/domain/types'
 
 import { Container } from './style'
 import { Tabs } from 'antd'

@@ -1,4 +1,4 @@
-import { Schedule, Timebox } from "@/types";
+import { Schedule, Timebox } from "@/domain/types";
 
 export interface UpdateScheduleDTO {
   roomId: string

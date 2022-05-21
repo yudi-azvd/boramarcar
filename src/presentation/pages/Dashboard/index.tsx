@@ -1,6 +1,6 @@
 import { FirebaseCurrentUserScheduleUpdateEmitter, firebaseGetUserById, firebaseGetUsers, firebaseListenToOtherUsersScheduleUpdates } from '@/data/firebase/db'
 import { useAuth } from '@/presentation/hooks/auth'
-import { Schedule, User } from '@/types'
+import { Schedule, User } from '@/domain/types'
 
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import { useEffect, useState } from 'react'
