@@ -4,6 +4,13 @@ export type User = {
   schedule: Schedule
 }
 
+export type Room = {
+  id: string
+  name: string
+  status: string
+  ownerId?: string
+}
+
 export type Day = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
 
 export type Time =

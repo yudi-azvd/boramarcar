@@ -15,7 +15,13 @@ outra stack.
 
 Agora, sim, as notas:
 
-## 2022-05-21 - mais tarde
+## 2022-05-21 - Ainda mais tarde
+
+Decidi mudar um pouco o fluxo de "autenticação".
+
+Páginas dedicadas a login/signup mas sem senha.
+
+## 2022-05-21 - Mais tarde
 
 Talvez, um jeito melhor de deixar as rotas privadas:
 https://stackoverflow.com/questions/70724269/react-router-v6-route-composition-is-it-possible-to-render-a-custom-route
