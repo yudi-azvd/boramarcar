@@ -2,11 +2,12 @@ import { Room } from "@/domain/types"
 import { useAuth } from "@/presentation/hooks/auth"
 import { Container, Content } from "./styles"
 
+import CreateRoomModalForm from "./components/CreateRoomModal"
+
 import { useState } from "react"
 import { Button, Space, Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import { Link } from "react-router-dom"
-import CreateRoomModal from "./components/CreateRoomModal"
 
 type RoomRowType = Room & {
   key: string
@@ -20,7 +21,7 @@ const rs: Room[] = [
 
 const UserRooms: React.FC = () => {
   const { user } = useAuth()
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
   const [rooms, setRooms] = useState<Room[]>(rs)
   // const [rooms, setRooms] = useState<Room[]>([])
 
@@ -67,11 +68,19 @@ const UserRooms: React.FC = () => {
     }
   }
 
+  function openCreateRoomModal() {
+    console.log('create room function modal');
+    setIsCreateRoomModalVisible(true)
+  }
+
   return (
     <Container>
       <p>Bem vindo, <strong>{user.name}</strong> </p>
 
-      <CreateRoomModal visible={true} />
+      <CreateRoomModalForm 
+        visible={isCreateRoomModalVisible} 
+        onCancel={() => setIsCreateRoomModalVisible(false)}
+      />
 
       <Content>
         {rooms.length === 0 ? (
@@ -87,7 +96,7 @@ const UserRooms: React.FC = () => {
           <Button type="primary" size="large">
             Entrar em sala com link
           </Button>
-          <Button size="large">
+          <Button onClick={openCreateRoomModal} size="large">
             Criar sala
           </Button>
         </div>
