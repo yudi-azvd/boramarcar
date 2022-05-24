@@ -1,5 +1,5 @@
 import { CurrentUserScheduleUpdateEmitter } from '@/contracts'
-import { Timebox, User } from '@/domain/types'
+import { Room, Timebox, User } from '@/domain/types'
 import {
   getDatabase,
   child,
@@ -13,6 +13,19 @@ import {
 } from 'firebase/database'
 
 const database = getDatabase()
+
+export async function firebaseCreateRoom(roomname: string, ownerId: string): Promise<Room> {
+  const roomsRef = ref(database, 'rooms/')
+
+  const newRoom = await push(roomsRef, {
+    users: [ownerId]
+  })
+
+  return {
+    name: roomname,
+    id: newRoom.key
+  } as Room
+}
 
 export async function firebaseDeleteUser(roomId: string, userId: string) {
   const userRef = ref(database, `users/${userId}`)

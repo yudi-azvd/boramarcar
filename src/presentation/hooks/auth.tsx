@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useState } from "react"
 
 interface AuthContextInterface {
   user: User
-  signup: (username: string) => Promise<void>
+  signup: (username: string) => Promise<User>
   signout: () => Promise<void>
 }
 
@@ -22,10 +22,11 @@ const AuthProvider: React.FC = ({ children }) => {
     return JSON.parse(localStorageUser) as User
   })
 
-  const signup = useCallback(async (username: string): Promise<void> => {
+  const signup = useCallback(async (username: string): Promise<User> => {
     const newUser = await firebaseCreateUser(roomId, username)
     localStorage.setItem('user', JSON.stringify(newUser))
     setUser(newUser)
+    return user
   }, [])
 
   const signout = useCallback(async (): Promise<void> => {
