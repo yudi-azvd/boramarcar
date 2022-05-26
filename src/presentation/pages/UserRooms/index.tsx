@@ -1,6 +1,6 @@
 import { Room } from "@/domain/types"
 import { useAuth } from "@/presentation/hooks/auth"
-import { GetUserRooms } from "@/contracts"
+import { CreateRoom, GetUserRooms } from "@/contracts"
 import { Container, Content } from "./styles"
 
 import CreateRoomModalForm from "./components/CreateRoomModal"
@@ -16,9 +16,10 @@ type RoomRowType = Room & {
 
 interface UserRoomsProps {
   getUserRooms: GetUserRooms
+  createRoom: CreateRoom
 }
 
-const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms }) => {
+const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
   const { user } = useAuth()
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
   const [rooms, setRooms] = useState<Room[]>([])
@@ -86,8 +87,11 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms }) => {
       <p>Bem vindo, <strong>{user.name}</strong> </p>
 
       <CreateRoomModalForm
+        addRoom={(newRoom: Room) => setRooms([newRoom, ...rooms])}
+        userId={user.id}
         visible={isCreateRoomModalVisible}
         onCancel={() => setIsCreateRoomModalVisible(false)}
+        createRoom={createRoom}
       />
 
       <Content>
