@@ -1,4 +1,4 @@
-import { CurrentUserScheduleUpdateEmitter } from '@/contracts'
+import { CurrentUserScheduleUpdateEmitter, ScheduleChangeHandler } from '@/contracts'
 import { Timebox, User } from '@/domain/types'
 import {
   getDatabase,
@@ -56,11 +56,10 @@ export class FirebaseCurrentUserScheduleUpdateEmitter implements CurrentUserSche
   }
 }
 
-interface ScheduleChangeHandler {
-  (usersWithNewSchedules: User[]): void
-}
-
-export function firebaseListenToOtherUsersScheduleUpdates(roomId: string, scheduleChangeHandler: ScheduleChangeHandler) {
+export function firebaseListenToOtherUsersScheduleUpdates(
+  roomId: string,
+  scheduleChangeHandler: ScheduleChangeHandler
+) {
   const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
   const dbRef = ref(database)
 

@@ -1,17 +1,20 @@
+import { CreateRoom } from "@/contracts"
 import { Room } from "@/domain/types"
 import { push, ref } from "firebase/database"
 
 import { database } from './index'
 
-
-export async function firebaseCreateRoom(
+export const firebaseCreateRoom: CreateRoom = async (
   roomname: string,
   ownerId: string
-): Promise<Room> {
+): Promise<Room> => {
   const roomsRef = ref(database, 'rooms/')
 
   const newRoom = await push(roomsRef, {
-    users: [ownerId]
+    users: { [ownerId]: true },
+    ownerId,
+    status: 'Ativo',
+    name: roomname
   })
 
   return {
