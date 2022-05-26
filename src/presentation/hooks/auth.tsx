@@ -13,7 +13,6 @@ const AuthContext = createContext<AuthContextInterface>(
 )
 
 const AuthProvider: React.FC = ({ children }) => {
-  const roomId = 'theOnlyRoomId'
   const [user, setUser] = useState<User>(() => {
     const localStorageUser = localStorage.getItem('user') 
     if (!localStorageUser)
@@ -23,14 +22,14 @@ const AuthProvider: React.FC = ({ children }) => {
   })
 
   const signup = useCallback(async (username: string): Promise<User> => {
-    const newUser = await firebaseCreateUser(roomId, username)
+    const newUser = await firebaseCreateUser(username)
     localStorage.setItem('user', JSON.stringify(newUser))
     setUser(newUser)
     return user
   }, [])
 
   const signout = useCallback(async (): Promise<void> => {
-    await firebaseDeleteUser(roomId, user.id)
+    await firebaseDeleteUser(user.id)
     localStorage.setItem('user', JSON.stringify({}))
     setUser({} as User)
   }, [user])

@@ -1,5 +1,5 @@
 import { CurrentUserScheduleUpdateEmitter } from '@/contracts'
-import { Room, Timebox, User } from '@/domain/types'
+import { Timebox, User } from '@/domain/types'
 import {
   getDatabase,
   child,
@@ -12,40 +12,22 @@ import {
   DataSnapshot,
 } from 'firebase/database'
 
-const database = getDatabase()
+export const database = getDatabase()
 
-export async function firebaseCreateRoom(roomname: string, ownerId: string): Promise<Room> {
-  const roomsRef = ref(database, 'rooms/')
-
-  const newRoom = await push(roomsRef, {
-    users: [ownerId]
-  })
-
-  return {
-    name: roomname,
-    id: newRoom.key
-  } as Room
-}
-
-export async function firebaseDeleteUser(roomId: string, userId: string) {
+export async function firebaseDeleteUser(userId: string) {
   const userRef = ref(database, `users/${userId}`)
-  const userInRoomsRef = ref(database, `rooms/${roomId}/users/${userId}`)
-  const userScheduleRef = ref(database, `schedules/${roomId}/${userId}`)
+  // const userInRoomsRef = ref(database, `rooms/${roomId}/users/${userId}`)
+  // const userScheduleRef = ref(database, `schedules/${roomId}/${userId}`)
 
   remove(userRef)
-  remove(userInRoomsRef)
-  remove(userScheduleRef)
+  // remove(userInRoomsRef)
+  // remove(userScheduleRef)
 }
 
-export async function firebaseCreateUser(roomId: string, username: string) {
+export async function firebaseCreateUser(username: string) {
   const usersRef = ref(database, 'users')
-  const roomsRef = ref(database, `rooms/${roomId}/users`)
   const newUserRef = push(usersRef, {
     name: username
-  })
-
-  update(roomsRef, {
-    [newUserRef.key as string]: true
   })
 
   return {
@@ -155,3 +137,7 @@ function convertToUsers(usersObject: any, schedulesByUserIdObject: any) {
 
   return users
 }
+
+
+export * from './getUserRooms'
+export * from './createRoom'
