@@ -26,5 +26,7 @@ export const Content = styled.div`
 
   a.leave {
     color: #ff4d4f;
+    color: grey;
+    cursor: not-allowed;
   }
 `

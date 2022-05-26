@@ -1,10 +1,11 @@
 import { Room } from "@/domain/types"
 import { useAuth } from "@/presentation/hooks/auth"
+import { GetUserRooms } from "@/contracts"
 import { Container, Content } from "./styles"
 
 import CreateRoomModalForm from "./components/CreateRoomModal"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Space, Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import { Link } from "react-router-dom"
@@ -13,17 +14,14 @@ type RoomRowType = Room & {
   key: string
 }
 
-const rs: Room[] = [
-  { name: 'Knonoha', id: '1', status: 'Ativo' },
-  { name: 'Amestris', id: '2', status: 'Ativo' },
-  { name: 'Atenas', id: '3', status: 'Ativo' },
-]
+interface UserRoomsProps {
+  getUserRooms: GetUserRooms
+}
 
-const UserRooms: React.FC = () => {
+const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms }) => {
   const { user } = useAuth()
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
-  const [rooms, setRooms] = useState<Room[]>(rs)
-  // const [rooms, setRooms] = useState<Room[]>([])
+  const [rooms, setRooms] = useState<Room[]>([])
 
   const dataSource: RoomRowType[] = rooms.map(room => (
     {
@@ -59,6 +57,7 @@ const UserRooms: React.FC = () => {
   ]
 
   function handleLeaveRoomPermanentely(room: Room) {
+    return
     console.log(room);
     const wantsToLeave = window.confirm(`Tem certeza que deseja sair permanentemente da sala ${room.name}?`)
 
@@ -73,12 +72,21 @@ const UserRooms: React.FC = () => {
     setIsCreateRoomModalVisible(true)
   }
 
+  useEffect(() => {
+    async function getRooms() {
+      const r = await getUserRooms(user.id)
+      setRooms(r)
+    }
+
+    getRooms()
+  }, [])
+
   return (
     <Container>
       <p>Bem vindo, <strong>{user.name}</strong> </p>
 
-      <CreateRoomModalForm 
-        visible={isCreateRoomModalVisible} 
+      <CreateRoomModalForm
+        visible={isCreateRoomModalVisible}
         onCancel={() => setIsCreateRoomModalVisible(false)}
       />
 
