@@ -3,6 +3,7 @@ import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, UpdateCurrent
 import { Day, Schedule, Time, Timebox } from "@/domain/types"
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
+import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import 'jest-styled-components'
 
@@ -10,7 +11,7 @@ class FakeCurrentUserScheduleUpdateEmitter implements CurrentUserScheduleUpdateE
   emit(timebox: Timebox): void { }
 }
 
-describe('Schedule', () => {
+describe('ScheduleTab', () => {
   const days: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']
   const times: Time[] = ['09h', '10h', '11h']
   const defaultSchedule: Schedule = {
@@ -34,7 +35,7 @@ describe('Schedule', () => {
     updateUserScheduleInThisRoom = jest.fn<Promise<void>, [Timebox]>()
 
     const currentUserScheduleUpdateEmitter = new FakeCurrentUserScheduleUpdateEmitter()
-    emitCurrentUserUpdateSpy = jest.spyOn(currentUserScheduleUpdateEmitter, 'emit')  
+    emitCurrentUserUpdateSpy = jest.spyOn(currentUserScheduleUpdateEmitter, 'emit')
 
     container = render(
       <ScheduleTab
@@ -46,10 +47,8 @@ describe('Schedule', () => {
     timeboxes = [...container.querySelectorAll('.timebox')]
   }
 
-  async function actClick(element: Window | Element | Node, options?: {} | undefined): Promise<void> {
-    await act(async () => {
-      fireEvent.click(element)
-    })
+  function getTimebox(selector: string): HTMLDivElement {
+    return container.querySelector(selector) as HTMLDivElement
   }
 
   beforeEach(async () => {
@@ -65,20 +64,15 @@ describe('Schedule', () => {
     // asserções não esperariam o useEffect do Schedule. Mas mesmo sem isso, o
     // teste passa também 
     await waitFor(() => {
-      const undefinedTimebox = container.querySelector('#sch-Sunday-10h') as HTMLDivElement
+      const undefinedTimebox = getTimebox('#sch-Sunday-10h')
       expect(undefinedTimebox).toHaveStyleRule('background', '#FFFFFF')
 
-      const availableTimebox = container.querySelector('#sch-Sunday-09h') as HTMLDivElement
+      const availableTimebox = getTimebox('#sch-Sunday-09h')
       expect(availableTimebox).toHaveStyleRule('background', '#18DC86')
 
-      const busyTimebox = container.querySelector('#sch-Wednesday-11h') as HTMLDivElement
+      const busyTimebox = getTimebox('#sch-Wednesday-11h')
       expect(busyTimebox).toHaveStyleRule('background', '#E95F63')
     })
-
-    // timeboxes.forEach(t => {
-    //   expect(t).toMatchSnapshot()
-    //   expect(t).toHaveStyleRule('background', '#FFFFFF')
-    // })
   })
 
   it('should display 1 hour timeboxes Sunday through Wednesday, from 09h to 11h', async () => {
@@ -86,53 +80,41 @@ describe('Schedule', () => {
 
     const presentDaysTimes = ['Sunday-09h', 'Sunday-11h', 'Wednesday-09h', 'Wednesday-11h']
     presentDaysTimes.forEach(dayTime => {
-      expect(container.querySelector(`#sch-${dayTime}`)).toBeTruthy()
+      expect(getTimebox(`#sch-${dayTime}`)).toBeTruthy()
     })
 
     const absentDaysTimes = ['Sunday-12h', 'Wednesday-20h', 'Saturday-15h']
     absentDaysTimes.forEach(dayTime => {
-      expect(container.querySelector(`#sch-${dayTime}`)).toBeFalsy()
+      expect(getTimebox(`#sch-${dayTime}`)).toBeFalsy()
     })
   })
 
   it('should update Timebox value from undefined color to available color on first click', async () => {
-    await waitFor(async () => {
-      const timeboxToClick = container.querySelector('#sch-Sunday-11h') as HTMLDivElement
-      await actClick(timeboxToClick)
-      expect(timeboxToClick).toHaveStyleRule('background', '#18DC86')
-    })
+    const timeboxToClick = getTimebox('#sch-Sunday-11h')
+    await userEvent.click(timeboxToClick)
+    expect(timeboxToClick).toHaveStyleRule('background', '#18DC86')
   })
 
   it('should update Timebox value from available color to busy color on second click', async () => {
-    await waitFor(async () => {
-      let timeboxToClick = container.querySelector('#sch-Sunday-11h') as HTMLDivElement
-      await actClick(timeboxToClick)
-      await actClick(timeboxToClick)
-      expect(timeboxToClick).toHaveStyleRule('background', '#E95F63')
-    })
+    let timeboxToClick = getTimebox('#sch-Sunday-11h')
+    await userEvent.click(timeboxToClick)
+    await userEvent.click(timeboxToClick)
+    expect(timeboxToClick).toHaveStyleRule('background', '#E95F63')
   })
 
   it('should update Timebox value from busy color to undefined color on third click', async () => {
-    await waitFor(async () => {
-      const timeboxToClick = container.querySelector('#sch-Sunday-11h') as HTMLDivElement
-      await actClick(timeboxToClick)
-      // expect(timeboxToClick).toHaveStyleRule('background', '#18DC86')
-      await actClick(timeboxToClick)
-      // Essa asserção é desnecessária, mas se não tiver, a asserção para
-      // #FFFFFF falha. Vai saber...
-      expect(timeboxToClick).toHaveStyleRule('background', '#E95F63')
-      await actClick(timeboxToClick)
-      expect(timeboxToClick).toHaveStyleRule('background', '#FFFFFF')
-    })
+    const timeboxToClick = getTimebox('#sch-Sunday-11h')
+    await userEvent.click(timeboxToClick)
+    await userEvent.click(timeboxToClick)
+    await userEvent.click(timeboxToClick)
+    expect(timeboxToClick).toHaveStyleRule('background', '#FFFFFF')
   })
 
   it('should request to update for the Timebox', async () => {
-    await waitFor(async () => {
-      const timeboxToClick = container.querySelector('#sch-Wednesday-09h') as HTMLDivElement
-      await actClick(timeboxToClick)
+    const timeboxToClick = getTimebox('#sch-Wednesday-09h')
+    await userEvent.click(timeboxToClick)
 
-      expect(emitCurrentUserUpdateSpy)
-        .toHaveBeenCalledWith({ dayAndTime: 'Wednesday-09h', availability: 'available' })
-    })
+    expect(emitCurrentUserUpdateSpy)
+      .toHaveBeenCalledWith({ dayAndTime: 'Wednesday-09h', availability: 'available' })
   })
 })
