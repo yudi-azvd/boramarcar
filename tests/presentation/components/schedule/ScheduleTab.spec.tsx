@@ -6,6 +6,7 @@ import { act, fireEvent, render, waitFor } from "@testing-library/react"
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import 'jest-styled-components'
+import { timeboxColors } from "@/domain/schedule/colors"
 
 class FakeCurrentUserScheduleUpdateEmitter implements CurrentUserScheduleUpdateEmitter {
   emit(timebox: Timebox): void { }
@@ -17,6 +18,11 @@ describe('ScheduleTab', () => {
   const defaultSchedule: Schedule = {
     'Sunday-09h': 'available',
     'Wednesday-11h': 'busy'
+  }
+
+  const colors = {
+    ...timeboxColors,
+    'undefined': '#FFFFFF'
   }
 
   let container: HTMLElement
@@ -65,13 +71,13 @@ describe('ScheduleTab', () => {
     // teste passa também 
     await waitFor(() => {
       const undefinedTimebox = getTimebox('#sch-Sunday-10h')
-      expect(undefinedTimebox).toHaveStyleRule('background', '#FFFFFF')
+      expect(undefinedTimebox).toHaveStyleRule('background', colors.undefined)
 
       const availableTimebox = getTimebox('#sch-Sunday-09h')
-      expect(availableTimebox).toHaveStyleRule('background', '#18DC86')
+      expect(availableTimebox).toHaveStyleRule('background', colors.available)
 
       const busyTimebox = getTimebox('#sch-Wednesday-11h')
-      expect(busyTimebox).toHaveStyleRule('background', '#E95F63')
+      expect(busyTimebox).toHaveStyleRule('background', colors.busy)
     })
   })
 
@@ -92,14 +98,14 @@ describe('ScheduleTab', () => {
   it('should update Timebox value from undefined color to available color on first click', async () => {
     const timeboxToClick = getTimebox('#sch-Sunday-11h')
     await userEvent.click(timeboxToClick)
-    expect(timeboxToClick).toHaveStyleRule('background', '#18DC86')
+    expect(timeboxToClick).toHaveStyleRule('background', colors.available)
   })
 
   it('should update Timebox value from available color to busy color on second click', async () => {
     let timeboxToClick = getTimebox('#sch-Sunday-11h')
     await userEvent.click(timeboxToClick)
     await userEvent.click(timeboxToClick)
-    expect(timeboxToClick).toHaveStyleRule('background', '#E95F63')
+    expect(timeboxToClick).toHaveStyleRule('background', colors.busy)
   })
 
   it('should update Timebox value from busy color to undefined color on third click', async () => {
@@ -107,7 +113,7 @@ describe('ScheduleTab', () => {
     await userEvent.click(timeboxToClick)
     await userEvent.click(timeboxToClick)
     await userEvent.click(timeboxToClick)
-    expect(timeboxToClick).toHaveStyleRule('background', '#FFFFFF')
+    expect(timeboxToClick).toHaveStyleRule('background', colors.undefined)
   })
 
   it('should request to update for the Timebox', async () => {
