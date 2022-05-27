@@ -1,8 +1,10 @@
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   roots: [
     "<rootDir>/src", "<rootDir>/tests"
   ],
-  collectCoverage: true,
+  clearMocks: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     '<rootDir>/src/components/*.{tsx}'
   ],
@@ -13,5 +15,8 @@ module.exports = {
   },
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
-  }
+  },
+  // https://jestjs.io/docs/27.x/configuration#setupfilesafterenv-array
+  // https://jestjs.io/docs/27.x/configuration#setupfiles-array
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 };
