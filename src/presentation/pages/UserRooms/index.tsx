@@ -3,7 +3,7 @@ import { useAuth } from "@/presentation/hooks/auth"
 import { CreateRoom, GetUserRooms } from "@/contracts"
 import { Container, Content } from "./styles"
 
-import CreateRoomModalForm from "./components/CreateRoomModal"
+import CreateRoomModalForm from "./components/CreateRoomModalForm"
 
 import { useEffect, useState } from "react"
 import { Button, Space, Table } from "antd"
@@ -17,6 +17,18 @@ type RoomRowType = Room & {
 interface UserRoomsProps {
   getUserRooms: GetUserRooms
   createRoom: CreateRoom
+}
+
+function getRandomName() {
+  const nameOptions = [
+    'Vila da Folha',
+    'Cidadela dos Ricks',
+    'Terra Média',
+    'Império Galático',
+    'Metrópolis',
+    'Quartel General'
+  ]
+  return nameOptions[Math.floor(Math.random()*nameOptions.length)]
 }
 
 const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
@@ -87,6 +99,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
       <p>Bem vindo, <strong>{user.name}</strong> </p>
 
       <CreateRoomModalForm
+        randomRoomname={getRandomName()}
         addRoom={(newRoom: Room) => setRooms([newRoom, ...rooms])}
         userId={user.id}
         visible={isCreateRoomModalVisible}
