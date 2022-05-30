@@ -1,6 +1,6 @@
 import { Room } from "@/domain/types"
 import { useAuth } from "@/presentation/hooks/auth"
-import { CreateRoom, GetUserRooms } from "@/contracts"
+import { CreateRoom, GetUserRooms, JoinRoom } from "@/contracts"
 import { Container, Content } from "./styles"
 
 import CreateRoomModalForm from "./components/CreateRoomModalForm"
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { Button, Space, Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import { Link } from "react-router-dom"
+import JoinRoomModalForm from "./components/JoinRoomModalForm"
 
 type RoomRowType = Room & {
   key: string
@@ -28,12 +29,13 @@ function getRandomName() {
     'Metrópolis',
     'Quartel General'
   ]
-  return nameOptions[Math.floor(Math.random()*nameOptions.length)]
+  return nameOptions[Math.floor(Math.random() * nameOptions.length)]
 }
 
 const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
   const { user } = useAuth()
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
+  const [isJoinRoomModalVisible, setIsJoinRoomModalVisible] = useState(false)
   const [rooms, setRooms] = useState<Room[]>([])
 
   const dataSource: RoomRowType[] = rooms.map(room => (
@@ -63,13 +65,13 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
         <Space size="middle">
           <Link to={`/r/${record.key}`}> Entrar </Link>
           <a className="leave" onClick={
-            () => handleLeaveRoomPermanentely(record)}> Sair permanentemente </a>
+            () => handleLeaveRoomPermanently(record)}> Sair permanentemente </a>
         </Space>
       )
     }
   ]
 
-  function handleLeaveRoomPermanentely(room: Room) {
+  function handleLeaveRoomPermanently(room: Room) {
     return
     console.log(room);
     const wantsToLeave = window.confirm(`Tem certeza que deseja sair permanentemente da sala ${room.name}?`)
@@ -81,9 +83,14 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
   }
 
   function openCreateRoomModal() {
-    console.log('create room function modal');
     setIsCreateRoomModalVisible(true)
   }
+
+  function openJoinRoomModal() {
+    setIsJoinRoomModalVisible(true)
+  }
+
+  const joinRoom: JoinRoom = async () => ({} as Room)
 
   useEffect(() => {
     async function getRooms() {
@@ -107,6 +114,13 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
         createRoom={createRoom}
       />
 
+      <JoinRoomModalForm
+        visible={isJoinRoomModalVisible}
+        userId={user.id}
+        joinRoom={joinRoom}
+        onCancel={() => setIsJoinRoomModalVisible(false)}
+      />
+
       <Content>
         {rooms.length === 0 ? (
           <>
@@ -118,7 +132,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
         )}
 
         <div>
-          <Button type="primary" size="large">
+          <Button onClick={openJoinRoomModal} type="primary" size="large">
             Entrar em sala com link
           </Button>
           <Button onClick={openCreateRoomModal} size="large">
