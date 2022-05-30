@@ -10,6 +10,11 @@ module.exports = {
   ],
   coverageDirectory: "coverage",
   testEnvironment: "jsdom",
+  globals: {
+    'ts-jest': {
+      isolatedModules: true
+    }
+  },
   transform: {
     '.+\\.(ts|tsx)$': 'ts-jest'
   },

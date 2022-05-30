@@ -19,6 +19,10 @@ export interface CreateRoom {
   (roomname: string, ownerId: string): Promise<Room>
 }
 
+export interface JoinRoom {
+  (roomId: string, userId: string): Promise<Room>
+}
+
 export interface ScheduleRepository {
   update: (updateSchedule: UpdateScheduleDTO) => Promise<void>
   getAll: (getAllSchedule: GetUserScheduleDTO) => Promise<Schedule>
