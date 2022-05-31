@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import {
   FirebaseCurrentUserScheduleUpdateEmitter,
   firebaseGetUserById,
@@ -7,12 +7,14 @@ import {
   firebaseListenToOtherUsersScheduleUpdates,
 } from '@/data/firebase/db'
 import { useAuth } from '@/presentation/hooks/auth'
-import { Schedule, User } from '@/domain/types'
+import { Room, Schedule, User } from '@/domain/types'
 
+import { List } from 'antd'
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
-import { Container } from './style'
+import { Container, RoomInfo, Top } from './style'
 
-const Room: React.FC = () => {
+const RoomDashboard: React.FC = () => {
+  const { state: { room } } = useLocation() as { state: { room: Room } }
   const { roomId } = useParams() as { roomId: string }
   const { user: currentUser } = useAuth()
   const [user, setUser] = useState(currentUser)
@@ -52,14 +54,19 @@ const Room: React.FC = () => {
 
   return (
     <Container>
-      <h1>Dashboard</h1>
-      <div>
-        <p>
-          <Link to="/rooms">
-            Voltar para as minhas salas
-          </Link>
-        </p>
-      </div>
+      <Top>
+        <h1>
+          Sala: <strong>{room.name}</strong>
+        </h1>
+        <div>
+          <p>
+            <Link to="/rooms">
+              {/* TODO: arranjar nome melhor  */}
+              Voltar para as minhas salas
+            </Link>
+          </p>
+        </div>
+      </Top>
 
       <ScheduleOrHeatmap
         user={user}
@@ -67,8 +74,20 @@ const Room: React.FC = () => {
         currentUserScheduleUpdateEmitter={emitter}
         getCurrentUserSchedule={getCurrentUserSchedule}
       />
+
+      <RoomInfo>
+        <List
+          header={<h3>Participantes</h3>}
+          dataSource={otherUsers.map((u) => u.name)}
+          renderItem={(item:string) => (
+            <List.Item>
+              {item}
+            </List.Item>
+          )}
+        />
+      </RoomInfo>
     </Container>
   )
 }
 
-export default Room
+export default RoomDashboard

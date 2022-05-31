@@ -23,13 +23,6 @@ const ScheduleOrHeatmap: React.FC<ScheduleOrHeatmapProps> = ({
   currentUserScheduleUpdateEmitter,
 }) => (
   <Container>
-    <div>
-      <p>
-        Bem vindo,
-        {user.name}
-      </p>
-    </div>
-
     <Tabs defaultActiveKey="1" size="large">
       <TabPane tab="Cronograma" key="1">
         <ScheduleTab
