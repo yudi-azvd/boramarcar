@@ -1,0 +1,80 @@
+{
+  "settings": {
+    "import/resolver": {
+      // https://stackoverflow.com/questions/67835072/vue-3-on-vite-js-with-eslint-unable-to-resolve-path-to-module-eslintimport-no
+      "typescript": {}
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "globals": {
+    // https://eslint.org/docs/user-guide/configuring/language-options#using-configuration-files-1
+    "React": "readonly"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "airbnb"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "semi": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "import/prefer-default-export": "off",
+    "react/function-component-definition": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function":"off",
+    "no-use-before-define": "off",
+    "no-alert": "off",
+    "react/jsx-no-bind": [
+      "error",
+      {
+        "allowArrowFunctions": true,
+        "allowFunctions": true
+      }
+    ],
+    // @typescript-eslint é mais apropriado pra analisar "no-unused-vars"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-empty-function": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "import/extensions": [
+      "error",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ]
+  }
+}

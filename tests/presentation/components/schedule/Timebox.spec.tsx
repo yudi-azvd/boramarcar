@@ -23,20 +23,20 @@ describe('Timebox', () => {
     const { sut } = makeSut({ availability: undefined })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: #FFFFFF`)
+    expect(sut).toHaveStyle('background: #FFFFFF')
   })
 
   it('should be green when its value is available', () => {
     const { sut } = makeSut({ availability: 'available' })
-    
+
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: #18DC86`)
+    expect(sut).toHaveStyle('background: #18DC86')
   })
-  
+
   it('should be red when its value is busy', () => {
     const { sut } = makeSut({ availability: 'busy' })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle(`background: #E95F63`)
+    expect(sut).toHaveStyle('background: #E95F63')
   })
 })

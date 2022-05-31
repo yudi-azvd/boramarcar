@@ -1,17 +1,16 @@
-import { DayAndTime, Availability, User } from "@/domain/types"
+import { DayAndTime, Availability, User } from '@/domain/types'
 
 export const currentUserSchedule:
   { [key in DayAndTime]?: Availability } = {
-  'Sunday-08h': 'available',
-  'Sunday-09h': 'busy',
-  'Tuesday-08h': 'available',
-  'Tuesday-09h': 'busy',
-  'Monday-08h': 'available',
-  'Wednesday-19h': 'busy'
-}
+    'Sunday-08h': 'available',
+    'Sunday-09h': 'busy',
+    'Tuesday-08h': 'available',
+    'Tuesday-09h': 'busy',
+    'Monday-08h': 'available',
+    'Wednesday-19h': 'busy',
+  }
 
-
-const fakeUsers: User[] =[
+const fakeUsers: User[] = [
   {
     name: 'Maria',
     id: 'user-2',
@@ -20,10 +19,10 @@ const fakeUsers: User[] =[
       'Sunday-09h': 'busy',
       'Tuesday-08h': 'available',
       'Tuesday-09h': 'busy',
-      "Friday-08h": 'available',
+      'Friday-08h': 'available',
       'Monday-08h': 'available',
       'Wednesday-19h': 'busy',
-    }
+    },
   },
   {
     name: 'João',
@@ -34,9 +33,9 @@ const fakeUsers: User[] =[
       'Monday-08h': 'busy',
       'Tuesday-08h': 'available',
       'Tuesday-09h': 'busy',
-      "Friday-08h": 'available',
+      'Friday-08h': 'available',
       'Wednesday-19h': 'busy',
-    }
+    },
   },
   {
     name: 'Ana',
@@ -47,10 +46,10 @@ const fakeUsers: User[] =[
       'Tuesday-08h': 'busy',
       'Tuesday-09h': 'available',
       'Monday-08h': 'busy',
-      "Friday-08h": 'available',
+      'Friday-08h': 'available',
       'Wednesday-19h': 'busy',
-    }
-  }
+    },
+  },
 ]
 
 export default fakeUsers

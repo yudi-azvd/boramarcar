@@ -1,6 +1,9 @@
-import { firebaseCreateUser, firebaseDeleteUser } from "@/data/firebase/db"
-import { User } from "@/domain/types"
-import { createContext, useCallback, useContext, useState } from "react"
+/* eslint-disable react/jsx-no-constructed-context-values */
+import {
+  createContext, useCallback, useContext, useState,
+} from 'react'
+import { firebaseCreateUser, firebaseDeleteUser } from '@/data/firebase/db'
+import { User } from '@/domain/types'
 
 interface AuthContextInterface {
   user: User
@@ -9,15 +12,14 @@ interface AuthContextInterface {
 }
 
 const AuthContext = createContext<AuthContextInterface>(
-  {} as AuthContextInterface
+  {} as AuthContextInterface,
 )
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User>(() => {
-    const localStorageUser = localStorage.getItem('user') 
-    if (!localStorageUser)
-      return {} as User
-    
+    const localStorageUser = localStorage.getItem('user')
+    if (!localStorageUser) return {} as User
+
     return JSON.parse(localStorageUser) as User
   })
 

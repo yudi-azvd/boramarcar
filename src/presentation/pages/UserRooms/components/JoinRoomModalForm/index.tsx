@@ -1,6 +1,8 @@
-import { JoinRoom } from "@/contracts"
-import { Room } from "@/domain/types"
-import { Button, Form, Input, Modal, notification } from "antd"
+import {
+  Button, Form, Input, Modal, notification,
+} from 'antd'
+import { JoinRoom } from '@/contracts'
+import { Room } from '@/domain/types'
 
 interface JoinRoomModalFormProps {
   visible: boolean
@@ -10,24 +12,24 @@ interface JoinRoomModalFormProps {
   addRoom: (room: Room) => void
 }
 
-const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({ 
+const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({
   visible = false,
   userId,
   onCancel,
   joinRoom,
-  addRoom
+  addRoom,
 }) => {
   async function handleFinish({ roomId }: { roomId: string }) {
     try {
       const room = await joinRoom(roomId, userId)
       notification.success({
-        message: 'Joined room successfully'
+        message: 'Joined room successfully',
       })
       addRoom(room)
     } catch (error) {
       notification.error({
         message: 'Alguma coisa deu errado :(',
-        description: String(error)
+        description: String(error),
       })
     }
   }
@@ -40,7 +42,7 @@ const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({
       footer={[
         <Button form="join-room" type="primary" key="submit" htmlType="submit">
           Entrar
-        </Button>
+        </Button>,
       ]}
     >
       <Form

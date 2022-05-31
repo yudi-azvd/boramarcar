@@ -1,8 +1,9 @@
-import { JoinRoom } from "@/contracts"
-import { Room } from "@/domain/types"
-import JoinRoomModalForm from "@/presentation/pages/UserRooms/components/JoinRoomModalForm"
-import { render, screen, waitFor } from "@testing-library/react"
+/* eslint-disable no-console */
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { JoinRoom } from '@/contracts'
+import { Room } from '@/domain/types'
+import JoinRoomModalForm from '@/presentation/pages/UserRooms/components/JoinRoomModalForm'
 
 interface SutParams {
   joinRoomSpy?: JoinRoom
@@ -14,24 +15,25 @@ describe('JoinRoomModalForm', () => {
   const roomNameToJoin = 'Room Name'
   let joinedRoom: Room
   let joinRoomSpy: JoinRoom
-  let addRoomSpy = jest.fn(() => {})
+  const addRoomSpy = jest.fn(() => { })
 
   const defaultJoinRoomSpy: JoinRoom = jest.fn(
-    async (roomId: string, userId: string): Promise<Room> => {
+    // eslint-disable-next-line no-unused-vars
+    async (roomId: string, _userId: string): Promise<Room> => {
       joinedRoom = {
         id: roomIdToJoin,
         name: 'Fake Room Name',
         ownerId: '',
-        status: 'Ativo'
+        status: 'Ativo',
       }
       return joinedRoom
-    })
+    },
+  )
 
   function makeSut(params?: SutParams) {
     if (params && params.joinRoomSpy) {
       joinRoomSpy = params.joinRoomSpy
-    }
-    else {
+    } else {
       joinRoomSpy = defaultJoinRoomSpy
     }
 
@@ -47,7 +49,7 @@ describe('JoinRoomModalForm', () => {
       user: userEvent.setup(),
       ...renderResult,
       input: screen.getByRole('textbox'),
-      submitButton: screen.getByText(/^entrar$/i)
+      submitButton: screen.getByText(/^entrar$/i),
     }
   }
 
@@ -82,7 +84,7 @@ describe('JoinRoomModalForm', () => {
   // supérfluos. A não ser que a implementação tratasse especificamente desses
   // diferentes erros .
   it('should not allow user to join a room they already joined', async () => {
-    const joinRoomSpy: JoinRoom = jest.fn(async () => {
+    joinRoomSpy = jest.fn(async () => {
       throw new Error(`Usuário já está na sala ${roomIdToJoin}: ${roomNameToJoin}`)
     })
 
@@ -96,7 +98,7 @@ describe('JoinRoomModalForm', () => {
   })
 
   it('should show notification error if room is not found', async () => {
-    const joinRoomSpy: JoinRoom = jest.fn(async () => {
+    joinRoomSpy = jest.fn(async () => {
       throw new Error('A sala de ID não existe')
     })
 
@@ -111,6 +113,6 @@ describe('JoinRoomModalForm', () => {
 
   // Considerando que vão ter os status
   // Ativo/Open -> Fechado -> To be Deleted?
-  // Naquele período depois 
+  // Naquele período depois
   it.todo('should not allow user to enter room with status closed')
 })

@@ -1,12 +1,12 @@
-import { CreateRoom } from "@/contracts"
-import { Room } from "@/domain/types"
+import { push, ref } from 'firebase/database'
+import { CreateRoom } from '@/contracts'
+import { Room } from '@/domain/types'
 
-import { push, ref } from "firebase/database"
 import { database } from './index'
 
 export const firebaseCreateRoom: CreateRoom = async (
   roomname: string,
-  ownerId: string
+  ownerId: string,
 ): Promise<Room> => {
   const roomsRef = ref(database, 'rooms/')
 
@@ -14,11 +14,11 @@ export const firebaseCreateRoom: CreateRoom = async (
     users: { [ownerId]: true },
     ownerId,
     status: 'Ativo',
-    name: roomname
+    name: roomname,
   })
 
   return {
     name: roomname,
-    id: newRoom.key
+    id: newRoom.key,
   } as Room
 }

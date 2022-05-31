@@ -1,10 +1,15 @@
-import { FirebaseCurrentUserScheduleUpdateEmitter, firebaseGetUserById, firebaseGetUsers, firebaseListenToOtherUsersScheduleUpdates } from '@/data/firebase/db'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import {
+  FirebaseCurrentUserScheduleUpdateEmitter,
+  firebaseGetUserById,
+  firebaseGetUsers,
+  firebaseListenToOtherUsersScheduleUpdates,
+} from '@/data/firebase/db'
 import { useAuth } from '@/presentation/hooks/auth'
 import { Schedule, User } from '@/domain/types'
 
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { Container } from './style'
 
 const Dashboard: React.FC = () => {
@@ -25,8 +30,8 @@ const Dashboard: React.FC = () => {
   }
 
   function handleUsersScheduleUpdate(usersWithNewSchedules: User[]) {
-    const thisUser = usersWithNewSchedules.find(u => u.id === user.id)
-    const _otherUsers = usersWithNewSchedules.filter(u => u.id !== user.id)
+    const thisUser = usersWithNewSchedules.find((u) => u.id === user.id)
+    const _otherUsers = usersWithNewSchedules.filter((u) => u.id !== user.id)
     setUser(thisUser as User)
     setOtherUsers(_otherUsers)
   }
@@ -34,13 +39,15 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function loadUsers() {
       const loadedUsers = await firebaseGetUsers(roomId)
-      setUser(loadedUsers.find(u => u.id === user.id) as User)
-      setOtherUsers(loadedUsers.filter(u => u.id !== user.id))
+      setUser(loadedUsers.find((u) => u.id === user.id) as User)
+      setOtherUsers(loadedUsers.filter((u) => u.id !== user.id))
     }
 
     loadUsers()
-    const unsubscribe = firebaseListenToOtherUsersScheduleUpdates(roomId,
-      handleUsersScheduleUpdate)
+    const unsubscribe = firebaseListenToOtherUsersScheduleUpdates(
+      roomId,
+      handleUsersScheduleUpdate,
+    )
     return () => unsubscribe()
   }, [])
 

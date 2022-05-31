@@ -1,11 +1,11 @@
-import { useAuth } from "@/presentation/hooks/auth"
-import logo from "@/presentation/assets/logo"
+import {
+  Button, Form, Input, notification,
+} from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/presentation/hooks/auth'
+import logo from '@/presentation/assets/logo'
 
-import { Container, Content } from "./styles"
-
-import { Button, Form, Input, notification } from "antd"
-import { useNavigate } from "react-router-dom"
-
+import { Container, Content } from './styles'
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const SignUp: React.FC = () => {
     } catch (error) {
       notification.error({
         message: 'Alguma coisa deu errado',
-        description: String(error)
+        description: String(error),
       })
     }
   }
@@ -28,8 +28,8 @@ const SignUp: React.FC = () => {
       <Content>
         <img width={120} src={logo} alt="Logo" />
 
-        <Form onFinish={handleSubmit} name="signup" layout='vertical'>
-          <Form.Item label="Seu nome" name="username" rules={[{ required: true, min: 4, max: 16, }]}>
+        <Form onFinish={handleSubmit} name="signup" layout="vertical">
+          <Form.Item label="Seu nome" name="username" rules={[{ required: true, min: 4, max: 16 }]}>
             <Input type="text" placeholder="Tanjiro Kamado" required />
           </Form.Item>
 
