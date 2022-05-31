@@ -13,7 +13,9 @@ export const firebaseJoinRoom: JoinRoom = async (
 ): Promise<Room> => {
   const roomsRef = ref(database, 'rooms/')
   const existingRoomSnapshot = await get(child(roomsRef, roomId))
-  if (!existingRoomSnapshot) throw new Error(`Sala com ID ${roomId} não encontrado`)
+  if (!existingRoomSnapshot.exists()) {
+    throw new Error(`Sala com ID ${roomId} não encontrado`)
+  }
 
   const roomObject = existingRoomSnapshot.val()
   const room: Room = {
