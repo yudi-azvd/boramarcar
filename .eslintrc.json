@@ -37,9 +37,12 @@
     "semi": "off",
     "react/prop-types": "off",
     "no-unused-vars": "off",
+    "no-plusplus": "off",
     "import/prefer-default-export": "off",
     "react/function-component-definition": "off",
-    "react/jsx-one-expression-per-line": ["off"],
+    "react/jsx-one-expression-per-line": [
+      "off"
+    ],
     "no-underscore-dangle": "off",
     "no-useless-constructor": "off",
     "no-empty-function": "off",

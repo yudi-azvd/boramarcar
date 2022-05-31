@@ -16,6 +16,8 @@ import {
 import { CurrentUserScheduleUpdateEmitter, ScheduleChangeHandler } from '@/contracts'
 import { Timebox, User } from '@/domain/types'
 
+import './populate'
+
 export const database = getDatabase()
 
 export async function firebaseDeleteUser(userId: string) {
