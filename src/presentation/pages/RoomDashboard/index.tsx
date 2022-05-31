@@ -9,7 +9,7 @@ import {
 import { useAuth } from '@/presentation/hooks/auth'
 import { Room, Schedule, User } from '@/domain/types'
 
-import { List } from 'antd'
+import { List, Tooltip } from 'antd'
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import { Container, RoomInfo, Top } from './style'
 
@@ -55,9 +55,14 @@ const RoomDashboard: React.FC = () => {
   return (
     <Container>
       <Top>
-        <h1>
-          Sala: <strong>{room.name}</strong>
-        </h1>
+        <div>
+          <h1>
+            Sala: <strong>{room.name}</strong>
+          </h1>
+          <Tooltip placement="right" title="Compartilhe esse ID para outras pessoas entrarem nessa sala">
+            <h2>ID: {room.id}</h2>
+          </Tooltip>
+        </div>
         <div>
           <p>
             <Link to="/rooms">
@@ -80,7 +85,7 @@ const RoomDashboard: React.FC = () => {
           locale={{ emptyText: 'Não há outros participantes nessa sala' }}
           header={<h3>Participantes</h3>}
           dataSource={otherUsers.map((u) => u.name)}
-          renderItem={(item:string) => (
+          renderItem={(item: string) => (
             <List.Item>
               {item}
             </List.Item>

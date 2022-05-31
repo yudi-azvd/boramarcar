@@ -15,8 +15,8 @@ export const Container = styled.div`
   
   @media (min-width: 768px) {
     grid-template-areas: 
-    "T T T"
-    "R S S";
+    "T T T T T"
+    "R S S S S";
   }
 
   padding-bottom: 32px;
@@ -25,10 +25,9 @@ export const Container = styled.div`
 export const Top = styled.div`
   grid-area: T;
 
-  div {
-    display: flex;
-    justify-content: space-between;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export const RoomInfo = styled.aside`
