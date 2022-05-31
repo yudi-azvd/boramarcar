@@ -104,11 +104,15 @@ export async function firebaseGetUsers(roomId: string): Promise<User[]> {
   try {
     const usersSnapshot = await get(child(dbRef, 'users'))
     const usersSchedulesSnapshot = await get(child(dbRef, `schedules/${roomId}`))
+    const usersInRoomSnapshot = await get(child(dbRef, `rooms/${roomId}/users`))
 
     if (usersSnapshot.exists()) {
       const usersObject = usersSnapshot.val()
       const schedulesByUserIdObject = usersSchedulesSnapshot.val()
+      const usersByIdInRoomObject = usersInRoomSnapshot.val()
       users = convertToUsers(usersObject, schedulesByUserIdObject)
+      // FIXME: Quanto mais pessoas cadastradas, pior vai ficar esse filtro
+      users = users.filter((u) => usersByIdInRoomObject[u.id])
     } else console.log('no data available');
   } catch (error) {
     console.log(error);
