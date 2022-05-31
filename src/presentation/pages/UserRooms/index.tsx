@@ -118,7 +118,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
       <p>
         Bem vindo, <strong>{user.name}</strong>
       </p>
-      <Tooltip title="Você deve usar o seu ID para logar">
+      <Tooltip title="Esse é o ID que você usar para logar">
         <p>Seu ID: {user.id} </p>
       </Tooltip>
 

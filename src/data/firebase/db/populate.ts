@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Room, User } from '@/domain/types';
 import {
   getDatabase, ref, update,
@@ -6,7 +7,7 @@ import {
 export const database = getDatabase()
 
 let usersCount = 0
-const roomsCount = 0
+let roomsCount = 0
 
 async function devCeateUser(username: string) {
   usersCount++
@@ -26,6 +27,7 @@ async function devCeateUser(username: string) {
 }
 
 async function devCeateRoom(roomname: string, ownerId: string) {
+  roomsCount++
   const roomsRef = ref(database, 'rooms/')
   const roomId = `r${roomsCount}`
 
@@ -46,7 +48,9 @@ async function devCeateRoom(roomname: string, ownerId: string) {
 
 async function populateDevelopmentDatabase() {
   const alvares = await devCeateUser('Alvares')
+  const bianca = await devCeateUser('Bianca')
   await devCeateRoom('Terra Média', alvares.id)
+  await devCeateRoom('Sala da Bianca', bianca.id)
 }
 
 if (import.meta.env.DEV) {
