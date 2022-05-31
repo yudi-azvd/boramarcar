@@ -1,23 +1,35 @@
 import { JoinRoom } from "@/contracts"
-import { Button, Form, Input, Modal } from "antd"
+import { Room } from "@/domain/types"
+import { Button, Form, Input, Modal, notification } from "antd"
 
 interface JoinRoomModalFormProps {
   visible: boolean
   userId: string
   joinRoom: JoinRoom
   onCancel: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined
+  addRoom: (room: Room) => void
 }
 
 const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({ 
   visible = false,
   userId,
   onCancel,
-  joinRoom
+  joinRoom,
+  addRoom
 }) => {
-
   async function handleFinish({ roomId }: { roomId: string }) {
-    console.log('>>> handle finissh');
-    await joinRoom(roomId, userId)
+    try {
+      const room = await joinRoom(roomId, userId)
+      notification.success({
+        message: 'Joined room successfully'
+      })
+      addRoom(room)
+    } catch (error) {
+      notification.error({
+        message: 'Alguma coisa deu errado :(',
+        description: String(error)
+      })
+    }
   }
 
   return (
@@ -37,7 +49,7 @@ const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({
         onFinish={handleFinish}
       >
         <Form.Item name="roomId" label="ID da sala" rules={[{ required: true }]}>
-          <Input type="text" placeholder="-Nkds82k12" />
+          <Input type="text" placeholder="-Nkds82k12..." />
         </Form.Item>
       </Form>
     </Modal>

@@ -4,12 +4,12 @@ import { CreateRoom, GetUserRooms, JoinRoom } from "@/contracts"
 import { Container, Content } from "./styles"
 
 import CreateRoomModalForm from "./components/CreateRoomModalForm"
+import JoinRoomModalForm from "./components/JoinRoomModalForm"
 
 import { useEffect, useState } from "react"
 import { Button, Space, Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import { Link } from "react-router-dom"
-import JoinRoomModalForm from "./components/JoinRoomModalForm"
 
 type RoomRowType = Room & {
   key: string
@@ -18,6 +18,7 @@ type RoomRowType = Room & {
 interface UserRoomsProps {
   getUserRooms: GetUserRooms
   createRoom: CreateRoom
+  joinRoom: JoinRoom
 }
 
 function getRandomName() {
@@ -32,7 +33,7 @@ function getRandomName() {
   return nameOptions[Math.floor(Math.random() * nameOptions.length)]
 }
 
-const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
+const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoom }) => {
   const { user } = useAuth()
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
   const [isJoinRoomModalVisible, setIsJoinRoomModalVisible] = useState(false)
@@ -82,6 +83,10 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
     }
   }
 
+  function addRoom(room: Room) {
+    setRooms([room, ...rooms])
+  }
+
   function openCreateRoomModal() {
     setIsCreateRoomModalVisible(true)
   }
@@ -89,8 +94,6 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
   function openJoinRoomModal() {
     setIsJoinRoomModalVisible(true)
   }
-
-  const joinRoom: JoinRoom = async () => ({} as Room)
 
   useEffect(() => {
     async function getRooms() {
@@ -107,7 +110,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
 
       <CreateRoomModalForm
         randomRoomname={getRandomName()}
-        addRoom={(newRoom: Room) => setRooms([newRoom, ...rooms])}
+        addRoom={addRoom}
         userId={user.id}
         visible={isCreateRoomModalVisible}
         onCancel={() => setIsCreateRoomModalVisible(false)}
@@ -119,6 +122,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom }) => {
         userId={user.id}
         joinRoom={joinRoom}
         onCancel={() => setIsJoinRoomModalVisible(false)}
+        addRoom={addRoom}
       />
 
       <Content>
