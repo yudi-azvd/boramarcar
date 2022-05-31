@@ -16,7 +16,15 @@ module.exports = {
     }
   },
   transform: {
-    '.+\\.(ts|tsx)$': 'ts-jest'
+    // '.+\\.(ts|tsx)$': 'ts-jest',
+    // https://github.com/swc-project/swc-node/issues/635#issuecomment-1070766669
+    '^.+\\.(t|j)sx?$': ['@swc/jest', {
+      jsc: {
+        transform: {
+          react: { runtime: 'automatic' }
+        }
+      }
+    }],
   },
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'

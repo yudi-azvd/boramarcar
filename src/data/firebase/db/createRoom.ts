@@ -1,7 +1,7 @@
 import { CreateRoom } from "@/contracts"
 import { Room } from "@/domain/types"
-import { push, ref } from "firebase/database"
 
+import { push, ref } from "firebase/database"
 import { database } from './index'
 
 export const firebaseCreateRoom: CreateRoom = async (
