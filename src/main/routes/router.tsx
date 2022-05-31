@@ -1,11 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/presentation/hooks/auth'
 import InitialPage from '@/presentation/pages/InitialPage'
-import Dashboard from '@/presentation/pages/Dashboard'
+import Room from '@/presentation/pages/Room'
 import DevNotes from '@/presentation/pages/DevNotes'
 
 import SignUp from '@/presentation/pages/SignUp'
-import UserRooms from '@/presentation/pages/UserRooms'
 import RequireAuth from './RequireAuth'
 import makeUserRooms from '../factories/UserRoomsFactory'
 
@@ -20,7 +19,7 @@ const Router: React.FC = () => (
         <Route element={<RequireAuth />}>
           {/* <Route path='/rooms' element={<UserRooms />} /> */}
           <Route path="/rooms" element={makeUserRooms()} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/r/:roomId" element={<Room />} />
           {/* Outras rotas privadas vão aqui */}
         </Route>
       </Routes>

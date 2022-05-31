@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   FirebaseCurrentUserScheduleUpdateEmitter,
   firebaseGetUserById,
@@ -12,10 +12,9 @@ import { Schedule, User } from '@/domain/types'
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import { Container } from './style'
 
-const Dashboard: React.FC = () => {
-  const roomId = 'theOnlyRoomId'
-  const navigate = useNavigate()
-  const { user: currentUser, signout } = useAuth()
+const Room: React.FC = () => {
+  const { roomId } = useParams() as { roomId: string }
+  const { user: currentUser } = useAuth()
   const [user, setUser] = useState(currentUser)
   const [otherUsers, setOtherUsers] = useState<User[]>([])
 
@@ -51,18 +50,13 @@ const Dashboard: React.FC = () => {
     return () => unsubscribe()
   }, [])
 
-  async function handleUserLogout() {
-    await signout()
-    navigate('/')
-  }
-
   return (
     <Container>
       <h1>Dashboard</h1>
       <div>
         <p>
-          <Link to="/" onClick={handleUserLogout}>
-            Sair e voltar para a página principal
+          <Link to="/rooms">
+            Voltar para as minhas salas
           </Link>
         </p>
       </div>
@@ -77,4 +71,4 @@ const Dashboard: React.FC = () => {
   )
 }
 
-export default Dashboard
+export default Room
