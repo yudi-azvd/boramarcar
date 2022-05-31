@@ -4,10 +4,12 @@ import {
 } from 'react'
 import { firebaseCreateUser, firebaseDeleteUser } from '@/data/firebase/db'
 import { User } from '@/domain/types'
+import { firebaseGetUserById } from '@/data/firebase/db/getUserById'
 
 interface AuthContextInterface {
   user: User
   signup: (username: string) => Promise<User>
+  signin: (userId: string) => Promise<User>
   signout: () => Promise<void>
 }
 
@@ -30,6 +32,13 @@ const AuthProvider: React.FC = ({ children }) => {
     return user
   }, [])
 
+  const signin = useCallback(async (userId: string): Promise<User> => {
+    const dbUser = await firebaseGetUserById(userId)
+    localStorage.setItem('user', JSON.stringify(dbUser))
+    setUser(dbUser)
+    return dbUser
+  }, [])
+
   const signout = useCallback(async (): Promise<void> => {
     await firebaseDeleteUser(user.id)
     localStorage.setItem('user', JSON.stringify({}))
@@ -37,7 +46,10 @@ const AuthProvider: React.FC = ({ children }) => {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, signup, signout }}>
+    <AuthContext.Provider value={{
+      user, signup, signin, signout,
+    }}
+    >
       {children}
     </AuthContext.Provider>
   )

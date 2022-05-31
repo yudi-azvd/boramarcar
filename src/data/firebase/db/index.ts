@@ -79,7 +79,7 @@ export function firebaseListenToOtherUsersScheduleUpdates(
   return unsubscribe
 }
 
-export async function firebaseGetUserById(roomId: string, id: string): Promise<User> {
+export async function firebaseGetUserInRoomById(roomId: string, id: string): Promise<User> {
   const dbRef = ref(database)
   let user: User = {} as User
   try {
