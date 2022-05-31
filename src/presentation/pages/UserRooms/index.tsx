@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Room } from '@/domain/types'
 import { useAuth } from '@/presentation/hooks/auth'
 import { CreateRoom, GetUserRooms, JoinRoom } from '@/contracts'
@@ -33,6 +33,7 @@ function getRandomName() {
 }
 
 const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoom }) => {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] = useState(false)
   const [isJoinRoomModalVisible, setIsJoinRoomModalVisible] = useState(false)
@@ -61,9 +62,10 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
     {
       title: 'Ações',
       key: 'action',
-      render: (_: any, record: RoomRowType) => (
+      render: (_: any, room: RoomRowType) => (
         <Space size="middle">
-          <Link to={`/r/${record.key}`}> Entrar </Link>
+          <Button type="link" onClick={() => navigate(`/r/${room.key}`, { state: { room } })}> Entrar </Button>
+          {/* <Link to={{ pathname: `/r/${room.key}` }}> Entrar </Link> */}
           <Button
             className="leave"
             type="link"
