@@ -15,6 +15,13 @@ outra stack.
 
 Agora, sim, as notas:
 
+## 2022-05-31
+
+Tenho que criar algum jeito de popular o banco de dados com alguns usuários,
+sala e cronogramas(?) em ambiente de desenvolvimento. Os usuários e salas teriam
+IDs bem fáceis como "u1", "u2" para usuários e "r1", "r2" para salas.
+
+
 ## 2022-05-21 - Ainda mais tarde
 
 Decidi mudar um pouco o fluxo de "autenticação".

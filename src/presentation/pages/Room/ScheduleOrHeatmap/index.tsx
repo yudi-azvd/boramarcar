@@ -26,7 +26,6 @@ const ScheduleOrHeatmap: React.FC<ScheduleOrHeatmapProps> = ({
     <div>
       <p>
         Bem vindo,
-        {' '}
         {user.name}
       </p>
     </div>
