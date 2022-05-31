@@ -1,4 +1,6 @@
-import { Room, Schedule, Timebox, User } from "@/domain/types";
+import {
+  Room, Schedule, Timebox, User,
+} from '@/domain/types';
 
 export interface UpdateScheduleDTO {
   roomId: string
@@ -35,7 +37,6 @@ export interface CurrentUserScheduleUpdateEmitter {
 export interface ScheduleChangeHandler {
   (usersWithNewSchedules: User[]): void
 }
-
 
 export interface GetCurrentUserSchedule {
   (): Promise<Schedule>

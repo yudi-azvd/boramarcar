@@ -1,7 +1,8 @@
-import { CreateRoom } from "@/contracts"
-import { Room } from "@/domain/types"
-import { Button, Form, Input, Modal, notification } from "antd"
-import { useState } from "react"
+import {
+  Button, Form, Input, Modal, notification,
+} from 'antd'
+import { CreateRoom } from '@/contracts'
+import { Room } from '@/domain/types'
 
 interface CreateRoomModalProps {
   userId: string
@@ -12,18 +13,21 @@ interface CreateRoomModalProps {
   addRoom: (room: Room) => void
 }
 
+interface CreateRoomFormValues {
+  name: string
+}
+
 const CreateRoomModalForm: React.FC<CreateRoomModalProps> = ({
   userId,
   visible = false,
   randomRoomname,
   onCancel,
   createRoom,
-  addRoom
+  addRoom,
 }) => {
-  const [isLoading, setIsLoading] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
   const randomName = randomRoomname
-
-  async function handleFinish(values: any) {
+  async function handleFinish(values: CreateRoomFormValues) {
     const roomname = values.name || randomName
 
     try {
@@ -31,12 +35,12 @@ const CreateRoomModalForm: React.FC<CreateRoomModalProps> = ({
       addRoom(newRoom)
       notification.success({
         message: 'Sala criada com sucesso!',
-        description: `Você já pode entrar na sala ${newRoom.name}`
+        description: `Você já pode entrar na sala ${newRoom.name}`,
       })
     } catch (error) {
       notification.error({
         message: 'Aconteceu algum erro :(',
-        description: String(error)
+        description: String(error),
       })
     }
   }
@@ -50,7 +54,7 @@ const CreateRoomModalForm: React.FC<CreateRoomModalProps> = ({
       footer={[
         <Button form="create-room" type="primary" key="submit" htmlType="submit">
           Criar
-        </Button>
+        </Button>,
       ]}
     >
       <Form

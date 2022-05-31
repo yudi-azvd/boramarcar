@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 90%;
@@ -24,7 +24,7 @@ export const Content = styled.div`
     }
   }
 
-  a.leave {
+  button.leave {
     color: #ff4d4f;
     color: grey;
     cursor: not-allowed;

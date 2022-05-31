@@ -11,7 +11,7 @@ export const colorStops = {
     '#FAA6A9',
     '#FF777B',
     '#E95F63',
-  ]
+  ],
 }
 
 /**
@@ -21,12 +21,10 @@ export const colorStops = {
  * deve ser negativo.
  */
 export function differenceToColor(available: number, busy: number, total: number) {
-  if (available === 0 && busy === 0)
-    return '#FFFFFF'
-    
+  if (available === 0 && busy === 0) return '#FFFFFF'
+
   const difference = available - busy
-  if (difference === 0)
-    return '#DDDDDD'
+  if (difference === 0) return '#DDDDDD'
   if (difference > 0) {
     const availablePercent = difference / total
     return colorStops.available[Math.floor(availablePercent * 4) - 1]
@@ -34,4 +32,3 @@ export function differenceToColor(available: number, busy: number, total: number
   const busyPercent = -difference / total
   return colorStops.busy[Math.floor(busyPercent * 4) - 1]
 }
-

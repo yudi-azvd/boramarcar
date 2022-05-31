@@ -1,4 +1,4 @@
-const DevNotes = () => {
+function DevNotes() {
   return (
     <div>
       <h1>Notas de desenvolvimento</h1>

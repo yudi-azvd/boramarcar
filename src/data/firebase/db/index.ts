@@ -1,5 +1,7 @@
-import { CurrentUserScheduleUpdateEmitter, ScheduleChangeHandler } from '@/contracts'
-import { Timebox, User } from '@/domain/types'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
 import {
   getDatabase,
   child,
@@ -11,6 +13,8 @@ import {
   onValue,
   DataSnapshot,
 } from 'firebase/database'
+import { CurrentUserScheduleUpdateEmitter, ScheduleChangeHandler } from '@/contracts'
+import { Timebox, User } from '@/domain/types'
 
 export const database = getDatabase()
 
@@ -27,13 +31,13 @@ export async function firebaseDeleteUser(userId: string) {
 export async function firebaseCreateUser(username: string) {
   const usersRef = ref(database, 'users')
   const newUserRef = push(usersRef, {
-    name: username
+    name: username,
   })
 
   return {
     name: username,
     id: newUserRef.key,
-    schedule: {}
+    schedule: {},
   } as User
 }
 
@@ -47,18 +51,17 @@ export class FirebaseCurrentUserScheduleUpdateEmitter implements CurrentUserSche
     const userScheduleInRoomRef = ref(database, `schedules/${this.roomId}/${this.userId}`)
     const { dayAndTime, availability } = timebox
 
-    if (timebox.availability !== undefined)
+    if (timebox.availability !== undefined) {
       update(userScheduleInRoomRef, {
-        [dayAndTime]: availability
+        [dayAndTime]: availability,
       })
-    else
-      remove(child(userScheduleInRoomRef, dayAndTime))
+    } else remove(child(userScheduleInRoomRef, dayAndTime))
   }
 }
 
 export function firebaseListenToOtherUsersScheduleUpdates(
   roomId: string,
-  scheduleChangeHandler: ScheduleChangeHandler
+  scheduleChangeHandler: ScheduleChangeHandler,
 ) {
   const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
   const dbRef = ref(database)
@@ -74,7 +77,6 @@ export function firebaseListenToOtherUsersScheduleUpdates(
   return unsubscribe
 }
 
-
 export async function firebaseGetUserById(roomId: string, id: string): Promise<User> {
   const dbRef = ref(database)
   let user: User = {} as User
@@ -84,16 +86,15 @@ export async function firebaseGetUserById(roomId: string, id: string): Promise<U
     if (userSnapshot.exists()) {
       user = {
         ...userSnapshot.val(),
-        schedule: scheduleSnapshot.val() ?? {}
+        schedule: scheduleSnapshot.val() ?? {},
       }
     }
   } catch (error) {
-    throw new Error('User not found. User ID: ' + id)
+    throw new Error(`User not found. User ID: ${id}`)
   }
 
   return user
 }
-
 
 export async function firebaseGetUsers(roomId: string): Promise<User[]> {
   const dbRef = ref(database)
@@ -106,9 +107,7 @@ export async function firebaseGetUsers(roomId: string): Promise<User[]> {
       const usersObject = usersSnapshot.val()
       const schedulesByUserIdObject = usersSchedulesSnapshot.val()
       users = convertToUsers(usersObject, schedulesByUserIdObject)
-    }
-    else
-      console.log('no data available');
+    } else console.log('no data available');
   } catch (error) {
     console.log(error);
   }
@@ -118,7 +117,7 @@ export async function firebaseGetUsers(roomId: string): Promise<User[]> {
 
 function convertToUsers(usersObject: any, schedulesByUserIdObject: any) {
   const users = Object.keys(usersObject)
-    .map<User>(user_id => {
+    .map<User>((user_id) => {
       // Se é o primeiro acesso da sala, schedulesByUserIdObject é null
       // Se é um usuário que veio depois, schedulesByUserIdObject[user_id] é null
       const userSchedule = schedulesByUserIdObject
@@ -136,7 +135,6 @@ function convertToUsers(usersObject: any, schedulesByUserIdObject: any) {
 
   return users
 }
-
 
 export * from './getUserRooms'
 export * from './createRoom'

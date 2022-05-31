@@ -24,8 +24,8 @@ export const Container = styled.div<ContainerProps>`
   width: 100%;
   height: 90vh;
   display: grid;
-  grid-template-columns: repeat(${props => props.cols}, 1fr);
-  grid-template-rows: repeat(${props => props.rows}, 1fr);
+  grid-template-columns: repeat(${(props) => props.cols}, 1fr);
+  grid-template-rows: repeat(${(props) => props.rows}, 1fr);
   column-gap: 4px;
   row-gap: 4px;
 
@@ -45,6 +45,6 @@ export const Container = styled.div<ContainerProps>`
   }
 
   ${HeatmapTimeboxItem} {
-    opacity: ${props => props.visible ? 1 : 0};
+    opacity: ${(props) => (props.visible ? 1 : 0)};
   }
 `

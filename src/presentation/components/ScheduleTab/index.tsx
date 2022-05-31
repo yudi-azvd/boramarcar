@@ -1,8 +1,12 @@
-import { CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule, ScheduleRepository, UpdateCurrentUserSchedule } from "@/contracts"
-import { englishWeekdaysToPortuguese } from "@/domain/weekdays"
-import { Day, DayAndTime, Schedule, Time, Availability } from "@/domain/types"
-import { useEffect, useState } from "react"
-import { Container, TimeboxItem } from "./styles"
+import { useEffect, useState } from 'react'
+import {
+  CurrentUserScheduleUpdateEmitter, GetCurrentUserSchedule,
+} from '@/contracts'
+import { englishWeekdaysToPortuguese } from '@/domain/weekdays'
+import {
+  Day, DayAndTime, Schedule, Time, Availability,
+} from '@/domain/types'
+import { Container, TimeboxItem } from './styles'
 
 interface ScheduleTabProps {
   times: Time[]
@@ -21,14 +25,11 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
 
   async function setTimeBoxValue(dayAndTime: DayAndTime): Promise<void> {
     const old = schedule[dayAndTime]
-    let newAvailability: Availability = undefined
+    let newAvailability: Availability
 
-    if (old === 'available')
-      newAvailability = 'busy'
-    if (old === 'busy')
-      newAvailability = undefined
-    if (old === undefined)
-      newAvailability = 'available'
+    if (old === 'available') { newAvailability = 'busy' }
+    if (old === 'busy') { newAvailability = undefined }
+    if (old === undefined) { newAvailability = 'available' }
 
     const timebox = { dayAndTime, availability: newAvailability }
     currentUserScheduleUpdateEmitter.emit(timebox)
@@ -37,8 +38,8 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
 
   useEffect(() => {
     async function getAll() {
-      const schedule = await getCurrentUserSchedule()
-      setSchedule(schedule)
+      const userSchedule = await getCurrentUserSchedule()
+      setSchedule(userSchedule)
     }
 
     getAll()
@@ -48,26 +49,32 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
     <Container cols={days.length + 1} rows={times.length + 1} visible>
       <div id="top-left" />
 
-      {days.map(day => (
-        <div className="day" key={`sch-${day}`}> {englishWeekdaysToPortuguese[day][0]} </div>
+      {days.map((day) => (
+        <div className="day" key={`sch-${day}`}>
+          {englishWeekdaysToPortuguese[day][0]}
+        </div>
       ))}
 
-      {times.map(time => (
-        [<div className="time" key={`sch-${time}`} > {time} </div>].concat(
-          days.map(day => {
+      {times.map((time) => (
+        [
+          <div className="time" key={`sch-${time}`}>
+            {time}
+          </div>,
+        ].concat(
+          days.map((day) => {
             const dayTime: DayAndTime = `${day}-${time}`
             return (
               <TimeboxItem
                 onClick={() => setTimeBoxValue(dayTime)}
-                // Precisa dessa classe para os testes. Ou escolhe outro seletor 
-                // mais fácil lá em Schedule.spec/makeSut 
+                // Precisa dessa classe para os testes. Ou escolhe outro seletor
+                // mais fácil lá em Schedule.spec/makeSut
                 className="timebox"
                 id={`sch-${dayTime}`}
                 key={`sch-${dayTime}`}
                 availability={schedule[dayTime] ?? undefined}
               />
             )
-          })
+          }),
         )
       ))}
     </Container>
