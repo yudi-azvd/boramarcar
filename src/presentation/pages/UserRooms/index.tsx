@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  Button, Space, Table, Tooltip,
+  Button, Space, Table,
 } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { useNavigate } from 'react-router-dom'
@@ -118,9 +118,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
       <p>
         Bem vindo, <strong>{user.name}</strong>
       </p>
-      <Tooltip title="Esse é o ID que você usar para logar">
-        <p>Seu ID: {user.id} </p>
-      </Tooltip>
+      <p>Seu ID: {user.id} (Esse é o ID que você deve usar para logar) </p>
 
       <CreateRoomModalForm
         randomRoomname={getRandomName()}
@@ -151,7 +149,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
 
         <div>
           <Button onClick={openJoinRoomModal} type="primary" size="large">
-            Entrar em sala com link
+            Entrar em sala com ID
           </Button>
           <Button onClick={openCreateRoomModal} size="large">
             Criar sala

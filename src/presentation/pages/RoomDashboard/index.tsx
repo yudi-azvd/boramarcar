@@ -59,9 +59,8 @@ const RoomDashboard: React.FC = () => {
           <h1>
             Sala: <strong>{room.name}</strong>
           </h1>
-          <Tooltip placement="right" title="Compartilhe esse ID para outras pessoas entrarem nessa sala">
-            <h2>ID: {room.id}</h2>
-          </Tooltip>
+          <h2>ID da sala: {room.id}</h2>
+          <p>Compartilhe o ID da sala para que outras pessoas também entrem aqui</p>
         </div>
         <div>
           <p>
