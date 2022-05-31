@@ -65,15 +65,21 @@ export function firebaseListenToOtherUsersScheduleUpdates(
   roomId: string,
   scheduleChangeHandler: ScheduleChangeHandler,
 ) {
-  const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
   const dbRef = ref(database)
 
+  const schedulesInRoomRef = ref(database, `schedules/${roomId}`)
+
   const unsubscribe = onValue(schedulesInRoomRef, async (schedulesSnapshot: DataSnapshot) => {
+    const usersInRoomSnapshot = await get(child(dbRef, `rooms/${roomId}/users`))
     const usersSnapshot = await get(child(dbRef, 'users'))
     const usersObject = usersSnapshot.val()
+    const usersByIdInRoomObject = usersInRoomSnapshot.val()
+
     const schedulesByUserIdObject = schedulesSnapshot.val()
     const users = convertToUsers(usersObject, schedulesByUserIdObject)
-    scheduleChangeHandler(users)
+    // FIXME: Quanto mais pessoas cadastradas, pior vai ficar esse filtro
+    const usersInRoom = users.filter((u) => usersByIdInRoomObject[u.id])
+    scheduleChangeHandler(usersInRoom)
   })
 
   return unsubscribe
