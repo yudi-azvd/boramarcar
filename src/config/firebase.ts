@@ -3,7 +3,7 @@ import { FirebaseOptions, initializeApp } from 'firebase/app';
 const dbHost = import.meta.env.VITE_FIREBASE_DB_HOST
 
 const firebaseConfig: FirebaseOptions = {
-  apiKey: 'AIzaSyAg358qtLWeLxy13tr4tZTBTrGdAQJymOg',
+  apiKey: import.meta.env.VITE_API_KEY,
   authDomain: 'heatmap-schedule.firebaseapp.com',
   // databaseURL: 'https://heatmap-schedule-default-rtdb.firebaseio.com',
   databaseURL: `http://${dbHost}/?ns=heatmap-schedule-default-rtdb`,
