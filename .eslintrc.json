@@ -34,7 +34,7 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "semi": "off",
+    "semi": ["error", "never"],
     "react/prop-types": "off",
     "no-unused-vars": "off",
     "no-plusplus": "off",

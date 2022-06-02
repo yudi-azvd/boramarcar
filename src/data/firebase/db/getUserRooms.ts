@@ -1,6 +1,6 @@
-import { get, ref } from 'firebase/database';
-import { GetUserRooms } from '@/contracts';
-import { Room } from '@/domain/types';
+import { get, ref } from 'firebase/database'
+import { GetUserRooms } from '@/contracts'
+import { Room } from '@/domain/types'
 
 import { database } from './index'
 
