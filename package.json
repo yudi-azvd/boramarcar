@@ -6,6 +6,7 @@
     "db": "firebase emulators:start",
     "dev": "vite --host",
     "test": "jest --runInBand",
+    "lint": "npx eslint \"src/**\"",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
