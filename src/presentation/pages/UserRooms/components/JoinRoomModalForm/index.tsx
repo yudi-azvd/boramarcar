@@ -21,10 +21,12 @@ const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({
 }) => {
   async function handleFinish({ roomId }: { roomId: string }) {
     try {
-      const room = await joinRoom(roomId, userId)
+      const trimmedRoomId = roomId.trim()
+      const room = await joinRoom(trimmedRoomId, userId)
       notification.success({
-        message: 'Joined room successfully',
+        message: 'Sala adicionada com sucesso!',
       })
+
       addRoom(room)
     } catch (error) {
       notification.error({
@@ -50,7 +52,7 @@ const JoinRoomModalForm: React.FC<JoinRoomModalFormProps> = ({
         layout="vertical"
         onFinish={handleFinish}
       >
-        <Form.Item name="roomId" label="ID da sala" rules={[{ required: true }]}>
+        <Form.Item name="roomId" label="ID da sala" rules={[{ required: true, whitespace: false }]}>
           <Input type="text" placeholder="-Nkds82k12..." />
         </Form.Item>
       </Form>

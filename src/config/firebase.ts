@@ -1,12 +1,18 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 
+let databaseURL = ''
 const dbHost = import.meta.env.VITE_FIREBASE_DB_HOST
+
+if (import.meta.env.DEV) {
+  databaseURL = `http://${dbHost}/?ns=heatmap-schedule-default-rtdb`
+} else {
+  databaseURL = 'https://heatmap-schedule-default-rtdb.firebaseio.com'
+}
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: 'heatmap-schedule.firebaseapp.com',
-  // databaseURL: 'https://heatmap-schedule-default-rtdb.firebaseio.com',
-  databaseURL: `http://${dbHost}/?ns=heatmap-schedule-default-rtdb`,
+  databaseURL,
   projectId: 'heatmap-schedule',
   storageBucket: 'heatmap-schedule.appspot.com',
   messagingSenderId: '1060748809539',
