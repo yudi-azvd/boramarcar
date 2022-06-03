@@ -10,16 +10,18 @@ import SignIn from '@/presentation/pages/SignIn'
 import makeUserRooms from '@/main/factories/UserRoomsFactory'
 import { Header } from '@/presentation/components/Header'
 import RequireAuth from './RequireAuth'
+import RequireNoAuth from './RequireNoAuth'
 
 const Router: React.FC = () => (
   <AuthProvider>
     <BrowserRouter>
       <Header />
       <Routes>
-        {/* No futuro: RequireNoAuth */}
-        <Route path="/" element={<InitialPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route element={<RequireNoAuth />}>
+          <Route path="/" element={<InitialPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Route>
 
         <Route element={<RequireAuth />}>
           <Route path="/rooms" element={makeUserRooms()} />
