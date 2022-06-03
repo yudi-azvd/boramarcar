@@ -9,9 +9,12 @@ import {
 import { useAuth } from '@/presentation/hooks/auth'
 import { Room, Schedule, User } from '@/domain/types'
 
-import { List, Tooltip } from 'antd'
+import { List } from 'antd'
+import { LeftOutlined } from '@ant-design/icons'
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
-import { Container, RoomInfo, Top } from './style'
+import {
+  Container, Content, RoomInfo, Top,
+} from './style'
 
 const RoomDashboard: React.FC = () => {
   const { state: { room } } = useLocation() as { state: { room: Room } }
@@ -54,43 +57,46 @@ const RoomDashboard: React.FC = () => {
 
   return (
     <Container>
-      <Top>
-        <div>
-          <h1>
-            Sala: <strong>{room.name}</strong>
-          </h1>
-          <h2>ID da sala: {room.id}</h2>
-          <p>Compartilhe o ID da sala para que outras pessoas também entrem aqui</p>
-        </div>
-        <div>
-          <p>
-            <Link to="/rooms">
-              {/* TODO: arranjar nome melhor  */}
-              Voltar para as minhas salas
-            </Link>
-          </p>
-        </div>
-      </Top>
+      <Link to="/rooms">
+        <LeftOutlined />
+        {/* TODO: arranjar nome melhor  */}
+        Voltar para as minhas salas
+      </Link>
 
-      <ScheduleOrHeatmap
-        user={user}
-        otherUsers={otherUsers}
-        currentUserScheduleUpdateEmitter={emitter}
-        getCurrentUserSchedule={getCurrentUserSchedule}
-      />
+      <Content>
+        <Top>
+          <div>
+            <h1>
+              Sala: <strong>{room.name}</strong>
+            </h1>
+            <h2>ID da sala: {room.id}</h2>
+            <p>Compartilhe o ID da sala para que outras pessoas também entrem aqui</p>
+          </div>
+          <div>
+            <p />
+          </div>
+        </Top>
 
-      <RoomInfo>
-        <List
-          locale={{ emptyText: 'Não há outros participantes nessa sala' }}
-          header={<h3>Participantes</h3>}
-          dataSource={otherUsers.map((u) => u.name)}
-          renderItem={(item: string) => (
-            <List.Item>
-              {item}
-            </List.Item>
-          )}
+        <ScheduleOrHeatmap
+          user={user}
+          otherUsers={otherUsers}
+          currentUserScheduleUpdateEmitter={emitter}
+          getCurrentUserSchedule={getCurrentUserSchedule}
         />
-      </RoomInfo>
+
+        <RoomInfo>
+          <List
+            locale={{ emptyText: 'Não há outros participantes nessa sala' }}
+            header={<h3>Participantes</h3>}
+            dataSource={otherUsers.map((u) => u.name)}
+            renderItem={(item: string) => (
+              <List.Item>
+                {item}
+              </List.Item>
+            )}
+          />
+        </RoomInfo>
+      </Content>
     </Container>
   )
 }
