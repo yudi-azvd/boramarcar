@@ -1,4 +1,4 @@
-import { Schedule, User } from '@/domain/types';
+import { Schedule, User } from '@/domain/types'
 
 export const userFakeSchedule: Schedule = {
   'Sunday-08h': 'available',

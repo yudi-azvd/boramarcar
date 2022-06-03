@@ -119,9 +119,9 @@ export async function firebaseGetUsers(roomId: string): Promise<User[]> {
       users = convertToUsers(usersObject, schedulesByUserIdObject)
       // FIXME: Quanto mais pessoas cadastradas, pior vai ficar esse filtro
       users = users.filter((u) => usersByIdInRoomObject[u.id])
-    } else console.log('no data available');
+    } else console.log('no data available')
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 
   return users

@@ -1,6 +1,6 @@
 import {
   Room, Schedule, Timebox, User,
-} from '@/domain/types';
+} from '@/domain/types'
 
 export interface UpdateScheduleDTO {
   roomId: string

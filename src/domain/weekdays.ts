@@ -1,4 +1,4 @@
-import { Day } from '@/domain/types';
+import { Day } from '@/domain/types'
 
 export const englishWeekdaysToPortuguese: {
   [key in Day]: string

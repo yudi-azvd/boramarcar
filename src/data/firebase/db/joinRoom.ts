@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import {
   child, get, ref, update,
-} from 'firebase/database';
-import { JoinRoom } from '@/contracts';
-import { Room } from '@/domain/types';
+} from 'firebase/database'
+import { JoinRoom } from '@/contracts'
+import { Room } from '@/domain/types'
 
 import { database } from './index'
 
