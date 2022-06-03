@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "predb": "node init-db.js",
     "db": "firebase emulators:start",
     "dev": "vite --host",
     "test": "jest --runInBand",
