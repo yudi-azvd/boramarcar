@@ -4,6 +4,18 @@ export const Container = styled.div`
   margin: auto;
   margin-top: 16px;
   width: 90%;
+
+  > a {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  > a svg {
+    margin-right: 8px;
+  }
+`
+
+export const Content = styled.div`
   display: grid;
   gap: 16px;
   grid-template-areas: 
@@ -26,8 +38,13 @@ export const Top = styled.div`
   grid-area: T;
 
   display: flex;
+  flex-direction: column-reverse;
   align-items: center;
   justify-content: space-between;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `
 
 export const RoomInfo = styled.aside`
