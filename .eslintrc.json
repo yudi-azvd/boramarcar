@@ -48,6 +48,7 @@
     "no-empty-function": "off",
     "no-use-before-define": "off",
     "no-alert": "off",
+    "react/no-unescaped-entities": "off",
     "react/jsx-no-bind": [
       "error",
       {
