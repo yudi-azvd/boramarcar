@@ -1,4 +1,4 @@
-import { FirebaseOptions, initializeApp } from 'firebase/app';
+import { FirebaseOptions, initializeApp } from 'firebase/app'
 
 let databaseURL = ''
 const dbHost = import.meta.env.VITE_FIREBASE_DB_HOST
@@ -11,14 +11,14 @@ if (import.meta.env.DEV) {
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: 'heatmap-schedule.firebaseapp.com',
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
   databaseURL,
-  projectId: 'heatmap-schedule',
-  storageBucket: 'heatmap-schedule.appspot.com',
-  messagingSenderId: '1060748809539',
-  appId: '1:1060748809539:web:e762509faed1ba37d90bf6',
-};
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+}
 
-const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig)
 
 export default firebaseApp
