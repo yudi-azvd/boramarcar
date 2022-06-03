@@ -7,26 +7,42 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
   }
 
-  > div {
+  > div.buttons {
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: 16px;
 
-    button + button {
+    /* button + button {
       margin-top: 16px;
+    } */
+    button {
+      margin-bottom: 16px;
     }
   }
 
-  button.leave {
-    color: #ff4d4f;
-    color: grey;
-    cursor: not-allowed;
+  @media (min-width: 768px) {
+    > div.buttons {
+      margin: 0 auto;
+    }
+  }
+
+  .ant-space .ant-space-item {
+    button {
+      padding-left: 0;
+    }
+
+    button.leave {
+      color: #ff4d4f;
+      color: grey;
+      cursor: not-allowed;
+    }
   }
 `

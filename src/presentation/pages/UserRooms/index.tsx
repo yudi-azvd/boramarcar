@@ -67,7 +67,6 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
       render: (_: any, room: RoomRowType) => (
         <Space size="middle">
           <Button type="link" onClick={() => navigate(`/r/${room.key}`, { state: { room } })}> Entrar </Button>
-          {/* <Link to={{ pathname: `/r/${room.key}` }}> Entrar </Link> */}
           <Button
             className="leave"
             type="link"
@@ -76,7 +75,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
               () => { }
             }
           >
-            Sair permanentemente
+            Sair
           </Button>
         </Space>
       ),
@@ -84,7 +83,9 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
   ]
 
   function handleLeaveRoomPermanently(room: Room) {
-    const wantsToLeave = window.confirm(`Tem certeza que deseja sair permanentemente da sala ${room.name}?`)
+    const message = `Tem certeza que deseja sair permanentemente da sala ${room.name}?`
+      + ' Todoos os seus dados nessa sala serão perdidos.'
+    const wantsToLeave = window.confirm(message)
 
     if (wantsToLeave) {
       // await removeUserFromRoom(room.id)
@@ -147,7 +148,7 @@ const UserRooms: React.FC<UserRoomsProps> = ({ getUserRooms, createRoom, joinRoo
           <Table dataSource={dataSource} columns={columns} pagination={false} />
         )}
 
-        <div>
+        <div className="buttons">
           <Button onClick={openJoinRoomModal} type="primary" size="large">
             Entrar em sala com ID
           </Button>
