@@ -53,11 +53,6 @@ yarn db
 yarn dev
 ```
 
-<<<<<<< HEAD
-## Agradecimentos
-
-@Edmundo-Ribeiro pelo nome do projeto.
-=======
 Se deu tudo certo, você pode interagir com a aplicação digitando esse endereço
 no seu navegador http://localhost:3000.
 
@@ -69,4 +64,3 @@ projeto, você pode ler o [devnotes](./docs/devnotes.md).
 ## Agradecimentos
 
 @Edmundo-Ribeiro pelo nome do projeto. Nome simples, curto e fácil de entender.
->>>>>>> firebase-integration-messy
