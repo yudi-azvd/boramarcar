@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { Room, User } from '@/domain/types';
+import { Room, User } from '@/domain/types'
 import {
   getDatabase, ref, update,
-} from 'firebase/database';
+} from 'firebase/database'
 
 export const database = getDatabase()
 
@@ -54,6 +54,6 @@ async function populateDevelopmentDatabase() {
 }
 
 if (import.meta.env.DEV) {
-  console.log('populate DB');
+  console.log('populate DB')
   populateDevelopmentDatabase()
 }

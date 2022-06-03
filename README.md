@@ -26,16 +26,18 @@ As configurações do Firebase ficam nos arquivos `.firebaserc`,
 cp firebase.example.json firebase.json
 ```
 
-Preencha o arquivo `firebase.json` com os seus dados de IP. Prefira usar um IP 
+Preencha o arquivo `firebase.json` com os seus dados de IP na propriedade
+`firebase.emulators.database`. Prefira usar um IP 
 como `192.1165.71.67` em vez de `localhost` ou `127.0.0.0`. Assim será possível 
 interagir com a aplicação de outros dispositivos diferentes do seu computador de
-desenvolvimento (exemplo: outros computadores e celulares).
+desenvolvimento (exemplo: outros computadores e celulares). Faça o mesmo para
+a variável `VITE_FIREBASE_DB_HOST` no arquivo `.env`:
 
 ```
 cp .env.example .env
 ```
 
-Criar um conta no Firebase, criar um projeto e copiar os dados dele nas variáveis
+Crie um conta no Firebase, crie um projeto e copie os dados dele nas variáveis
 do `.env` (pra ser sincero, não sei se deveria precisar de tudo isso só pra 
 emular o RTDB localmente. Depois eu descubro).
 

@@ -8,11 +8,13 @@ import SignUp from '@/presentation/pages/SignUp'
 import SignIn from '@/presentation/pages/SignIn'
 
 import makeUserRooms from '@/main/factories/UserRoomsFactory'
+import { Header } from '@/presentation/components/Header'
 import RequireAuth from './RequireAuth'
 
 const Router: React.FC = () => (
   <AuthProvider>
     <BrowserRouter>
+      <Header />
       <Routes>
         {/* No futuro: RequireNoAuth */}
         <Route path="/" element={<InitialPage />} />
