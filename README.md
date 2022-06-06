@@ -1,6 +1,41 @@
-# Bora Marcar 
+<!-- README original -->
+<!-- https://github.com/othneildrew/Best-README-Template -->
+<!-- RAW https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/README.md -->
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="src/logo.svg" alt="Logo" width="80" height="80">
+  </a>
 
-Encontre e visualize horários em comum para o seu grupo. Fácil e rápido de usar.
+  <h2 align="center">Bora Marcar</h2>
+
+  <p align="center">
+    Encontre e visualize horários em comum para o seu grupo. Fácil e rápido de usar.
+    <br />
+    <a href="https://boramarcar.vercel.app">Veja funcionando</a>
+    ·
+    <a style="pointer-events: none; display: inline-block; color: grey;" href="#">
+      Achou um bug? Clique aqui</a>
+    ·
+    <a style="pointer-events: none; display: inline-block; color: grey;" href="#">
+      Mais funcionalidades</a>
+  </p>
+</div>
+
+<br />
+
+## Visão geral
+
+![Bora Marcar](docs/app-screenshot.png)
+
+**Bora Marcar** é uma aplicação para ajudar você e seu grupo a encontrar os
+melhores horários para uma reunião ou um rolê qualquer.
+
+### Tecnologias
+
+- React + TypeScript
+- Firebase (Realtime Database)
+- Vite
 
 ## Rodar em ambiente de desenvolvimento
 
