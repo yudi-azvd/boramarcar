@@ -32,15 +32,18 @@ export function differenceToColor(available: number, busy: number, total: number
   if (difference === 0) return '#DDDDDD'
   if (difference > 0) {
     const availablePercentage = difference / total
-    const { length } = colorStops.available
-    stopIndex = Math.floor(availablePercentage * length)
-    stopIndex = stopIndex === length ? stopIndex - 1 : stopIndex
+    stopIndex = mapPercentageToStopIndex(availablePercentage)
     return colorStops.available[stopIndex]
   }
 
   const busyPercentage = -difference / total
-  const { length } = colorStops.busy
-  stopIndex = Math.floor(busyPercentage * length)
-  stopIndex = stopIndex === length ? stopIndex - 1 : stopIndex
+  stopIndex = mapPercentageToStopIndex(busyPercentage)
   return colorStops.busy[stopIndex]
+}
+
+function mapPercentageToStopIndex(percentage: number) {
+  const { length } = colorStops.busy
+  let stopIndex = Math.floor(percentage * length)
+  stopIndex = stopIndex === length ? stopIndex - 1 : stopIndex
+  return stopIndex
 }
