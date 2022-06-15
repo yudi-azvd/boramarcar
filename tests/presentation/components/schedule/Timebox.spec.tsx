@@ -4,6 +4,7 @@ import 'jest-styled-components'
 
 import { TimeboxItem } from '@/presentation/components/ScheduleTab/styles'
 import { Availability } from '@/domain/types'
+import { scheduleColors } from '@/../tests/util/schedule'
 
 interface SutProps {
   availability?: Availability
@@ -23,20 +24,20 @@ describe('Timebox', () => {
     const { sut } = makeSut({ availability: undefined })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle('background: #FFFFFF')
+    expect(sut).toHaveStyle(`background: ${scheduleColors.undefined}`)
   })
 
   it('should be green when its value is available', () => {
     const { sut } = makeSut({ availability: 'available' })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle('background: #18DC86')
+    expect(sut).toHaveStyle(`background: ${scheduleColors.available}`)
   })
 
   it('should be red when its value is busy', () => {
     const { sut } = makeSut({ availability: 'busy' })
 
     expect(sut).toMatchSnapshot()
-    expect(sut).toHaveStyle('background: #E95F63')
+    expect(sut).toHaveStyle(`background: ${scheduleColors.busy}`)
   })
 })
