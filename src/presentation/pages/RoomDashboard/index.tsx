@@ -22,6 +22,7 @@ const RoomDashboard: React.FC = () => {
   const { user: currentUser } = useAuth()
   const [user, setUser] = useState(currentUser)
   const [otherUsers, setOtherUsers] = useState<User[]>([])
+  const [userToCompare, setUserToCompare] = useState<User | undefined>()
 
   const emitter = new FirebaseCurrentUserScheduleUpdateEmitter(
     roomId,
@@ -79,7 +80,7 @@ const RoomDashboard: React.FC = () => {
 
         <ScheduleOrHeatmap
           user={user}
-          otherUsers={otherUsers}
+          otherUsers={userToCompare ? [userToCompare] : otherUsers}
           currentUserScheduleUpdateEmitter={emitter}
           getCurrentUserSchedule={getCurrentUserSchedule}
         />
@@ -88,12 +89,15 @@ const RoomDashboard: React.FC = () => {
           <List
             locale={{ emptyText: 'Não há outros participantes nessa sala' }}
             header={<h3>Participantes</h3>}
-            dataSource={otherUsers.map((u) => u.name)}
-            renderItem={(item: string) => (
-              <List.Item>
-                {item}
-              </List.Item>
-            )}
+            dataSource={otherUsers.map((u) => `${u.name}#--${u.id}`)}
+            renderItem={(item: string) => {
+              const [name, id] = item.split('#--')
+              return (
+                <List.Item onClick={() => setUserToCompare(otherUsers.find((u) => u.id === id))}>
+                  {name}
+                </List.Item>
+              )
+            }}
           />
         </RoomInfo>
       </Content>

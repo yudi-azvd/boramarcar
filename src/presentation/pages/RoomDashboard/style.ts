@@ -53,4 +53,8 @@ export const RoomInfo = styled.aside`
   li {
     list-style: decimal;
   }
+
+  .ant-list-item {
+    cursor: pointer;
+  }
 `
