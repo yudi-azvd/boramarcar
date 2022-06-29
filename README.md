@@ -13,12 +13,12 @@
     Encontre e visualize horários em comum para o seu grupo. Fácil e rápido de usar.
     <br />
     <a href="https://boramarcar.vercel.app">Veja funcionando</a>
-    ·
+    <!-- ·
     <a style="pointer-events: none; display: inline-block; color: grey;" href="#">
       Achou um bug? Clique aqui</a>
     ·
     <a style="pointer-events: none; display: inline-block; color: grey;" href="#">
-      Mais funcionalidades</a>
+      Mais funcionalidades</a> -->
   </p>
 </div>
 
