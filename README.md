@@ -42,8 +42,8 @@ melhores horários para uma reunião ou um rolê qualquer.
 Comece clonando o repositório e entre nele:
 
 ```sh
-git clone https://github.com/yudi-azvd/heatmap-schedule.git
-cd heatmap-schedule
+git clone https://github.com/yudi-azvd/boramarcar.git
+cd boramarcar
 ```
 
 Siga o restante das instruções nesse [guia](/docs/setup-dev-environment.md).
