@@ -56,5 +56,18 @@ export const RoomInfo = styled.aside`
 
   .ant-list-item {
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+  }
+
+  span {
+    padding: 2px 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  span.selected {
+    /* background: rgba(0, 255, 0, 0.3); */
+    background: #18DC86;
   }
 `

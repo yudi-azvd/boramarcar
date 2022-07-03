@@ -10,7 +10,7 @@ import { useAuth } from '@/presentation/hooks/auth'
 import { Room, Schedule, User } from '@/domain/types'
 
 import { List } from 'antd'
-import { LeftOutlined } from '@ant-design/icons'
+import { CheckOutlined, LeftOutlined } from '@ant-design/icons'
 import ScheduleOrHeatmap from './ScheduleOrHeatmap'
 import {
   Container, Content, RoomInfo, Top,
@@ -22,7 +22,7 @@ const RoomDashboard: React.FC = () => {
   const { user: currentUser } = useAuth()
   const [user, setUser] = useState(currentUser)
   const [otherUsers, setOtherUsers] = useState<User[]>([])
-  const [userToCompare, setUserToCompare] = useState<User | undefined>()
+  const [selectedUsersToCompare, setSelectedUsersToCompare] = useState<User[]>([])
 
   const emitter = new FirebaseCurrentUserScheduleUpdateEmitter(
     roomId,
@@ -39,6 +39,21 @@ const RoomDashboard: React.FC = () => {
     const _otherUsers = usersWithNewSchedules.filter((u) => u.id !== user.id)
     setUser(thisUser as User)
     setOtherUsers(_otherUsers)
+  }
+
+  // TODO: otimizar essa procura. Talvez seja possível usar Set pra lembrar dos
+  // usuários selecionados (pelos IDs?). Além disso, ficar duplicando usuário
+  // também duplica o schedule dele. E tem mais uma procura lá embaixo na
+  // renderização.
+  function toggleUserInSelectedUsers(userId: string) {
+    const clickedUser = selectedUsersToCompare.find((u) => u.id === userId) as User
+    const isClickedUserSelected = !!clickedUser
+    if (isClickedUserSelected) {
+      setSelectedUsersToCompare(selectedUsersToCompare.filter((u) => u.id !== userId))
+    } else {
+      const selectedUser = otherUsers.find((u) => u.id === userId) as User
+      setSelectedUsersToCompare([selectedUser, ...selectedUsersToCompare])
+    }
   }
 
   useEffect(() => {
@@ -80,7 +95,7 @@ const RoomDashboard: React.FC = () => {
 
         <ScheduleOrHeatmap
           user={user}
-          otherUsers={userToCompare ? [userToCompare] : otherUsers}
+          otherUsers={selectedUsersToCompare.length !== 0 ? selectedUsersToCompare : otherUsers}
           currentUserScheduleUpdateEmitter={emitter}
           getCurrentUserSchedule={getCurrentUserSchedule}
         />
@@ -92,9 +107,22 @@ const RoomDashboard: React.FC = () => {
             dataSource={otherUsers.map((u) => `${u.name}#--${u.id}`)}
             renderItem={(item: string) => {
               const [name, id] = item.split('#--')
+              const isSelected = !!selectedUsersToCompare.find((u) => u.id === id)
               return (
-                <List.Item onClick={() => setUserToCompare(otherUsers.find((u) => u.id === id))}>
-                  {name}
+                <List.Item
+                  onClick={() => toggleUserInSelectedUsers(id)}
+                >
+                  <span className={`${isSelected ? 'selected' : ''}`}>
+                    {name}
+                  </span>
+                  <CheckOutlined
+                    style={{
+                      color: isSelected ? 'green' : 'transparent',
+                      transition: 'color 0.2s',
+                      stroke: 'red',
+                      fontSize: 20,
+                    }}
+                  />
                 </List.Item>
               )
             }}
